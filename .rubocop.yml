@@ -1,0 +1,23 @@
+AllCops:
+  Excludes:
+    - db/**
+
+CollectionMethods:
+  PreferredMethods:
+    collect: 'map'
+    collect!: 'map!'
+    detect: 'find'
+    find_all: 'select'
+
+HashSyntax:
+  Enabled: false
+AsciiComments:
+  Enabled: false
+DotPosition:
+  Enabled: false
+SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+AlignParameters:
+  Enabled: false
+StringLiterals:
+  Enabled: false

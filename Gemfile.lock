@@ -1,6 +1,13 @@
+GIT
+  remote: git://github.com/causes/mock_redis.git
+  revision: f3abf289cb063fbac4e6ec974f4c3a47aa750f41
+  specs:
+    mock_redis (0.14.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (4.0.5)
     actionmailer (4.1.8)
       actionpack (= 4.1.8)
       actionview (= 4.1.8)
@@ -28,7 +35,29 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
+    autoprefixer-rails (4.0.2.1)
+      execjs
+    better_errors (2.0.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
+    bootstrap_form (2.2.0)
     builder (3.2.2)
+    capistrano (3.3.5)
+      capistrano-stats (~> 1.1.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (~> 1.3)
+    capistrano-bundler (1.1.3)
+      capistrano (~> 3.1)
+      sshkit (~> 1.2)
+    capistrano-rails (1.1.2)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-stats (1.1.1)
+    coderay (1.1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -36,18 +65,38 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    colorize (0.7.5)
     commonjs (0.2.7)
+    dalli (2.7.2)
+    debug_inspector (0.0.2)
+    diff-lcs (1.2.5)
+    docile (1.1.5)
+    draper (1.4.0)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      request_store (~> 1.0)
     erubis (2.7.0)
     execjs (2.2.2)
+    factory_girl (4.5.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.5.0)
+      factory_girl (~> 4.5.0)
+      railties (>= 3.0.0)
+    foreigner (1.7.1)
+      activerecord (>= 3.0.0)
+    given_core (3.5.4)
+      sorcerer (>= 0.3.7)
+    haml (4.0.6)
+      tilt
     hike (1.2.3)
+    hiredis (0.5.2)
     i18n (0.6.11)
-    jbuilder (2.2.6)
-      activesupport (>= 3.0.0, < 5)
-      multi_json (~> 1.2)
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
+    kgio (2.9.2)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (2.6.0)
@@ -59,7 +108,13 @@ GEM
     mime-types (2.4.3)
     minitest (5.5.0)
     multi_json (1.10.1)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.9.1)
+    oj (2.11.1)
     pg (0.17.1)
+    quiet_assets (1.0.3)
+      railties (>= 3.1, < 5.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -73,24 +128,65 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.1.8)
       sprockets-rails (~> 2.0)
+    rails-cache-tags (1.3.1)
+      activesupport (>= 3.0)
+    rails-i18n (4.0.3)
+      i18n (~> 0.6)
+      railties (~> 4.0)
     railties (4.1.8)
       actionpack (= 4.1.8)
       activesupport (= 4.1.8)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
+    raindrops (0.13.0)
     rake (10.4.2)
-    rdoc (4.2.0)
-      json (~> 1.4)
+    redis (3.2.0)
+    redis-classy (1.2.0)
+      redis-namespace (~> 1.0)
+    redis-mutex (3.0.0)
+      redis-classy (~> 1.2)
+    redis-namespace (1.5.1)
+      redis (~> 3.0, >= 3.0.4)
     ref (1.0.5)
+    request_store (1.1.0)
+    rspec (3.1.0)
+      rspec-core (~> 3.1.0)
+      rspec-expectations (~> 3.1.0)
+      rspec-mocks (~> 3.1.0)
+    rspec-core (3.1.7)
+      rspec-support (~> 3.1.0)
+    rspec-expectations (3.1.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.1.0)
+    rspec-given (3.5.4)
+      given_core (= 3.5.4)
+      rspec (>= 2.12)
+    rspec-mocks (3.1.3)
+      rspec-support (~> 3.1.0)
+    rspec-rails (3.1.0)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.1.0)
+      rspec-expectations (~> 3.1.0)
+      rspec-mocks (~> 3.1.0)
+      rspec-support (~> 3.1.0)
+    rspec-support (3.1.2)
     sass (3.2.19)
     sass-rails (4.0.5)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.2.2)
       sprockets (~> 2.8, < 3.0)
       sprockets-rails (~> 2.0)
-    sdoc (0.4.1)
-      json (~> 1.7, >= 1.7.7)
-      rdoc (~> 4.0)
+    seedbank (0.3.0)
+    shoulda-matchers (2.7.0)
+      activesupport (>= 3.0.0)
+    simplecov (0.9.1)
+      docile (~> 1.1.0)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.8.0)
+    simplecov-html (0.8.0)
+    sorcerer (1.0.2)
     spring (1.2.0)
     sprockets (2.12.3)
       hike (~> 1.2)
@@ -101,12 +197,19 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    sshkit (1.6.1)
+      colorize (>= 0.7.0)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
+    test_after_commit (0.4.0)
+      activerecord (>= 3.2)
     therubyracer (0.12.1)
       libv8 (~> 3.16.14.0)
       ref
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timecop (0.7.1)
     turbolinks (2.5.3)
       coffee-rails
     twitter-bootswatch-rails (3.2.0.0)
@@ -117,27 +220,74 @@ GEM
       less-rails (>= 2.3)
       railties (>= 3.1)
       twitter-bootswatch-rails
+    twitter-bootswatch-rails-helpers (3.2.0.0)
+      twitter-bootswatch-rails (~> 3.2.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.6.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unicorn (4.8.3)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
+    unicorn-worker-killer (0.4.2)
+      unicorn (~> 4)
+    vicar (0.0.2)
+      actionpack (>= 3.1.0, < 5.0)
+    will_paginate (3.0.7)
+    will_paginate-bootstrap (1.0.1)
+      will_paginate (>= 3.0.3)
+    wirble (0.1.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm
+  autoprefixer-rails
+  better_errors
+  binding_of_caller
+  bootstrap_form
+  capistrano (~> 3.2)
+  capistrano-bundler
+  capistrano-rails
   coffee-rails (~> 4.0.0)
-  jbuilder (~> 2.0)
+  dalli (~> 2.7)
+  draper
+  factory_girl_rails (~> 4.4)
+  foreigner (~> 1.6)
+  haml
+  hiredis (~> 0.5)
   jquery-rails
   less-rails
+  mock_redis!
+  multi_json
+  oj
   pg
+  quiet_assets
   rails (= 4.1.8)
+  rails-cache-tags (~> 1.3)
+  rails-i18n
+  redis (~> 3.1)
+  redis-mutex (~> 3.0)
+  rspec-given (~> 3.5)
+  rspec-rails (~> 3.1)
   sass-rails (~> 4.0.3)
-  sdoc (~> 0.4.0)
+  seedbank
+  shoulda-matchers (~> 2.7)
+  simplecov (~> 0.9)
   spring
+  test_after_commit (~> 0.4)
   therubyracer
+  timecop (~> 0.7)
   turbolinks
   twitter-bootswatch-rails (~> 3.2)
   twitter-bootswatch-rails-fontawesome
+  twitter-bootswatch-rails-helpers (~> 3.1)
   uglifier (>= 1.3.0)
+  unicorn
+  unicorn-worker-killer
+  vicar (~> 0.0.2)
+  will_paginate-bootstrap
+  wirble

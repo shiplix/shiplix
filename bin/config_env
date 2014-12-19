@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+require 'pathname'
+
+project = ENV['PROJECT']
+deploy = ENV['DEPLOY']
+
+raise 'Project or Deploy not found' unless project || deploy
+rails_root = Pathname.new(File.expand_path(File.dirname(__FILE__) + '/..'))
+configs_path = rails_root.join('packages', project, deploy)
+
+Dir.
+  glob(configs_path.join('**', '*')).
+  reject { |path| File.directory?(path) }.
+  each do |original|
+    original = Pathname.new(original)
+    project_entry = original.relative_path_from(configs_path)
+    src_dir = File.dirname(rails_root.join(project_entry))
+    src = original.relative_path_from(Pathname.new(src_dir))
+
+    FileUtils.ln_sf(src, project_entry)
+  end
