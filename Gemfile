@@ -30,6 +30,7 @@ gem 'hiredis', '~> 0.5'
 gem 'dalli', '~> 2.7'
 gem 'rails-cache-tags', '~> 1.3'
 gem 'redis-mutex', '~> 3.0'
+gem "omniauth-github"
 
 group :development do
   gem 'better_errors'
