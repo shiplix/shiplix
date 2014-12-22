@@ -1,0 +1,9 @@
+= link_to 'Refresh', repo_syncs_url(format: :json), remote: true, method: :post,  class: 'js-refresh-repos button'
+
+= render(@repos) || 'There is no repositories loaded yet.'
+
+- content_for(:js_ready) do
+  :plain
+    $('.js-refresh-repos').on('ajax:success', function(e, data, status, xhr){
+      console.log(data);
+    });

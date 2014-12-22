@@ -29,3 +29,11 @@
     / Placed at the end of the document so the pages load faster
     = javascript_include_tag 'slate', 'data-turbolinks-track' => true
     = yield(:javascript) if content_for?(:javascript)
+
+    - if content_for?(:js_ready)
+      :javascript
+        $(document).ready(
+          function(){
+            #{yield(:js_ready)}
+          }
+        );

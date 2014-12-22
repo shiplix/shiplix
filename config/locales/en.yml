@@ -11,3 +11,8 @@ en:
       index:
         title: 'Users'
         header: 'Users'
+
+    repos:
+      index:
+        title: 'Repositories'
+        header: 'Repositories'

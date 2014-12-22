@@ -35,4 +35,17 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Redis
+  conf = YAML.load_file(Rails.root.join('config', 'redis.yml')).fetch(Rails.env.to_s).symbolize_keys
+  redis = ::Redis.new(conf)
+  Redis::Classy.db = redis
+  Redis.current = redis
+  Resque.redis = redis
+  Resque.redis.namespace = 'shiplix'
+
+  # Memcache
+  conf = YAML.load_file(Rails.root.join('config', 'memcache.yml')).fetch(Rails.env.to_s).symbolize_keys
+  servers = conf.delete(:servers)
+  config.cache_store = :dalli_store, servers, conf
 end

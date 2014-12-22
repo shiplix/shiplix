@@ -12,6 +12,7 @@ gem 'therubyracer',  platforms: :ruby
 gem 'haml'
 gem 'jquery-rails'
 gem 'turbolinks'
+gem 'jquery-turbolinks'
 gem 'autoprefixer-rails'
 gem 'will_paginate-bootstrap'
 gem 'twitter-bootswatch-rails', '~> 3.2'
@@ -30,7 +31,12 @@ gem 'hiredis', '~> 0.5'
 gem 'dalli', '~> 2.7'
 gem 'rails-cache-tags', '~> 1.3'
 gem 'redis-mutex', '~> 3.0'
-gem "omniauth-github"
+gem 'omniauth-github'
+gem 'attr_extras'
+gem 'resque', '~> 1.25'
+gem 'resque-retry'
+gem 'resque-god', path: '/home/merkushin/apps/bibendi/resque-god'
+gem 'octokit'
 
 group :development do
   gem 'better_errors'

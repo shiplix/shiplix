@@ -6,3 +6,4 @@ resque.yml
 resque.god
 rubik.yml
 paperdist.yml
+resque-god.yml

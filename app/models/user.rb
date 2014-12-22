@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  has_many :memberships
+  has_many :repos, through: :memberships
+
   validates :github_username, presence: true
 
   before_create :generate_remember_token

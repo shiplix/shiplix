@@ -15,6 +15,8 @@ Bundler.require(*Rails.groups)
 
 module Shiplix
   class Application < Rails::Application
+    config.autoload_paths += %W(#{config.root}/lib)
+
     config.active_record.schema_format = :sql
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
