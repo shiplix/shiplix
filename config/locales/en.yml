@@ -7,10 +7,10 @@ en:
   pages:
     default_postfix: ' - Shiplix'
 
-    users:
+    home:
       index:
-        title: 'Users'
-        header: 'Users'
+        title: 'Code Analize'
+        header: 'Code Analize'
 
     repos:
       index:

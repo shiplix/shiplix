@@ -1,0 +1,6 @@
+.well
+  - if signed_in?
+    = link_to 'Logout', '/sign_out', class: 'btn btn-primary'
+    Hello, #{current_user.github_username}
+  - else
+    = link_to 'Signin', '/auth/github', class: 'btn btn-primary'

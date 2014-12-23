@@ -4,10 +4,9 @@ Rails.application.routes.draw do
 
   resources :jobs, only: [:show]
 
-  resource :user, only: [:index]
   resources :repos, only: [:index]
   resources :repo_syncs, only: [:create]
   resources :repo_activations, only: [:create]
 
-  root 'users#index'
+  root 'home#index'
 end

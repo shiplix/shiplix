@@ -56,6 +56,10 @@ group :production, :development do
   gem 'unicorn-worker-killer'
 end
 
+group :development, :test do
+  gem 'dotenv-rails'
+end
+
 group :test do
   gem 'timecop', '~> 0.7'
   gem 'rspec-rails', '~> 3.1'
