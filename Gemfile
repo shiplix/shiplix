@@ -39,6 +39,7 @@ gem 'resque-god', path: '/home/merkushin/apps/bibendi/resque-god'
 gem 'resque-unique', path: '/home/merkushin/apps/bibendi/resque-unique'
 gem 'octokit'
 gem 'pluggable_js'
+gem 'font-awesome-rails'
 
 group :development do
   gem 'better_errors'

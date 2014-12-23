@@ -4,7 +4,7 @@
 
 = render(@repos) || 'There is no repositories loaded yet.'
 
-#js-progress-dialog.modal.fade{:role => 'dialog', 'aria-hidden' => 'true'}
+#js-progress-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
   .modal-dialog.modal-sm
     .modal-content
       #js-progressbar

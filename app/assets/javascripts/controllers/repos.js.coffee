@@ -5,8 +5,7 @@
       pid: data.meta_id
       form: 'load'
       onEnable: ->
-        $('#js-progress-dialog').modal
-          keyboard: false
+        $('#js-progress-dialog').modal()
       onSuccess: (data) ->
         location.reload()
       onError: (data) ->
@@ -18,8 +17,7 @@
       pid: data.meta_id
       form: 'load'
       onEnable: ->
-        $('#js-progress-dialog').modal
-          keyboard: false
+        $('#js-progress-dialog').modal()
       onSuccess: (data) ->
         location.reload()
       onError: (data) ->
