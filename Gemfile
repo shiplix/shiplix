@@ -36,7 +36,9 @@ gem 'attr_extras'
 gem 'resque', '~> 1.25'
 gem 'resque-retry'
 gem 'resque-god', path: '/home/merkushin/apps/bibendi/resque-god'
+gem 'resque-unique', path: '/home/merkushin/apps/bibendi/resque-unique'
 gem 'octokit'
+gem 'pluggable_js'
 
 group :development do
   gem 'better_errors'

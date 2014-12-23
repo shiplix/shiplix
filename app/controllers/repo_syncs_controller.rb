@@ -2,16 +2,11 @@ class RepoSyncsController < ApplicationController
   respond_to :json
 
   def create
-    Resque.enqueue(
-      RepoSyncJob,
+    meta_id = RepoSyncJob.enqueue(
       current_user.id,
       session[:github_token]
-    )
+    ).meta_id
 
-    respond_to do |format|
-      format.json do
-        render json: {status: 'ok'}
-      end
-    end
+    render json: {meta_id: meta_id}
   end
 end

@@ -3,8 +3,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  layout 'slate'
-
   before_action :authenticate
 
   helper_method :current_user, :signed_in?

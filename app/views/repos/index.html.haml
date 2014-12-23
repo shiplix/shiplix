@@ -1,9 +1,10 @@
-= link_to 'Refresh', repo_syncs_url(format: :json), remote: true, method: :post,  class: 'js-refresh-repos button'
+- content_for(:page_header_links) do
+  .pull-right
+    = link_to 'Refresh', repo_syncs_url, remote: true, method: :post,  class: 'js-refresh-repos btn btn-info'
 
 = render(@repos) || 'There is no repositories loaded yet.'
 
-- content_for(:js_ready) do
-  :plain
-    $('.js-refresh-repos').on('ajax:success', function(e, data, status, xhr){
-      console.log(data);
-    });
+#js-progress-dialog.modal.fade{:role => 'dialog', 'aria-hidden' => 'true'}
+  .modal-dialog.modal-sm
+    .modal-content
+      #js-progressbar

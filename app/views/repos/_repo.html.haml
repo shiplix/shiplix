@@ -1,1 +1,7 @@
-= repo.full_github_name
+.panel.panel-default
+  .panel-body
+    - unless repo.active?
+      .pull-right
+        = link_to 'Activate', repo_activations_url(id: repo.id), remote: true, method: :post,  class: 'btn btn-success js-repo-activate'
+    %h4
+      = repo.full_github_name
