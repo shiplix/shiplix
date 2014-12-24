@@ -1,4 +1,4 @@
-class RepoActivationJob
+class RepoDeactivationJob
   include Retryable
   extend Resque::Unique
 
@@ -9,6 +9,6 @@ class RepoActivationJob
   def self.execute(user_id, repo_id, github_token)
     user = User.find(user_id)
     repo = user.repos.find(repo_id)
-    RepoActivatorService.new(repo, github_token).call
+    RepoDeactivatorService.new(repo, github_token).call
   end
 end

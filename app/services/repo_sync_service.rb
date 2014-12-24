@@ -1,7 +1,7 @@
 class RepoSyncService
   ORGANIZATION_TYPE = 'Organization'.freeze
 
-  pattr_initialize :user, :github_token
+  pattr_initialize :repo, :github_token
   attr_reader :user
 
   def api

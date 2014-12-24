@@ -1,7 +1,18 @@
 .panel.panel-default
   .panel-body
-    - unless repo.active?
-      .pull-right
-        = link_to 'Activate', repo_activations_url(id: repo.id), remote: true, method: :post,  class: 'btn btn-success js-repo-activate'
+    .pull-right
+      - if repo.active?
+        = link_to 'Remove',
+                  repo_activation_url(id: repo.id),
+                  remote: true,
+                  method: :delete,
+                  class: 'btn btn-danger js-repo-deactivate',
+                  data: {confirm: 'Are you sure?'}
+      - else
+        = link_to 'Activate',
+                  repo_activation_url(id: repo.id),
+                  remote: true,
+                  method: :put,
+                  class: 'btn btn-success js-repo-activate'
     %h4
       = repo.full_github_name
