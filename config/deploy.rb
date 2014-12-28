@@ -1,17 +1,17 @@
 lock '3.3.5'
 
 set :application, 'shiplix'
-set :repo_url, 'git@.git'
+set :repo_url, 'git@bitbucket.org:shiplix/shiplix.git'
 set :scm, :git
-set :deploy_to, '/home/shiplix/sites/shiplix'
+set :deploy_to, '/home/ubuntu/sites/shiplix'
 set :format, :pretty
-set :log_level, :info
+set :log_level, :debug
 set :bundle_jobs, 4
 set :linked_dirs, %w{log tmp public/system}
 set :keep_releases, 7
 set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
 set :rails_env, 'production'
-set :ssh_options, {forward_agent: true, user: 'shiplix'}
+set :ssh_options, {forward_agent: true, user: 'ubuntu'}
 
 # https://github.com/capistrano/bundler/issues/45
 set :bundle_binstubs, nil
@@ -40,7 +40,7 @@ namespace :deploy do
     end
   end
 
-  after :publishing, :restart
+  #after :publishing, :restart
 
   desc 'Restart resque'
   task :restart_resque do
@@ -69,5 +69,5 @@ namespace :deploy do
     end
   end
 
-  after :finished, :slack_notice
+  #after :finished, :slack_notice
 end

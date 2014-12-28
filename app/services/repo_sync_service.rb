@@ -1,12 +1,8 @@
 class RepoSyncService
   ORGANIZATION_TYPE = 'Organization'.freeze
 
-  pattr_initialize :repo, :github_token
+  pattr_initialize :user, :github_token
   attr_reader :user
-
-  def api
-    @api ||= GithubApi.new(github_token)
-  end
 
   def call
     user.repos.clear
@@ -18,6 +14,10 @@ class RepoSyncService
   end
 
   private
+
+  def api
+    @api ||= GithubApi.new(github_token)
+  end
 
   def repo_attributes(attributes)
     attributes.slice(:private).merge(

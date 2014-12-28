@@ -3,9 +3,8 @@ require 'base64'
 require 'active_support/core_ext/object/with_options'
 
 class GithubApi
-  SERVICES_TEAM_NAME = 'Services'
-  PREVIEW_MEDIA_TYPE =
-    ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
+  SERVICES_TEAM_NAME = 'Services'.freeze
+  PREVIEW_MEDIA_TYPE = ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
 
   def initialize(token = ENV.fetch('HOUND_GITHUB_TOKEN'))
     @token = token

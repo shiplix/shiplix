@@ -1,5 +1,4 @@
 require File.expand_path('../boot', __FILE__)
-require File.expand_path('../constants', __FILE__)
 
 # Pick the frameworks you want:
 require "active_model/railtie"
@@ -15,6 +14,8 @@ Bundler.require(*Rails.groups)
 
 module Shiplix
   class Application < Rails::Application
+    Dotenv::Railtie.load unless Rails.env.production?
+
     config.autoload_paths += %W(#{config.root}/lib)
 
     config.active_record.schema_format = :sql
@@ -30,15 +31,11 @@ module Shiplix
     config.active_record.default_timezone = :utc
 
     # Set a default host that will be used in all mailers
-    config.action_mailer.default_url_options = {:host => HOST}
-
-    config.action_controller.asset_host = "http://#{ASSETS_HOST}#{":#{ASSETS_PORT}" if defined?(ASSETS_PORT)}"
+    config.action_mailer.default_url_options = {host: ENV.fetch('SHIPLIX_HOST')}
 
     # JSON
     require 'multi_json'
     MultiJson.use :oj
-
-    config.action_dispatch.tld_length = HOST.split('.').size.pred
 
     config.generators do |g|
       g.orm :active_record

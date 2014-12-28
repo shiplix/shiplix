@@ -1,0 +1,7 @@
+env:
+  INTERVAL: 1
+
+workers:
+  '*':
+    count: 2
+    stop_timeout: 2700

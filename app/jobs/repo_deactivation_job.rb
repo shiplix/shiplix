@@ -1,6 +1,6 @@
 class RepoDeactivationJob
   include Retryable
-  extend Resque::Unique
+  extend Resque::Single
 
   @queue = :high
 

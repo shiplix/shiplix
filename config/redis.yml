@@ -1,0 +1,11 @@
+defaults: &DEFAULTS
+  host: '<%= ENV["SHIPLIX_REDIS_HOST"] %>'
+  port: <%= ENV["SHIPLIX_REDIS_PORT"] %>
+  namespace: 'shiplix'
+  driver: hiredis
+
+development:
+  <<: *DEFAULTS
+
+production:
+  <<: *DEFAULTS

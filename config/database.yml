@@ -1,0 +1,17 @@
+defaults: &DEFAULTS
+  adapter: postgresql
+  username: <%= ENV["SHIPLIX_DB_USER"] %>
+  host: <%= ENV["SHIPLIX_DB_HOST"] %>
+  port: <%= ENV["SHIPLIX_DB_PORT"] %>
+
+development:
+  <<: *DEFAULTS
+  database: shiplix
+
+test:
+  <<: *DEFAULTS
+  database: shiplix_test
+
+production:
+  <<: *DEFAULTS
+  database: shiplix

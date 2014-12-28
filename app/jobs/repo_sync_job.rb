@@ -1,6 +1,6 @@
 class RepoSyncJob
   include Retryable
-  extend Resque::Unique
+  extend Resque::Single
 
   @queue = :high
 

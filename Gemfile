@@ -8,7 +8,7 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'less-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
-gem 'therubyracer',  platforms: :ruby
+gem 'therubyracer', platforms: :ruby
 gem 'haml'
 gem 'jquery-rails'
 gem 'turbolinks'
@@ -35,11 +35,12 @@ gem 'omniauth-github'
 gem 'attr_extras'
 gem 'resque', '~> 1.25'
 gem 'resque-retry'
-gem 'resque-god', path: '/home/merkushin/apps/bibendi/resque-god'
-gem 'resque-unique', path: '/home/merkushin/apps/bibendi/resque-unique'
+gem 'resque-god'
+gem 'resque-single'
 gem 'octokit'
 gem 'pluggable_js'
 gem 'font-awesome-rails'
+gem 'cocaine', require: false
 
 group :development do
   gem 'better_errors'

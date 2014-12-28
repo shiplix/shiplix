@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :repos, only: [:index]
   resources :repo_syncs, only: [:create]
   resources :repo_activations, only: [:update, :destroy]
+  resources :github_events, only: [:create]
 
   root 'home#index'
 end

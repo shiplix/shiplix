@@ -16,3 +16,4 @@
 /.idea
 .ruby-version
 .env
+.capistrano/

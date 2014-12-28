@@ -1,0 +1,10 @@
+defaults: &DEFAULTS
+  servers: '<%= ENV["SHIPLIX_MEMCACHE_SERVERS"] %>'
+  namespace: 'shiplix'
+  autofix_keys: true
+
+development:
+  <<: *DEFAULTS
+
+production:
+  <<: *DEFAULTS
