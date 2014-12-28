@@ -1,4 +1,4 @@
-server 'ec2-54-148-161-96.us-west-2.compute.amazonaws.com', roles: [:web, :app, :db, :job]
+server '54.149.182.233', roles: [:web, :app, :db, :job]
 
 set :deploy_name, 'Staging'
 set :slack_channel, 'deploy'
