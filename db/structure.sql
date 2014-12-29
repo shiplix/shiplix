@@ -30,6 +30,37 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: builds; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE builds (
+    id integer NOT NULL,
+    repo_id integer NOT NULL,
+    revision character varying(255) NOT NULL,
+    pull_request_id integer
+);
+
+
+--
+-- Name: builds_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE builds_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: builds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE builds_id_seq OWNED BY builds.id;
+
+
+--
 -- Name: memberships; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -144,6 +175,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY builds ALTER COLUMN id SET DEFAULT nextval('builds_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY memberships ALTER COLUMN id SET DEFAULT nextval('memberships_id_seq'::regclass);
 
 
@@ -159,6 +197,14 @@ ALTER TABLE ONLY repos ALTER COLUMN id SET DEFAULT nextval('repos_id_seq'::regcl
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: builds_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY builds
+    ADD CONSTRAINT builds_pkey PRIMARY KEY (id);
 
 
 --
@@ -183,6 +229,13 @@ ALTER TABLE ONLY repos
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_builds_on_repo_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_builds_on_repo_id ON builds USING btree (repo_id);
 
 
 --
@@ -221,6 +274,30 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: builds_repo_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY builds
+    ADD CONSTRAINT builds_repo_id_fk FOREIGN KEY (repo_id) REFERENCES repos(id);
+
+
+--
+-- Name: memberships_repo_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY memberships
+    ADD CONSTRAINT memberships_repo_id_fk FOREIGN KEY (repo_id) REFERENCES repos(id);
+
+
+--
+-- Name: memberships_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY memberships
+    ADD CONSTRAINT memberships_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -231,4 +308,6 @@ INSERT INTO schema_migrations (version) VALUES ('20141219051157');
 INSERT INTO schema_migrations (version) VALUES ('20141219102228');
 
 INSERT INTO schema_migrations (version) VALUES ('20141219105312');
+
+INSERT INTO schema_migrations (version) VALUES ('20141229114603');
 

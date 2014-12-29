@@ -6,20 +6,17 @@ class BuildService
   def call
     @build = repo.builds.find_or_create_by!(revision: revision)
 
-    deploy
+    pull
     analyze
   end
 
   private
 
-  def deploy
-    line = Cocaine::CommandLine.new('bundle', 'exec', 'cap', 'build', 'deploy',
-                                    environment: {'REVISON' => revision, 'REPO_NAME' => repo.full_github_name},
-                                    logger: Logger.new(STDOUT))
-    line.run
+  def pull
+    PullService.new(repo, revision).call
   end
 
   def analyze
-
+    AnalyzeService.new(repo, revision).call
   end
 end

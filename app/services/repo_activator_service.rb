@@ -7,7 +7,7 @@ class RepoActivatorService
     repo.activate
 
     if !repo.builds.exists? && recent_revision
-      BuildJob.enqueue(repo.id, recent_revision, github_token)
+      BuildJob.enqueue(repo.id, recent_revision)
     end
   end
 
