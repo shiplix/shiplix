@@ -54,6 +54,10 @@ class Repo < ActiveRecord::Base
     ENV["EXEMPT_ORGS"] && ENV["EXEMPT_ORGS"].split(",").include?(organization)
   end
 
+  def scm_url
+    "git@github.com:#{full_github_name}.git"
+  end
+
   private
 
   def organization

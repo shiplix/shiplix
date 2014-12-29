@@ -13,7 +13,7 @@ class BuildService
   private
 
   def pull
-    PullService.new(repo, revision).call
+    ScmUpdateService.new(@build).call
   end
 
   def analyze
