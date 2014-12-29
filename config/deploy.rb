@@ -8,6 +8,7 @@ set :format, :pretty
 set :log_level, :debug
 set :bundle_jobs, 4
 set :linked_dirs, %w{log tmp public/system}
+set :linked_files, %w{.env}
 set :keep_releases, 7
 set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
 set :rails_env, 'production'

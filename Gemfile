@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.1.8'
 gem 'rails-i18n'
+gem 'dotenv-rails'
 gem 'pg'
 gem 'sass-rails', '~> 4.0.3'
 gem 'less-rails'
@@ -49,17 +50,13 @@ group :development do
   gem 'capistrano', '~> 3.2'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
+  gem 'capistrano3-puma'
   gem 'quiet_assets'
   gem 'wirble'
 end
 
 group :production, :development do
-  gem 'unicorn'
-  gem 'unicorn-worker-killer'
-end
-
-group :development, :test do
-  gem 'dotenv-rails'
+  gem 'puma'
 end
 
 group :test do
