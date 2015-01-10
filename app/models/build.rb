@@ -33,4 +33,8 @@ class Build < ActiveRecord::Base
   def locator
     @locator ||= BuildLocator.new(self)
   end
+
+  def source_locator
+    @source_locator ||= SourceLocator.new(locator.revision_path.to_s)
+  end
 end

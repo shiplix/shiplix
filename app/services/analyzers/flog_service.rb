@@ -2,46 +2,50 @@ require 'flog'
 
 module Analyzers
   class FlogService < BaseService
-    HIGH_COMPLEXITY_SCORE_THRESHOLD = 10 # TODO: change this!
+    HIGH_COMPLEXITY_SCORE_THRESHOLD = 25
 
     attr_reader :flog
 
     def call
       @flog = Flog.new(all: true, continue: true, methods: true)
 
-      # TODO: move SourceLocator to Build?
-      SourceLocator.new(build.locator.revision_path.to_s).paths.each do |path|
-        add_smells_to(path)
+      build.source_locator.paths.each do |path|
+        analyze(path)
+        calculate(path)
       end
     end
 
     private
 
-    # TODO: refactor this shit
-    def add_smells_to(path)
+    def analyze(path)
       flog.reset
       flog.flog(path)
       flog.calculate
+    end
 
+    def calculate(path)
       flog.scores.each do |klass_name, total_score|
-        klass = build.klasses.where(name: klass_name).first || build.klasses.create!(name: klass_name)
+        klass = klass_by_name(klass_name)
 
-        rel_path = relative_path(path)
-        unless klass.source_files.where(path: rel_path).exists?
-          source_file = build.source_files.find_or_create_by!(path: rel_path)
+        unless klass.source_files.where(path: relative_path(path)).exists?
+          source_file = source_file_by_path(path)
           KlassSourceFile.create!(klass_id: klass.id, source_file_id: source_file.id)
         end
 
         klass.complexity = klass.complexity.to_i + total_score.round
 
-        flog.method_scores[klass_name].each do |klass_method, score|
-          score = score.round
-          if score >= HIGH_COMPLEXITY_SCORE_THRESHOLD
-            create_smell(klass, klass_method, score)
-          end
-        end
+        add_smells(klass)
 
         klass.save!
+      end
+    end
+
+    def add_smells(klass)
+      flog.method_scores[klass.name].each do |klass_method, score|
+        score = score.round
+        if score >= HIGH_COMPLEXITY_SCORE_THRESHOLD
+          create_smell(klass, klass_method, score)
+        end
       end
     end
 
@@ -63,13 +67,7 @@ module Analyzers
         line: line.to_i
       )
 
-      # TODO: wtf?
       KlassSmell.create!(klass_id: klass.id, smell_id: smell.id)
-    end
-
-    def relative_path(path)
-      @revision_path ||= build.locator.revision_path.to_s + '/'
-      path.sub(@revision_path, '')
     end
   end
 end
