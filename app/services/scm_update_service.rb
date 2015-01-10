@@ -1,4 +1,3 @@
-require 'build_path'
 require 'cocaine'
 
 class ScmUpdateService
@@ -14,7 +13,7 @@ class ScmUpdateService
   private
 
   def check
-    if File.exist?(build_path.cache.join('HEAD').to_s)
+    if File.exist?(build.locator.cache_path.join('HEAD').to_s)
       update
     else
       clone
@@ -22,42 +21,38 @@ class ScmUpdateService
   end
 
   def clone
-    make_cache_path unless File.directory?(build_path.cache.to_s)
+    make_cache_path unless File.directory?(build.locator.cache_path.to_s)
 
     Cocaine::CommandLine.
       new('git', 'clone --mirror :url :path').
-      run(url: build.repo.scm_url, path: build_path.cache.to_s)
+      run(url: build.repo.scm_url, path: build.locator.cache_path.to_s)
   end
 
   def update
     Cocaine::CommandLine.
-      new('git', 'remote update').
-      run
+      new('cd', ':cache_path && git remote update').
+      run(cache_path: build.locator.cache_path.to_s)
   end
 
   def release
-    make_revision_path unless File.directory?(build_path.revision.to_s)
+    make_revision_path unless File.directory?(build.locator.revision_path.to_s)
 
     Cocaine::CommandLine.
       new('cd', ':cache_path && git archive :revision | tar -x -f - -C :revision_path').
       run(revision: build.revision,
-          cache_path: build_path.cache.to_s,
-          revision_path: build_path.revision.to_s)
+          cache_path: build.locator.cache_path.to_s,
+          revision_path: build.locator.revision_path.to_s)
   end
 
   def make_cache_path
     Cocaine::CommandLine.
       new('mkdir', '-p :path').
-      run(path: build_path.cache.to_s)
+      run(path: build.locator.cache_path.to_s)
   end
 
   def make_revision_path
     Cocaine::CommandLine.
       new('mkdir', '-p :path').
-      run(path: build_path.revision.to_s)
-  end
-
-  def build_path
-    @build_path ||= BuildPath.new(build)
+      run(path: build.locator.revision_path.to_s)
   end
 end

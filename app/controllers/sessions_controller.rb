@@ -4,6 +4,8 @@ class SessionsController < ApplicationController
   def create
     user = find_user || create_user
     create_session_for(user)
+    update_access_token(user)
+
     redirect_to root_path
   end
 
@@ -21,19 +23,23 @@ class SessionsController < ApplicationController
   def create_user
     user = User.create!(
       github_username: github_username,
-      email_address: github_email_address
+      email_address: github_email_address,
+      access_token: github_token
     )
-    flash[:signed_up] = true
+
     user
   end
 
   def create_session_for(user)
     session[:remember_token] = user.remember_token
-    session[:github_token] = github_token
   end
 
   def destroy_session
     session[:remember_token] = nil
+  end
+
+  def update_access_token(user)
+    user.update(access_token: github_token) if user.access_token != github_token
   end
 
   def github_username

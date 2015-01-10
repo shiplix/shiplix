@@ -1,7 +1,7 @@
 class RepoDeactivatorService
   include Apiable
 
-  pattr_initialize :repo, :github_token
+  pattr_initialize :user, :repo
 
   def call
     repo.deactivate

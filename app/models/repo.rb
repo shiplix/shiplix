@@ -1,13 +1,9 @@
 class Repo < ActiveRecord::Base
   has_many :memberships
   has_many :users, through: :memberships
-  has_many :builds
-  #has_one :subscription
+  has_many :branches
 
   alias_attribute :name, :full_github_name
-
-  #delegate :type, :price, to: :plan, prefix: true
-  #delegate :price, to: :subscription, prefix: true
 
   validates :full_github_name, presence: true
   validates :github_id, uniqueness: true, presence: true
@@ -32,26 +28,27 @@ class Repo < ActiveRecord::Base
     repo
   end
 
-  def activate
-    update(active: true)
+  def owner
+    @owner ||= memberships.where(owner: true).first.user
   end
 
-  def deactivate
-    update(active: false)
-  end
+  def activate(user)
+    return if active?
 
-  def plan
-    Plan.new(self)
-  end
-
-  def stripe_subscription_id
-    if subscription
-      subscription.stripe_subscription_id
+    transaction do
+      update(active: true)
+      memberships.where(user_id: user.id).first.update(owner: true)
     end
   end
 
-  def exempt?
-    ENV["EXEMPT_ORGS"] && ENV["EXEMPT_ORGS"].split(",").include?(organization)
+  def deactivate
+    return unless active?
+
+    transaction do
+      update(active: false)
+      owner.memberships.where(repo_id: id).first.update(owner: false)
+      @owner = nil
+    end
   end
 
   def scm_url

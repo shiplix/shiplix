@@ -1,14 +1,12 @@
 class RepoActivatorService
   include Apiable
 
-  pattr_initialize :repo, :github_token
+  pattr_initialize :user, :repo
 
   def call
-    repo.activate
+    repo.activate(user)
 
-    if !repo.builds.exists? && recent_revision
-      BuildJob.enqueue(repo.id, recent_revision)
-    end
+    PushBuildJob.enqueue(repo.id, default_branch, recent_revision) if recent_revision.present?
   end
 
   private

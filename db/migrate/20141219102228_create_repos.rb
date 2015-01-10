@@ -7,6 +7,7 @@ class CreateRepos < ActiveRecord::Migration
       t.string :full_github_name, null: false
       t.boolean :private, null: false, default: false
       t.boolean :in_organization, null: false, default: false
+
       t.timestamps
     end
 

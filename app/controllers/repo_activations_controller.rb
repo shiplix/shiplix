@@ -18,8 +18,7 @@ class RepoActivationsController < ApplicationController
   def enqueue_job(klass)
     klass.enqueue(
       current_user.id,
-      repo.id,
-      session[:github_token]
+      repo.id
     ).meta_id
   end
 end

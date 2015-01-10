@@ -4,11 +4,11 @@ class RepoDeactivationJob
 
   @queue = :high
 
-  lock_on { |user_id, repo_id, *| [user_id, repo_id] }
+  lock_on { |user_id, repo_id| [user_id, repo_id] }
 
-  def self.execute(user_id, repo_id, github_token)
+  def self.execute(user_id, repo_id)
     user = User.find(user_id)
     repo = user.repos.find(repo_id)
-    RepoDeactivatorService.new(repo, github_token).call
+    RepoDeactivatorService.new(user, repo).call
   end
 end

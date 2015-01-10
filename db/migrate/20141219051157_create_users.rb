@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :remember_token, null: false
       t.boolean :refreshing_repos, default: false
       t.string :email_address
+      t.string :access_token, null: false
 
       t.timestamps null: false
     end

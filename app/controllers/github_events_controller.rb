@@ -7,7 +7,6 @@ class GithubEventsController < ApplicationController
     when 'ping'
       # do nothing
     when 'pull_request'
-      # process_pull_request if payload.action == 'opened'
       raise NotImplementedError
     when 'push'
       process_push
@@ -18,15 +17,16 @@ class GithubEventsController < ApplicationController
 
   private
 
-  def payload
-    @payload ||= Payload.new(params[:payload] || request.raw_post)
+  def payload_data
+    params[:payload] || request.raw_post
   end
 
   def repo
-    Repo.where(github_id: payload[:repository][:id]).active.first
+    Repo.where(github_id: @payload.repo_id).active.first
   end
 
   def process_push
-    BuildJob.enqueue(repo.id, payload[:head_commit][:id])
+    @payload = Payload::Push.new(payload_data)
+    PushBuildJob.enqueue(repo.id, @payload.branch, @payload.revision)
   end
 end

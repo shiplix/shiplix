@@ -24,10 +24,6 @@ class User < ActiveRecord::Base
 
   private
 
-  def payment_gateway_customer
-    @payment_gateway_customer ||= PaymentGatewayCustomer.new(self)
-  end
-
   def generate_remember_token
     self.remember_token = SecureRandom.hex(20)
   end
