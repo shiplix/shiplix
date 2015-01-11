@@ -1,7 +1,9 @@
 class Smell < ActiveRecord::Base
-  belongs_to :build
+  belongs_to :smell
+  belongs_to :source_file
   has_many :locations
 
-  validates :build_id, presence: true
+  validates :smell_id, presence: true
+  validates :source_file_id, presence: true
   validates :type, presence: true
 end

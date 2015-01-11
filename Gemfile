@@ -44,7 +44,7 @@ gem 'pluggable_js'
 gem 'font-awesome-rails'
 gem 'cocaine', require: false
 gem 'flog', '~> 4.3'
-gem 'parser', '~> 2.1'
+gem 'flay', '~> 2.6'
 gem 'reek', '~> 1.6'
 
 group :development do

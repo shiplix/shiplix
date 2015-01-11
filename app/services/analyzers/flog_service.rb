@@ -26,48 +26,47 @@ module Analyzers
     def calculate(path)
       flog.scores.each do |klass_name, total_score|
         klass = klass_by_name(klass_name)
+        source_file = source_file_by_path(path)
 
-        unless klass.source_files.where(path: relative_path(path)).exists?
-          source_file = source_file_by_path(path)
+        unless klass.source_files.where(path: source_file.path).exists?
           KlassSourceFile.create!(klass_id: klass.id, source_file_id: source_file.id)
         end
 
         klass.complexity = klass.complexity.to_i + total_score.round
 
-        add_smells(klass)
+        add_smells(klass, source_file)
 
         klass.save!
       end
     end
 
-    def add_smells(klass)
+    def add_smells(klass, source_file)
       flog.method_scores[klass.name].each do |klass_method, score|
         score = score.round
         if score >= HIGH_COMPLEXITY_SCORE_THRESHOLD
-          create_smell(klass, klass_method, score)
+          create_smell(klass, klass_method, source_file, score)
         end
       end
     end
 
-    def create_smell(klass, klass_method, score)
+    def create_smell(klass, klass_method, source_file, score)
       path_line = flog.method_locations[klass_method]
       return if path_line.blank?
 
-      path, line = path_line.split(':')
+      line = path_line.split(':').last.to_i
       method_name = klass_method.split('#').last
 
       smell = Smells::Flog.create!(
-        build: build,
+        klass: klass,
+        source_file: source_file,
         score: score,
         method_name: method_name
       )
 
       smell.locations.create!(
-        path: relative_path(path),
-        line: line.to_i
+        source_file: source_file,
+        line: line
       )
-
-      KlassSmell.create!(klass_id: klass.id, smell_id: smell.id)
     end
   end
 end
