@@ -1,7 +1,7 @@
 module Payload
   class Push < Base
     def branch
-      data[:ref].sub('/refs/heads/')
+      data[:ref].sub('refs/heads/', '')
     end
 
     def repo_id

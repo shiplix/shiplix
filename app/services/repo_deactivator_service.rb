@@ -5,5 +5,14 @@ class RepoDeactivatorService
 
   def call
     repo.deactivate
+
+    remove_hooks
+  end
+
+  private
+
+  def remove_hooks
+    api.remove_hook(repo.full_github_name, repo.hook_id)
+    repo.update(hook_id: nil)
   end
 end

@@ -5,7 +5,7 @@ module Payload
     pattr_initialize :unparsed_data
 
     def data
-      @data ||= JSON.parse(unparsed_data).with_indifderent_access
+      @data ||= JSON.parse(unparsed_data).with_indifferent_access
     end
 
     def [](key)

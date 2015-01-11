@@ -12,6 +12,7 @@ class PushBuildJob
     unless branch
       BranchesSyncService.new(repo).call
       branch = find_branch(repo, branch_name)
+      raise "Branch #{branch_name} not found for repo_id #{repo_id}" unless branch
     end
 
     PushBuildService.new(branch, revision).call if branch
