@@ -15,4 +15,12 @@ class SourceFile < ActiveRecord::Base
 
     self.name = Pathname.new(path).basename.to_s
   end
+
+  def klass_by_line(line)
+    klass_source_files.
+      where('line <= ? and line_end >= ?', line, line).
+      order(:line).
+      first.
+      try(:klass)
+  end
 end

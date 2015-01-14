@@ -6,6 +6,7 @@ class PushBuildService
   pattr_initialize :branch, :revision
 
   ANALYZERS = [
+    Analyzers::NamespacesService,
     Analyzers::FlogService
   ]
 

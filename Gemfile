@@ -57,6 +57,7 @@ group :development do
   gem 'capistrano3-puma'
   gem 'quiet_assets'
   gem 'wirble'
+  gem 'awesome_print'
 end
 
 group :production, :development do

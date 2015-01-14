@@ -1,6 +1,20 @@
+require 'parser/ast/node'
+
 module Parser
   module AST
     class Node
+      class Namespace
+        vattr_initialize :name, :line, :line_end
+
+        def to_s
+          name
+        end
+
+        def inspect
+          "#{name} #{line}:#{line_end}"
+        end
+      end
+
       MODULE_TYPES = [:module, :class].freeze
 
       def count_nodes_of_type(*types)
@@ -19,32 +33,31 @@ module Parser
         end
       end
 
-      def get_module_names
-        children_modules = children
-          .select { |child| child.is_a?(Parser::AST::Node) }
-          .flat_map { |child| child.get_module_names }
+      def namespaces
+        children_namespaces = children_nodes.flat_map { |child| child.namespaces }
 
-        if MODULE_TYPES.include?(self.type)
-          if children_modules.empty?
-            [module_name]
-          else
-            children_modules.map do |children_module|
-              "#{module_name}::#{children_module}"
-            end
+        if MODULE_TYPES.include?(type)
+          namespace = Namespace.new(namespace_name, loc.line, loc.end.line)
+
+          [namespace] + children_namespaces.map do |child_namespace|
+            name = "#{namespace_name}::#{child_namespace}"
+            Namespace.new(name, child_namespace.line, child_namespace.line_end)
           end
-        elsif children_modules.empty?
+        elsif children_namespaces.empty?
           []
         else
-          children_modules
+          children_namespaces
         end
       end
 
-      private
+      def children_nodes
+        children.select { |child| child.is_a?(Parser::AST::Node) }
+      end
 
-      def module_name
+      def namespace_name
         name_segments = []
         current_node = children[0]
-        while(current_node) do
+        while current_node do
           name_segments.unshift(current_node.children[1])
           current_node = current_node.children[0]
         end
@@ -57,7 +70,7 @@ module Parser
         0
       end
 
-      def get_module_names
+      def namespaces
         []
       end
     end

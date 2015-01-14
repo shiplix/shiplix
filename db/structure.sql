@@ -128,43 +128,15 @@ ALTER SEQUENCE builds_id_seq OWNED BY builds.id;
 
 
 --
--- Name: klass_smells; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE klass_smells (
-    id integer NOT NULL,
-    klass_id integer NOT NULL,
-    smell_id integer NOT NULL
-);
-
-
---
--- Name: klass_smells_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE klass_smells_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: klass_smells_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE klass_smells_id_seq OWNED BY klass_smells.id;
-
-
---
 -- Name: klass_source_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE klass_source_files (
     id integer NOT NULL,
     klass_id integer NOT NULL,
-    source_file_id integer NOT NULL
+    source_file_id integer NOT NULL,
+    line integer NOT NULL,
+    line_end integer NOT NULL
 );
 
 
@@ -195,7 +167,7 @@ CREATE TABLE klasses (
     id integer NOT NULL,
     build_id integer NOT NULL,
     name character varying(255) NOT NULL,
-    rating integer NOT NULL,
+    rating integer,
     complexity integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -228,9 +200,9 @@ ALTER SEQUENCE klasses_id_seq OWNED BY klasses.id;
 CREATE TABLE locations (
     id integer NOT NULL,
     smell_id integer NOT NULL,
+    source_file_id integer NOT NULL,
     line integer NOT NULL,
-    num_lines integer DEFAULT 0 NOT NULL,
-    path character varying(2048) NOT NULL
+    num_lines integer DEFAULT 0 NOT NULL
 );
 
 
@@ -337,7 +309,8 @@ CREATE TABLE schema_migrations (
 
 CREATE TABLE smells (
     id integer NOT NULL,
-    build_id integer NOT NULL,
+    klass_id integer NOT NULL,
+    source_file_id integer NOT NULL,
     type smell_type NOT NULL,
     message character varying(255),
     score integer,
@@ -367,36 +340,6 @@ ALTER SEQUENCE smells_id_seq OWNED BY smells.id;
 
 
 --
--- Name: source_file_smells; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE source_file_smells (
-    id integer NOT NULL,
-    source_file_id integer NOT NULL,
-    smell_id integer NOT NULL
-);
-
-
---
--- Name: source_file_smells_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE source_file_smells_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: source_file_smells_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE source_file_smells_id_seq OWNED BY source_file_smells.id;
-
-
---
 -- Name: source_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -405,7 +348,7 @@ CREATE TABLE source_files (
     build_id integer NOT NULL,
     path character varying(2048) NOT NULL,
     name character varying(255) NOT NULL,
-    rating integer NOT NULL,
+    rating integer,
     complexity integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -484,13 +427,6 @@ ALTER TABLE ONLY builds ALTER COLUMN id SET DEFAULT nextval('builds_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY klass_smells ALTER COLUMN id SET DEFAULT nextval('klass_smells_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY klass_source_files ALTER COLUMN id SET DEFAULT nextval('klass_source_files_id_seq'::regclass);
 
 
@@ -533,13 +469,6 @@ ALTER TABLE ONLY smells ALTER COLUMN id SET DEFAULT nextval('smells_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY source_file_smells ALTER COLUMN id SET DEFAULT nextval('source_file_smells_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY source_files ALTER COLUMN id SET DEFAULT nextval('source_files_id_seq'::regclass);
 
 
@@ -564,14 +493,6 @@ ALTER TABLE ONLY branches
 
 ALTER TABLE ONLY builds
     ADD CONSTRAINT builds_pkey PRIMARY KEY (id);
-
-
---
--- Name: klass_smells_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY klass_smells
-    ADD CONSTRAINT klass_smells_pkey PRIMARY KEY (id);
 
 
 --
@@ -623,14 +544,6 @@ ALTER TABLE ONLY smells
 
 
 --
--- Name: source_file_smells_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY source_file_smells
-    ADD CONSTRAINT source_file_smells_pkey PRIMARY KEY (id);
-
-
---
 -- Name: source_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -661,17 +574,10 @@ CREATE UNIQUE INDEX index_builds_on_branch_id_and_pull_request_number ON builds 
 
 
 --
--- Name: index_klass_smells_on_klass_id_and_smell_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_klass_files_on_source_file_id_and_line_and_line_end; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_klass_smells_on_klass_id_and_smell_id ON klass_smells USING btree (klass_id, smell_id);
-
-
---
--- Name: index_klass_smells_on_smell_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_klass_smells_on_smell_id ON klass_smells USING btree (smell_id);
+CREATE INDEX index_klass_files_on_source_file_id_and_line_and_line_end ON klass_source_files USING btree (source_file_id, line, line_end);
 
 
 --
@@ -679,13 +585,6 @@ CREATE INDEX index_klass_smells_on_smell_id ON klass_smells USING btree (smell_i
 --
 
 CREATE UNIQUE INDEX index_klass_source_files_on_klass_id_and_source_file_id ON klass_source_files USING btree (klass_id, source_file_id);
-
-
---
--- Name: index_klass_source_files_on_source_file_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_klass_source_files_on_source_file_id ON klass_source_files USING btree (source_file_id);
 
 
 --
@@ -700,6 +599,13 @@ CREATE UNIQUE INDEX index_klasses_on_build_id_and_name ON klasses USING btree (b
 --
 
 CREATE INDEX index_locations_on_smell_id ON locations USING btree (smell_id);
+
+
+--
+-- Name: index_locations_on_source_file_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_locations_on_source_file_id ON locations USING btree (source_file_id);
 
 
 --
@@ -731,10 +637,17 @@ CREATE UNIQUE INDEX index_repos_on_github_id ON repos USING btree (github_id);
 
 
 --
--- Name: index_smells_on_build_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_smells_on_klass_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_smells_on_build_id ON smells USING btree (build_id);
+CREATE INDEX index_smells_on_klass_id ON smells USING btree (klass_id);
+
+
+--
+-- Name: index_smells_on_source_file_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_smells_on_source_file_id ON smells USING btree (source_file_id);
 
 
 --
@@ -742,20 +655,6 @@ CREATE INDEX index_smells_on_build_id ON smells USING btree (build_id);
 --
 
 CREATE INDEX index_smells_on_type ON smells USING btree (type);
-
-
---
--- Name: index_source_file_smells_on_smell_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_source_file_smells_on_smell_id ON source_file_smells USING btree (smell_id);
-
-
---
--- Name: index_source_file_smells_on_source_file_id_and_smell_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_source_file_smells_on_source_file_id_and_smell_id ON source_file_smells USING btree (source_file_id, smell_id);
 
 
 --
@@ -796,22 +695,6 @@ ALTER TABLE ONLY builds
 
 
 --
--- Name: klass_smells_klass_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY klass_smells
-    ADD CONSTRAINT klass_smells_klass_id_fk FOREIGN KEY (klass_id) REFERENCES klasses(id) ON DELETE CASCADE;
-
-
---
--- Name: klass_smells_smell_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY klass_smells
-    ADD CONSTRAINT klass_smells_smell_id_fk FOREIGN KEY (smell_id) REFERENCES smells(id) ON DELETE CASCADE;
-
-
---
 -- Name: klass_source_files_klass_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -844,6 +727,14 @@ ALTER TABLE ONLY locations
 
 
 --
+-- Name: locations_source_file_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY locations
+    ADD CONSTRAINT locations_source_file_id_fk FOREIGN KEY (source_file_id) REFERENCES source_files(id) ON DELETE CASCADE;
+
+
+--
 -- Name: memberships_repo_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -860,27 +751,19 @@ ALTER TABLE ONLY memberships
 
 
 --
--- Name: smells_build_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: smells_klass_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY smells
-    ADD CONSTRAINT smells_build_id_fk FOREIGN KEY (build_id) REFERENCES builds(id) ON DELETE CASCADE;
+    ADD CONSTRAINT smells_klass_id_fk FOREIGN KEY (klass_id) REFERENCES klasses(id) ON DELETE CASCADE;
 
 
 --
--- Name: source_file_smells_smell_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: smells_source_file_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY source_file_smells
-    ADD CONSTRAINT source_file_smells_smell_id_fk FOREIGN KEY (smell_id) REFERENCES smells(id) ON DELETE CASCADE;
-
-
---
--- Name: source_file_smells_source_file_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY source_file_smells
-    ADD CONSTRAINT source_file_smells_source_file_id_fk FOREIGN KEY (source_file_id) REFERENCES source_files(id) ON DELETE CASCADE;
+ALTER TABLE ONLY smells
+    ADD CONSTRAINT smells_source_file_id_fk FOREIGN KEY (source_file_id) REFERENCES source_files(id) ON DELETE CASCADE;
 
 
 --

@@ -25,18 +25,18 @@ module Analyzers
 
     def calculate(path)
       flog.scores.each do |klass_name, total_score|
-        klass = klass_by_name(klass_name)
-        source_file = source_file_by_path(path)
+        next unless valid_klass_name?(klass_name)
 
-        unless klass.source_files.where(path: source_file.path).exists?
-          KlassSourceFile.create!(klass_id: klass.id, source_file_id: source_file.id)
-        end
+        klass = klass_by_name(klass_name)
+        raise "Klass #{klass_name} not found" unless klass
+
+        source_file = source_file_by_path(path)
+        raise "SourceFile #{path} not found" unless source_file
 
         klass.complexity = klass.complexity.to_i + total_score.round
+        klass.save!
 
         add_smells(klass, source_file)
-
-        klass.save!
       end
     end
 
@@ -57,8 +57,8 @@ module Analyzers
       method_name = klass_method.split('#').last
 
       smell = Smells::Flog.create!(
-        klass: klass,
-        source_file: source_file,
+        klass_id: klass.id,
+        source_file_id: source_file.id,
         score: score,
         method_name: method_name
       )
@@ -67,6 +67,10 @@ module Analyzers
         source_file: source_file,
         line: line
       )
+    end
+
+    def valid_klass_name?(klass_name)
+      klass_name.split('::').all? { |name| name =~ /^[A-Z]{1}[A-Za-z0-9_]*$/ }
     end
   end
 end
