@@ -56,7 +56,7 @@ namespace :deploy do
         icon_emoji: ':rocket:'
       }
 
-      execute :curl, "-X POST --data-urlencode 'payload=#{payload.to_json}' #{fetch(:slack_url}"
+      execute :curl, "-X POST --data-urlencode 'payload=#{payload.to_json}' #{fetch(:slack_url)}"
     end
   end
 
