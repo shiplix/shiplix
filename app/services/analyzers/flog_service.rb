@@ -54,7 +54,7 @@ module Analyzers
       return if path_line.blank?
 
       line = path_line.split(':').last.to_i
-      method_name = klass_method.split('#').last
+      method_name = klass_method.sub('::', '#').split('#').last
 
       smell = Smells::Flog.create!(
         klass_id: klass.id,

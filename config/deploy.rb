@@ -6,7 +6,7 @@ set :scm, :git
 set :deploy_to, '/home/ubuntu/sites/shiplix'
 set :format, :pretty
 set :log_level, :debug
-set :bundle_jobs, 4
+set :bundle_flags, '--deployment'
 set :linked_dirs, %w{log tmp public/system}
 set :linked_files, %w{.env}
 set :keep_releases, 7
@@ -34,15 +34,6 @@ namespace :deploy do
 
   before :updated, :config_env
 
-  desc 'Restart Unicorn'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      execute "test -e /var/run/unicorn/unicorn.pid && kill -USR2 $(cat /var/run/unicorn/unicorn.pid) || true"
-    end
-  end
-
-  #after :publishing, :restart
-
   desc 'Restart resque'
   task :restart_resque do
     on roles(:job) do
@@ -64,11 +55,10 @@ namespace :deploy do
         text: "Deployed Shiplix::#{fetch(:deploy_name)} from #{fetch(:branch)} by #{deployer}",
         icon_emoji: ':rocket:'
       }
-      url = "https://#{fetch(:slack_domain)}.slack.com/services/hooks/incoming-webhook?token=#{fetch(:slack_token)}"
 
-      execute :curl, "-X POST --data-urlencode 'payload=#{payload.to_json}' #{url}"
+      execute :curl, "-X POST --data-urlencode 'payload=#{payload.to_json}' #{fetch(:slack_url}"
     end
   end
 
-  #after :finished, :slack_notice
+  after :finished, :slack_notice
 end
