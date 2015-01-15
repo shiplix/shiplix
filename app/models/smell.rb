@@ -1,9 +1,10 @@
 class Smell < ActiveRecord::Base
-  belongs_to :klass
-  belongs_to :source_file
+  belongs_to :build
+  belongs_to :subject, polymorphic: true
   has_many :locations
 
-  validates :klass_id, presence: true
-  validates :source_file_id, presence: true
+  validates :build_id, presence: true
+  validates :subject_id, presence: true
+  validates :subject_type, presence: true
   validates :type, presence: true
 end

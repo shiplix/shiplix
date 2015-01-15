@@ -1,8 +1,9 @@
 class CreateSmells < ActiveRecord::Migration
   def change
     create_table :smells do |t|
-      t.integer :klass_id, null: false
-      t.integer :source_file_id, null: false
+      t.integer :build_id, null: false
+      t.integer :subject_id, null: false
+      t.column :subject_type, 'smell_subject_type', null: false
       t.column :type, 'smell_type', null: false
       t.string :message
       t.integer :score
@@ -11,11 +12,9 @@ class CreateSmells < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :smells, :type
-    add_index :smells, :klass_id
-    add_index :smells, :source_file_id
+    add_index :smells, [:build_id, :type]
+    add_index :smells, [:subject_id, :subject_type]
 
-    add_foreign_key :smells, :klasses, dependent: :delete
-    add_foreign_key :smells, :source_files, dependent: :delete
+    add_foreign_key :smells, :builds, dependent: :delete
   end
 end

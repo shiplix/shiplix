@@ -58,13 +58,12 @@ module Analyzers
 
       smell = Smells::Flog.create!(
         klass_id: klass.id,
-        source_file_id: source_file.id,
         score: score,
         method_name: method_name
       )
 
       smell.locations.create!(
-        source_file: source_file,
+        source_file_id: source_file.id,
         line: line
       )
     end
