@@ -1,9 +1,15 @@
 class CreateSmellsEnums < ActiveRecord::Migration
   def up
-    execute %q{create type smell_type as enum ('Smells::Flog')}
+    execute <<-SQL
+      create type smell_type as enum ('Smells::Flog', 'Smells::Flay', 'Smells::Reek', 'Smells::Rubocop');
+      create type smell_subject_type as enum ('Klass', 'SourceFile')
+    SQL
   end
 
   def down
-    execute %q{drop type smell_type}
+    execute <<-SQL
+      drop type smell_type;
+      drop type smell_subject_type
+    SQL
   end
 end

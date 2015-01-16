@@ -1,6 +1,7 @@
 class Build < ActiveRecord::Base
   has_many :klasses
   has_many :source_files
+  has_many :smells
 
   belongs_to :branch
 

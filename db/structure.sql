@@ -47,11 +47,24 @@ CREATE TYPE build_type AS ENUM (
 
 
 --
+-- Name: smell_subject_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE smell_subject_type AS ENUM (
+    'Klass',
+    'SourceFile'
+);
+
+
+--
 -- Name: smell_type; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE smell_type AS ENUM (
-    'Smells::Flog'
+    'Smells::Flog',
+    'Smells::Flay',
+    'Smells::Reek',
+    'Smells::Rubocop'
 );
 
 
@@ -309,8 +322,9 @@ CREATE TABLE schema_migrations (
 
 CREATE TABLE smells (
     id integer NOT NULL,
-    klass_id integer NOT NULL,
-    source_file_id integer NOT NULL,
+    build_id integer NOT NULL,
+    subject_id integer NOT NULL,
+    subject_type smell_subject_type NOT NULL,
     type smell_type NOT NULL,
     message character varying(255),
     score integer,
@@ -637,24 +651,17 @@ CREATE UNIQUE INDEX index_repos_on_github_id ON repos USING btree (github_id);
 
 
 --
--- Name: index_smells_on_klass_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_smells_on_build_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_smells_on_klass_id ON smells USING btree (klass_id);
-
-
---
--- Name: index_smells_on_source_file_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_smells_on_source_file_id ON smells USING btree (source_file_id);
+CREATE INDEX index_smells_on_build_id_and_type ON smells USING btree (build_id, type);
 
 
 --
--- Name: index_smells_on_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_smells_on_subject_id_and_subject_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_smells_on_type ON smells USING btree (type);
+CREATE INDEX index_smells_on_subject_id_and_subject_type ON smells USING btree (subject_id, subject_type);
 
 
 --
@@ -751,19 +758,11 @@ ALTER TABLE ONLY memberships
 
 
 --
--- Name: smells_klass_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: smells_build_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY smells
-    ADD CONSTRAINT smells_klass_id_fk FOREIGN KEY (klass_id) REFERENCES klasses(id) ON DELETE CASCADE;
-
-
---
--- Name: smells_source_file_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY smells
-    ADD CONSTRAINT smells_source_file_id_fk FOREIGN KEY (source_file_id) REFERENCES source_files(id) ON DELETE CASCADE;
+    ADD CONSTRAINT smells_build_id_fk FOREIGN KEY (build_id) REFERENCES builds(id) ON DELETE CASCADE;
 
 
 --
