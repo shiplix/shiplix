@@ -73,6 +73,7 @@ end
 
 group :test do
   gem 'timecop', '~> 0.7'
+  gem "fakefs", require: 'fakefs/safe'
   gem 'rspec-rails', '~> 3.1'
   gem 'rspec-given', '~> 3.5'
   gem 'test_after_commit', '~> 0.4'
