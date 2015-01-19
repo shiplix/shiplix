@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-
 gem 'rails', '4.1.8'
 gem 'rails-i18n'
 gem 'dotenv-rails'
 gem 'pg'
 gem 'pg_array_parser'
+
 gem 'sass-rails', '~> 4.0.3'
 gem 'less-rails'
 gem 'uglifier', '>= 1.3.0'
@@ -20,6 +20,8 @@ gem 'will_paginate-bootstrap'
 gem 'twitter-bootswatch-rails', '~> 3.2'
 gem 'twitter-bootswatch-rails-helpers', '~> 3.1'
 gem 'twitter-bootswatch-rails-fontawesome'
+gem 'font-awesome-rails'
+
 gem 'draper'
 gem 'bootstrap_form'
 gem 'vicar', '~> 0.0.2'
@@ -41,8 +43,8 @@ gem 'resque-god'
 gem 'resque-single'
 gem 'octokit'
 gem 'pluggable_js'
-gem 'font-awesome-rails'
 gem 'cocaine', require: false
+
 gem 'flog', '~> 4.3'
 gem 'flay', '~> 2.6'
 gem 'reek', '~> 1.6'
@@ -64,13 +66,19 @@ group :production, :development do
   gem 'puma'
 end
 
+group :development, :test do
+  gem 'pry-rails'
+  gem 'pry-byebug'
+end
+
 group :test do
   gem 'timecop', '~> 0.7'
+  gem "fakefs", require: 'fakefs/safe'
   gem 'rspec-rails', '~> 3.1'
   gem 'rspec-given', '~> 3.5'
   gem 'test_after_commit', '~> 0.4'
   gem 'mock_redis', :github => 'causes/mock_redis'
   gem 'factory_girl_rails', '~> 4.4'
   gem 'shoulda-matchers', '~> 2.7'
-  gem 'simplecov', '~> 0.9'
+  gem 'simplecov', '~> 0.9', require: false
 end
