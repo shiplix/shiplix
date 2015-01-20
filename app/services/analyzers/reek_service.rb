@@ -43,12 +43,11 @@ module Analyzers
     #
     # Example:
     #   klass_name_from_context('A::B::C#d')
-    #   # => 'C'
+    #   # => 'A::B::C'
     #
     # Returns String
     def klass_name_from_context(context)
-      klass_name = context.split(KLASS_SEPARATOR).last
-      klass_name.sub(/#{METHOD_SEPARATOR}.*/, '')
+      context.sub(/#{METHOD_SEPARATOR}.*/, '')
     end
 
     # Internal: find method name from context
