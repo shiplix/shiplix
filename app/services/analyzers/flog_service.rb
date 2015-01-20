@@ -36,11 +36,11 @@ module Analyzers
         klass.complexity = klass.complexity.to_i + total_score.round
         klass.save!
 
-        add_smells(klass, source_file)
+        find_smells(klass, source_file)
       end
     end
 
-    def add_smells(klass, source_file)
+    def find_smells(klass, source_file)
       flog.method_scores[klass.name].each do |klass_method, score|
         score = score.round
         if score >= HIGH_COMPLEXITY_SCORE_THRESHOLD
@@ -57,7 +57,8 @@ module Analyzers
       method_name = klass_method.sub('::', '#').split('#').last
 
       smell = Smells::Flog.create!(
-        klass_id: klass.id,
+        build_id: build.id,
+        subject: klass,
         score: score,
         method_name: method_name
       )
