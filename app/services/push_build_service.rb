@@ -8,7 +8,8 @@ class PushBuildService
   ANALYZERS = [
     Analyzers::NamespacesService,
     Analyzers::FlogService,
-    Analyzers::FlayService
+    Analyzers::FlayService,
+    Analyzers::ReekService
   ]
 
   def call
