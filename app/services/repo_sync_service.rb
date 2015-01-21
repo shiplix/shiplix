@@ -21,8 +21,8 @@ class RepoSyncService
   private
 
   def find_or_create_repos
-    repos.each_with_object({}) do |resource, hsh|
-      attributes = repo_attributes(resource.to_hash)
+    api.repos.each_with_object({}) do |repo, hsh|
+      attributes = repo_attributes(repo)
       repo = Repo.find_or_create_with(attributes)
       hsh[repo.id] = repo
     end
@@ -34,29 +34,5 @@ class RepoSyncService
       full_github_name: attributes[:full_name],
       in_organization: attributes[:owner][:type] == ORGANIZATION_TYPE
     )
-  end
-
-  def repos
-    user_repos + org_repos
-  end
-
-  def user_repos
-    authorized_repos(api.repos)
-  end
-
-  def org_repos
-    repos = orgs.flat_map do |org|
-      api.org_repos(org[:login])
-    end
-
-    authorized_repos(repos)
-  end
-
-  def orgs
-    api.orgs
-  end
-
-  def authorized_repos(repos)
-    repos.select { |repo| repo.permissions.admin }
   end
 end
