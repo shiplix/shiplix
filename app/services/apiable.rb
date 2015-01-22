@@ -1,5 +1,7 @@
+require 'github_api'
+
 module Apiable
   def api
-    @api ||= Octokit::Client.new(access_token: user.access_token, auto_paginate: true)
+    @api ||= GithubApi.new(user.access_token)
   end
 end
