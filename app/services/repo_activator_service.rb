@@ -10,7 +10,9 @@ class RepoActivatorService
       repo.update(hook_id: hook_id)
     end
 
-    PushBuildJob.enqueue(repo.id, api.default_branch, recent_revision) if recent_revision.present?
+    if recent_revision.present?
+      PushBuildJob.enqueue(repo.id, api.default_branch(repo.full_github_name), recent_revision)
+    end
   end
 
   private
