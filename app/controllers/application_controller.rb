@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
     rescue_from ActiveRecord::RecordNotFound, :with => :catch_404
   end
 
-  catch_errors if Rails.env.production?
+  catch_errors if Rails.env.production? || Rails.env.test?
 
   def catch_404
     render_error(404)

@@ -11,6 +11,7 @@ class Build < ActiveRecord::Base
 
   scope :push_builds, -> { where(type: 'Builds::Push') }
   scope :pull_request_builds, -> { where(type: 'Builds::PullRequest') }
+  scope :recent, -> { where(state: 'finished').order(id: :desc) }
 
   delegate :repo, to: :branch
 

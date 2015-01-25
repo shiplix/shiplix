@@ -3,12 +3,12 @@ module PageInfo
     attr_accessor :controller
     alias :c :controller
 
-    attr_reader :title_variables,
-                :title_key,
-                :header_key,
-                :description_key,
-                :custom_title,
-                :custom_header
+    attr_accessor :title_variables,
+                  :title_key,
+                  :header_key,
+                  :description_key,
+                  :custom_title,
+                  :custom_header
 
     def initialize(controller)
       @controller = controller
@@ -95,49 +95,8 @@ module PageInfo
       ]
     end
 
-    # это использовать в наследниках
-    def set_title_variables(vars)
-      raise ArgumentError unless vars.is_a?(Hash)
-      @title_variables = vars
-    end
-
-    # это использовать в наследниках
-    def set_title_key(key)
-      raise ArgumentError unless key.is_a?(String)
-      @title_key = key
-    end
-
-    # это использовать в наследниках
-    def set_header_key(key)
-      raise ArgumentError unless key.is_a?(String)
-      @header_key = key
-    end
-
-    # это использовать в наследниках
-    def set_description_key(key)
-      raise ArgumentError unless key.is_a?(String)
-      @description_key = key
-    end
-
-    def set_custom_title(title)
-      if title.blank?
-        false
-      else
-        @custom_title = title
-      end
-    end
-
-    def set_custom_header(header)
-      if header.blank?
-        false
-      else
-        @custom_header = header
-      end
-    end
-
     def compact_spaces(value)
       value.gsub(/[ ]+/, ' ').gsub(/ ([\,\.\:\!])/, '\1')
     end
   end
-
 end

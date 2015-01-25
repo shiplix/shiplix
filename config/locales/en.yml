@@ -16,3 +16,10 @@ en:
       index:
         title: 'Repositories'
         header: 'Repositories'
+
+    klasses:
+      postfix: ' - %{repo}'
+
+      index:
+        title: 'Classes'
+        header: 'Classes'

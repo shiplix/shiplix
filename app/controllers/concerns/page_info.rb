@@ -9,19 +9,19 @@ module PageInfo
              :page_description,
 
              :title_variables,
-             :set_title_variables,
+             :title_variables=,
 
              :title_key,
-             :set_title_key,
+             :title_key=,
 
              :header_key,
-             :set_header_key,
+             :header_key=,
 
              :description_key,
-             :set_description_key,
+             :description_key=,
 
-             :set_custom_title,
-             :set_custom_header,
+             :custom_title=,
+             :custom_header=,
 
              :title_postfix,
 
