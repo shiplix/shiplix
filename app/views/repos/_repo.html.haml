@@ -15,4 +15,8 @@
                   method: :put,
                   class: 'btn btn-success js-repo-activate'
     %h4
-      = repo.full_github_name
+      - if repo.active?
+        %a{:href => repo_klasses_url(repo)}
+          = repo.full_github_name
+      - else
+        = repo.full_github_name
