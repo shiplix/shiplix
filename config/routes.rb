@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   resources :github_events, only: [:create]
 
   root 'home#index'
+
+  match '*path', to: 'application#catch_404', via: :all
 end
