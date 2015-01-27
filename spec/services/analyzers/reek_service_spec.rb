@@ -12,14 +12,12 @@ describe Analyzers::ReekService do
   subject(:service) { described_class.new(push_build) }
 
   before do
-    allow(push_build).to receive(:source_locator)
-      .and_return(SourceLocator.new(test_file_path))
-
+    stub_build(push_build, test_file_path)
     stub_const('Analyzers::ReekService::SMELL_SCORES', smell_scores)
   end
 
   context 'when tested file has smells' do
-    let(:test_file_path) { Rails.root.join('spec/fixtures/reek/dirty.rb').to_s }
+    let(:test_file_path) { path_to_repo_files('reek/dirty.rb').to_s }
 
     When { service.call }
     Given(:klass) { push_build.klasses.find_by(name: 'DirtyModule::Dirty') }
@@ -41,7 +39,7 @@ describe Analyzers::ReekService do
   end
 
   context 'when tested file has not smells' do
-    let(:test_file_path) { Rails.root.join('spec/fixtures/reek/clean.rb').to_s }
+    let(:test_file_path) { path_to_repo_files('reek/clean.rb').to_s }
 
     When { service.call }
     Then { expect(push_build.klasses).to be_empty }

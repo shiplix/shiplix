@@ -1,6 +1,7 @@
 module Analyzers
   class BaseService
     pattr_initialize :build
+    attr_implement :call
 
     private
 

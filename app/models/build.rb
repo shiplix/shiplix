@@ -13,6 +13,7 @@ class Build < ActiveRecord::Base
   scope :pull_request_builds, -> { where(type: 'Builds::PullRequest') }
 
   delegate :repo, to: :branch
+  delegate :revision_path, to: :locator
 
   include AASM
 
