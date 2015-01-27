@@ -1,0 +1,21 @@
+language: ruby
+
+rvm:
+  - '2.1.5'
+
+env: 
+  - RAILS_ENV=test SHIPLIX_HOST=shiplix.dev SHIPLIX_DB_USER=postgres SHIPLIX_DB_HOST=localhost SHIPLIX_DB_PORT=5432 SHIPLIX_GITHUB_CLIENT_ID=3f96f42a8054d817a5b7 SHIPLIX_GITHUB_CLIENT_SECRET=818d76ecefa08edf136a59c0c9f2b0730a03b58f SHIPLIX_BUILDS_PATH=/home/shippable/workspace/src
+
+addons:
+  postgresql: '9.3'
+
+before_script:
+  #- psql -c "create database shiplix WITH OWNER = postgres TABLESPACE = pg_default CONNECTION LIMIT = -1 TEMPLATE template0 ENCODING 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';" -U postgres
+  - bundle exec rake db:create
+  - bundle exec rake db:migrate
+
+script:
+  - bundle exec rspec
+
+notifications:
+   email: false
