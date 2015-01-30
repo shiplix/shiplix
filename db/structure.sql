@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -283,7 +284,8 @@ CREATE TABLE repos (
     private boolean DEFAULT false NOT NULL,
     in_organization boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    deploy_key_id integer
 );
 
 
@@ -801,4 +803,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150102181104');
 INSERT INTO schema_migrations (version) VALUES ('20150109192409');
 
 INSERT INTO schema_migrations (version) VALUES ('20150109192631');
+
+INSERT INTO schema_migrations (version) VALUES ('20150130032032');
 
