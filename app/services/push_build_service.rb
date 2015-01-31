@@ -9,7 +9,8 @@ class PushBuildService
     Analyzers::NamespacesService,
     Analyzers::FlogService,
     Analyzers::FlayService,
-    Analyzers::ReekService
+    Analyzers::ReekService,
+    Analyzers::BrakemanService
   ]
 
   def call
