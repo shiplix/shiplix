@@ -5,6 +5,10 @@
       %th Rating
       %th Complexity
   %tbody
-    = render(@klasses) || 'There is no builds yet.'
+    - if @klasses.present?
+      = render(@klasses)
+    - else
+      %p There is no builds yet.
 
-= will_paginate @klasses, renderer: BootstrapPagination::Rails
+- if @klasses.present?
+  = will_paginate @klasses, renderer: BootstrapPagination::Rails
