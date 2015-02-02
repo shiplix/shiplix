@@ -4,16 +4,30 @@ class RepoActivatorService
   pattr_initialize :user, :repo
 
   def call
-    repo.activate(user)
-
-    api.add_hooks(repo.full_github_name, callback_endpoint) do |hook_id|
-      repo.update(hook_id: hook_id)
+    repo.transaction do
+      repo.activate(user)
+      add_hooks
+      add_deploy_key
     end
 
-    PushBuildJob.enqueue(repo.id, api.default_branch, recent_revision) if recent_revision.present?
+    if recent_revision.present?
+      PushBuildJob.enqueue(repo.id, api.default_branch(repo.full_github_name), recent_revision)
+    end
   end
 
   private
+
+  def add_hooks
+    api.add_hooks(repo.full_github_name, callback_endpoint) do |hook_id|
+      repo.update(hook_id: hook_id)
+    end
+  end
+
+  def add_deploy_key
+    api.add_deploy_key(repo.full_github_name, ENV.fetch('SHIPLIX_DEPLOY_KEY')) do |deploy_key_id|
+      repo.update(deploy_key_id: deploy_key_id)
+    end
+  end
 
   def recent_revision
     @recent_revision ||= api.recent_revision(repo.full_github_name)

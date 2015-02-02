@@ -1,0 +1,20 @@
+.jumbotron.clearfix
+  %h1 Oops
+
+  %p 500 response error
+
+  %p &nbsp;
+  %p &nbsp;
+
+  %p Sorry... It's not you. It's us.
+
+  %p &nbsp;
+  %p &nbsp;
+
+  %p
+    %a.btn.btn-primary.btn-lg{:href => '/'}
+      %span.glyphicon.glyphicon-home
+        Home
+
+- if @exception && (Rails.env.staging? || !Rails.env.production?)
+  = render 'layouts/exception', exception: @exception

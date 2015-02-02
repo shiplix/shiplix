@@ -4,10 +4,15 @@ Rails.application.routes.draw do
 
   resources :jobs, only: [:show]
 
-  resources :repos, only: [:index]
+  resources :repos, only: [:index] do
+    resources :klasses, only: [:index]
+  end
+
   resources :repo_syncs, only: [:create]
   resources :repo_activations, only: [:update, :destroy]
   resources :github_events, only: [:create]
 
   root 'home#index'
+
+  match '*path', to: 'application#catch_404', via: :all
 end

@@ -1,0 +1,14 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Rating
+      %th Complexity
+  %tbody
+    - if @klasses.present?
+      = render(@klasses)
+    - else
+      %p There is no builds yet.
+
+- if @klasses.present?
+  = will_paginate @klasses, renderer: BootstrapPagination::Rails

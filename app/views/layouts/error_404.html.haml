@@ -1,0 +1,21 @@
+.jumbotron.clearfix
+  %h1 Oops
+
+  %p 404 not found. That page doesn't exist!
+
+  %p &nbsp;
+  %p &nbsp;
+
+  %p The content that you requested could not be found.
+  %p May be the repository, branch, pull request have been deleted/merged/fixed/closed/deactivated.
+
+  %p &nbsp;
+  %p &nbsp;
+
+  %p
+    %a.btn.btn-primary.btn-lg{:href => '/'}
+      %span.glyphicon.glyphicon-home
+        Home
+
+- if @exception && (Rails.env.staging? || !Rails.env.production?)
+  = render 'layouts/exception', exception: @exception

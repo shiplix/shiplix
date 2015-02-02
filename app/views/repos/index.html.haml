@@ -2,7 +2,10 @@
   .pull-right
     = link_to 'Refresh', repo_syncs_url, remote: true, method: :post,  class: 'js-refresh-repos btn btn-info'
 
-= render(@repos) || 'There is no repositories loaded yet.'
+- if @repos.present?
+  = render(@repos)
+-else
+  %p There is no repositories loaded yet
 
 #js-progress-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
   .modal-dialog.modal-sm
