@@ -14,6 +14,7 @@ class Build < ActiveRecord::Base
   scope :recent, -> { where(state: 'finished').order(id: :desc) }
 
   delegate :repo, to: :branch
+  delegate :revision_path, to: :locator
 
   include AASM
 

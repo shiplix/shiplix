@@ -64,7 +64,8 @@ CREATE TYPE smell_type AS ENUM (
     'Smells::Flog',
     'Smells::Flay',
     'Smells::Reek',
-    'Smells::Rubocop'
+    'Smells::Rubocop',
+    'Smells::Brakeman'
 );
 
 
@@ -803,6 +804,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150102181104');
 INSERT INTO schema_migrations (version) VALUES ('20150109192409');
 
 INSERT INTO schema_migrations (version) VALUES ('20150109192631');
+
+INSERT INTO schema_migrations (version) VALUES ('20150127194910');
 
 INSERT INTO schema_migrations (version) VALUES ('20150130032032');
 

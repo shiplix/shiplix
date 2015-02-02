@@ -48,6 +48,7 @@ gem 'cocaine', require: false
 gem 'flog', '~> 4.3'
 gem 'flay', '~> 2.6'
 gem 'reek', '~> 1.6'
+gem 'brakeman', '~> 3.0'
 
 group :development do
   gem 'better_errors'
