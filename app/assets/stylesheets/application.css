@@ -1,8 +1,5 @@
-/* Slate
- * Bootswatch
+/* Atlant
  *= require_self
- *= require slate/loader
- *= require slate/bootswatch
- *= require font-awesome
+ *= require atlant/styles
  *= require progressbar
 */
