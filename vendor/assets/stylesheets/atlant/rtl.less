@@ -1,0 +1,97 @@
+/* RTL SUPPORT */
+.page-container{    
+    &.page-content-rtl{                
+        
+        .breadcrumb{float: right; text-align: right;
+            > li + li:before{content: "\f104";}
+        }        
+        
+        .page-title{float: right;
+            h2{float: right;}
+        } 
+        
+        .x-navigation{
+            li{                
+                &.xn-title{text-align: right;}
+                > a{text-align: right;
+                    .fa, .glyphicon{margin-right: 0px; margin-left: 10px;}
+                }
+                &.xn-icon-button{
+                    > a{text-align: center;
+                        .fa, .glyphicon{margin-left: 0px;}
+                        .flag{margin-right: auto; margin-left: auto;}
+                    }
+                }
+                &.xn-openable{         
+                    &:before{right: auto; left: 0px; text-align: right;}
+                    > .informer{right: auto; left: 25px;}
+                }
+            }
+            
+            .informer{right: auto; left: 10px;}
+        }
+                        
+        .flag{margin-right: 0px; margin-left: 10px;}
+        .mCSB_scrollTools{left: 0px; right: auto;}
+        
+        .panel{text-align: right;
+            .panel-heading{
+                .panel-title{float: right; margin-left: 0px; margin-right: 7px;}
+                ul.panel-controls{float: left;}
+            }                    
+        } 
+
+        .list-group-contacts{
+            .list-group-item{
+                img{margin-right: 0px; margin-left: 10px;}
+            } 
+        }
+        .list-group-controls{right: auto; left: 10px;}
+        .list-group-status{float: right; margin-right: 0px; margin-left: 10px;}
+
+        .list-tags{
+            li{float: right;
+                a{float: right; margin: 0px 0px 5px 5px;}
+            }
+        } 
+
+        .messages{
+            .item{
+                .text {
+                    .heading{
+                        .date{float: left;}
+                    } 
+                }
+            }
+        }
+        
+        .page-content{
+            .page-content-wrap{text-align: right;
+                               
+                               
+                .widget{
+                    &.widget-item-icon{
+                        .widget-data,.widget-data-left{
+                            .widget-int,.widget-title,.widget-subtitle{text-align: right;}                            
+                        }
+                    } 
+                }
+                .control-label,div.tagsinput span.tag a{text-align: left;}
+                
+                .bootstrap-select.btn-group .btn .filter-option{text-align: right;}
+                .bootstrap-select > .btn{padding-left: 25px; padding-right: 15px;}
+                .bootstrap-select.btn-group .btn .caret{right: auto; left: 12px;}
+                .dropdown-menu > li > a{text-align: right;}
+                
+                .close{float: left;}
+                
+                .list-group-item > .badge{float: left;}
+
+                th{text-align: right;}
+            }
+        }
+        
+        
+    }
+}
+/* END RTL SUPPORT */
