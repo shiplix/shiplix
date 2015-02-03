@@ -70,42 +70,7 @@ class GithubApi
     user_repos + org_repos
   end
 
-  # Add deploy public rsa key
-  #
-  # repo - String
-  # key  - String
-  #
-  # Yields deploy_key_id - Integer
-  def add_deploy_key(repo, key)
-    deploy_key = api.add_deploy_key(repo, deploy_key_name, key)
-
-    yield deploy_key.id
-  rescue Octokit::UnprocessableEntity => error
-    raise unless error.message.include? 'Key has already been taken'
-  end
-
-  # Remove deploy public rsa key
-  #
-  # repo - String
-  #
-  # Returns boolean
-  def remove_deploy_key(repo, deploy_key_id)
-    api.remove_deploy_key(repo, deploy_key_id)
-  end
-
   private
-
-  def deploy_key_name
-    name = %w(Shiplix)
-
-    if Rails.env.staging?
-      name << 'staging'
-    elsif !Rails.env.production?
-      name << Rails.env.to_s
-    end
-
-    name.join(' - ')
-  end
 
   def user_repos
     authorized_repos(api.repos)

@@ -52,7 +52,7 @@ class Repo < ActiveRecord::Base
   end
 
   def scm_url
-    "git@github.com:#{full_github_name}.git"
+    "https://#{owner.access_token}:@github.com/#{full_github_name}.git"
   end
 
   private

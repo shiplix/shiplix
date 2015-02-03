@@ -30,6 +30,10 @@ class ScmUpdateService
 
   def update
     Cocaine::CommandLine.
+      new('cd', ':cache_path && git remote set-url origin :url').
+      run(cache_path: build.locator.cache_path.to_s, url: build.repo.scm_url)
+
+    Cocaine::CommandLine.
       new('cd', ':cache_path && git remote update').
       run(cache_path: build.locator.cache_path.to_s)
   end
