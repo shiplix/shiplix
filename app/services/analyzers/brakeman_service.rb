@@ -30,7 +30,8 @@ module Analyzers
         build: build,
         subject: klass || source_file,
         method_name: warn.method.to_s,
-        message: warn.message
+        message: warn.message,
+        smell_type: warn.warning_type
       )
 
       # NOTE: brakeman can return line as nil

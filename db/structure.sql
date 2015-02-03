@@ -332,7 +332,8 @@ CREATE TABLE smells (
     score integer,
     method_name character varying(255),
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    smell_type character varying(255)
 );
 
 
@@ -808,4 +809,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150109192631');
 INSERT INTO schema_migrations (version) VALUES ('20150127194910');
 
 INSERT INTO schema_migrations (version) VALUES ('20150130032032');
+
+INSERT INTO schema_migrations (version) VALUES ('20150203095935');
 
