@@ -1,5 +1,20 @@
-/* Atlant
+/*
  *= require_self
+ *= require jquery-ui
+ *= require font-awesome
+ *= require bootstrap-sass-official
+
+ *= require atlant/summernote/summernote.css
+ *= require atlant/codemirror/codemirror.css
+ *= require atlant/nvd3/nv.d3.css
+ *= require atlant/mcustomscrollbar/jquery.mCustomScrollbar.css
+ *= require atlant/fullcalendar/fullcalendar.css
+ *= require atlant/blueimp/blueimp-gallery.min.css
+ *= require atlant/rickshaw/rickshaw.css
+ *= require atlant/dropzone/dropzone.css
+ *= require atlant/introjs/introjs.min.css
+ *= require atlant/animate/animate.min.css
  *= require atlant/styles
+
  *= require progressbar
 */
