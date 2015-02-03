@@ -1,22 +1,39 @@
-.panel.panel-default
-  .panel-body
-    .pull-right
+%tr
+  %td
+    - if repo.active?
+      %h3
+        %span.label.label-success.label-form
+          0 [Calm]
+
+  %td
+    %h3
       - if repo.active?
-        = link_to 'Remove',
-                  repo_activation_url(id: repo.id),
-                  remote: true,
-                  method: :delete,
-                  class: 'btn btn-danger js-repo-deactivate',
-                  data: {confirm: 'Are you sure?'}
-      - else
-        = link_to 'Activate',
-                  repo_activation_url(id: repo.id),
-                  remote: true,
-                  method: :put,
-                  class: 'btn btn-success js-repo-activate'
-    %h4
-      - if repo.active?
-        %a{:href => repo_klasses_url(repo)}
-          = repo.full_github_name
+        = link_to repo.full_github_name, repo_klasses_url(repo)
       - else
         = repo.full_github_name
+
+  %td
+    - if repo.active?
+      %h3
+        10
+
+  %td
+    %label.switch
+      - if repo.active?
+        = check_box_tag "#{repo.id}_switch",
+                        1,
+                        true,
+                        data: {remote: true,
+                               url: repo_activation_url(id: repo.id),
+                               method: 'delete',
+                               confirm: 'Are you sure?'},
+                        class: 'js-repo-deactivate'
+      - else
+        = check_box_tag "#{repo.id}_switch",
+                        1,
+                        false,
+                        data: {remote: true,
+                               url: repo_activation_url(id: repo.id),
+                               method: 'put'},
+                        class: 'js-repo-activate'
+      %span
