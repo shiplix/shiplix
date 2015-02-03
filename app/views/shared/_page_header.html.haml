@@ -1,0 +1,6 @@
+- if (header = page_header).present?
+  .page-title
+    %h2
+      %span.fa.fa-arrow-circle-o-left
+      = header
+      = yield(:page_header_links) if content_for?(:page_header_links)

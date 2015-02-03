@@ -1,0 +1,13 @@
+%ul.x-navigation.x-navigation-horizontal.x-navigation-panel
+  %li.xn-icon-button
+    %a.x-navigation-minimize{href: '#'}
+      %i.fa.fa-dedent
+  %li.pull-right.last
+    - if signed_in?
+      %a{href: '/sign_out'}
+        %i.fa.fa-sign-out
+        Logout
+    - else
+      %a{href: '/auth/github'}
+        %i.fa.fa-github
+        Sign in

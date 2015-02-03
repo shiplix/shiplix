@@ -1,21 +1,12 @@
-.navbar.navbar-inverse
-  .navbar-header
-    %button.navbar-toggle{:type => 'button', :data => {:toggle => 'collapse', :target => '.navbar-inverse-collapse'}}
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
-    %a.navbar-brand{:href => root_path} Shiplix
-
-  .navbar-collapse.collapse.navbar-inverse-collapse
-    %ul.nav.navbar-nav
-      - if signed_in?
-        %li{class: current_page?(repos_path) && 'active'}= link_to 'Repos', repos_path
-
-    %ul.nav.navbar-nav.navbar-right
-      %li.active
-        - if signed_in?
-          = link_to 'Logout', '/sign_out'
-        - else
-          = link_to '/auth/github' do
-            %i.fa.fa-github
-            Sign in with Github
+.page-sidebar
+  %ul.x-navigation
+    %li.xn-logo
+      %a{href: root_path} Shiplix
+      %a.x-navigation-control{href: '#'}
+    %li.xn-title
+      Navigation
+    %li{class: current_page?(repos_path) && 'active'}
+      %a{href: repos_path}
+        %i.fa.fa-desktop
+        %span.xn-text
+          Repositories
