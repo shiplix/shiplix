@@ -1,8 +1,9 @@
-/* Atlant
+/*
  *= require_self
- *= require atlant/jquery/jquery-ui.min.css
- *= require atlant/bootstrap/bootstrap.min.css
- *= require atlant/fontawesome/font-awesome.min.css
+ *= require jquery-ui
+ *= require font-awesome
+ *= require bootstrap-sass-official
+
  *= require atlant/summernote/summernote.css
  *= require atlant/codemirror/codemirror.css
  *= require atlant/nvd3/nv.d3.css
@@ -14,5 +15,6 @@
  *= require atlant/introjs/introjs.min.css
  *= require atlant/animate/animate.min.css
  *= require atlant/styles
+
  *= require progressbar
 */

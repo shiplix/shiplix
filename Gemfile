@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
 gem 'rails', '4.1.8'
 gem 'rails-i18n'
@@ -17,10 +18,6 @@ gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'autoprefixer-rails'
 gem 'will_paginate-bootstrap'
-gem 'twitter-bootswatch-rails', '~> 3.2'
-gem 'twitter-bootswatch-rails-helpers', '~> 3.1'
-gem 'twitter-bootswatch-rails-fontawesome'
-gem 'font-awesome-rails'
 
 gem 'draper'
 gem 'bootstrap_form'
@@ -49,6 +46,11 @@ gem 'flog', '~> 4.3'
 gem 'flay', '~> 2.6'
 gem 'reek', '~> 1.6'
 gem 'brakeman', '~> 3.0'
+
+# assets
+gem 'rails-assets-bootstrap-sass-official', '= 3.3.1'
+gem 'rails-assets-jquery-ui', '= 1.11.2'
+gem 'font-awesome-rails'
 
 group :development do
   gem 'better_errors'
