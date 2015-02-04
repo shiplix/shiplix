@@ -1,3 +1,0 @@
-// Slate
-// Bootswatch
-// bootswatch.js
