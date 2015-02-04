@@ -26,10 +26,7 @@
       interval: 1000, //интервал запроса к серверу в миллисекундах
       disabled: false, //первоначальное состояние прогресс-бара
       typeRequest: 'GET', //тип запроса к серверу
-      waitRequestComplete: true, //ждать ответа от сервера и до этого времени не делать новых запросов
-      classProgressBar: 'progress-bar',
-      classProgressBarLabel: 'progress-bar-label',
-      classProgressBarContainer: 'progress progress-striped active progress-bar-container'
+      waitRequestComplete: true //ждать ответа от сервера и до этого времени не делать новых запросов
     },
 
     _getOptions = function($element) {
@@ -65,19 +62,19 @@
     },
 
     _render = function($element) {
-      var
-        options = _getOptions($element),
-        $bar = $('<div>').addClass(options.classProgressBar),
-        $label = $('<div>').addClass(options.classProgressBarLabel).html(options.text);
+      var options = _getOptions($element);
 
       switch (options.form) {
         case 'progress':
-          $bar.width(options.value / options.max * $element.width());
-          $element.empty().append($bar, $label);
+          // TODO: rewrite this code
+          //$bar.width(options.value / options.max * $element.width());
+          //$element.empty().append($bar, $label);
         break;
         case 'load':
-          $bar.width($element.width());
-          $element.empty().append($bar, $label);
+          var $bar = $element.children().first();
+          if ($bar.text() != options.text) {
+            $bar.html(options.text);
+          }
         break;
       }
     },
@@ -121,7 +118,7 @@
           $this = $(this).data('options', $.extend({}, _options)),
           options = _getOptions($this);
 
-        $this.addClass(options.classProgressBarContainer).show().html(options.text);
+        $this.show().children().first().html(options.text);
         !options.disabled && _start($this);
       });
     },
