@@ -16,7 +16,7 @@ module Analyzers
     end
 
     def relative_path(path)
-      @revision_path ||= build.locator.revision_path.to_s + '/'
+      @revision_path ||= build.revision_path.to_s + '/'
       path.sub(@revision_path, '')
     end
   end
