@@ -1,36 +1,36 @@
 @['repos#index'] = (data) ->
   $('.js-refresh-repos').on 'ajax:success', (e, data, status, xhr) ->
-    $('#js-progressbar').progressBar
+    $('#js-refreshing-progressbar').progressBar
       url: '/jobs'
       pid: data.meta_id
       form: 'load'
       onEnable: ->
-        $('#js-progress-dialog').modal()
+        $('#js-refreshing-dialog').modal()
       onSuccess: (data) ->
         location.reload()
       onError: (data) ->
-        alert('Error in refreshing repos')
+        alert('Error in refreshing repositories')
 
   $('.js-repo-activate').on 'ajax:success', (e, data, status, xhr) ->
-    $('#js-progressbar').progressBar
+    $('#js-activating-progressbar').progressBar
       url: '/jobs'
       pid: data.meta_id
       form: 'load'
       onEnable: ->
-        $('#js-progress-dialog').modal()
+        $('#js-activating-dialog').modal()
       onSuccess: (data) ->
         location.reload()
       onError: (data) ->
-        alert('Error in activating repo')
+        alert('Error in activating repository')
 
   $('.js-repo-deactivate').on 'ajax:success', (e, data, status, xhr) ->
-    $('#js-progressbar').progressBar
+    $('#js-deactivating-progressbar').progressBar
       url: '/jobs'
       pid: data.meta_id
       form: 'load'
       onEnable: ->
-        $('#js-progress-dialog').modal()
+        $('#js-deactivating-dialog').modal()
       onSuccess: (data) ->
         location.reload()
       onError: (data) ->
-        alert('Error in deactivating repo')
+        alert('Error in deactivating repository')

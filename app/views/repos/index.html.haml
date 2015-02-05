@@ -1,13 +1,73 @@
-- content_for(:page_header_links) do
-  .pull-right
-    = link_to 'Refresh', repo_syncs_url, remote: true, method: :post,  class: 'js-refresh-repos btn btn-info'
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        .panel-title-box
+          %h3 Repositories
+          %span Repositories list
 
-- if @repos.present?
-  = render(@repos)
--else
-  %p There is no repositories loaded yet
+        %ul.panel-controls
+          %li
+            %a.panel-fullscreen{href: '#'}
+              %i.fa.fa-expand
+          %li
+            = link_to repo_syncs_url, remote: true, method: :post, class: 'js-refresh-repos' do
+              %i.fa.fa-refresh
 
-#js-progress-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
+      .panel-body.panel-body-table
+        .table-responsive
+          %table.table.table-bordered.table-striped
+            %thead
+              %tr
+                %th{style: 'width: 100px'} Marks
+                %th Repository name
+                %th{style: 'width: 100px'} Smells
+                %th{style: 'width: 75px'} Status
+            %tbody
+              - if @repos.present?
+                = render(@repos)
+              -else
+                There is no repositories loaded yet
+
+
+#js-refreshing-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
   .modal-dialog.modal-sm
     .modal-content
-      #js-progressbar
+      .panel.panel-info
+        .panel-heading
+          %h3.panel-title Refreshing repositories
+        .panel-body
+          #js-refreshing-progressbar.progress
+            .progress-bar.progress-bar-striped.progress-bar-info.active{'role' => 'progressbar',
+                                                                        'aria-valuenow' => 100,
+                                                                        'aria-valuemin' => 0,
+                                                                        'aria-valuemax' => 100,
+                                                                        'style' => 'width: 100%'}
+
+#js-activating-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
+  .modal-dialog.modal-sm
+    .modal-content
+      .panel.panel-success
+        .panel-heading
+          %h3.panel-title Activating repository
+        .panel-body
+          #js-activating-progressbar.progress
+            .progress-bar.progress-bar-striped.progress-bar-success.active{'role' => 'progressbar',
+                                                                           'aria-valuenow' => 100,
+                                                                           'aria-valuemin' => 0,
+                                                                           'aria-valuemax' => 100,
+                                                                           'style' => 'width: 100%'}
+
+#js-deactivating-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
+  .modal-dialog.modal-sm
+    .modal-content
+      .panel.panel-danger
+        .panel-heading
+          %h3.panel-title Deactivating repository
+        .panel-body
+          #js-deactivating-progressbar.progress
+            .progress-bar.progress-bar-striped.progress-bar-danger.active{'role' => 'progressbar',
+                                                                          'aria-valuenow' => 100,
+                                                                          'aria-valuemin' => 0,
+                                                                          'aria-valuemax' => 100,
+                                                                          'style' => 'width: 100%'}

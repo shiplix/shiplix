@@ -285,8 +285,7 @@ CREATE TABLE repos (
     private boolean DEFAULT false NOT NULL,
     in_organization boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    deploy_key_id integer
+    updated_at timestamp without time zone
 );
 
 
@@ -811,4 +810,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150127194910');
 INSERT INTO schema_migrations (version) VALUES ('20150130032032');
 
 INSERT INTO schema_migrations (version) VALUES ('20150203095935');
+
+INSERT INTO schema_migrations (version) VALUES ('20150203173145');
 

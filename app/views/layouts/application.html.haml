@@ -14,17 +14,15 @@
 
 
   %body
-    = render 'shared/navbar'
+    .page-container
+      = render 'shared/navbar'
+      .page-content
+        = render 'shared/x_navbar'
+        = render 'shared/breadcrumbs'
+        = render 'shared/page_header'
 
-    .container
-      = bootswatch_flash
-
-      - if (h1 = page_header).present?
-        %h1
-          = h1
-          = yield(:page_header_links) if content_for?(:page_header_links)
-
-      = yield
+        .page-content-wrap
+          = yield
 
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = javascript_pluggable_tag
