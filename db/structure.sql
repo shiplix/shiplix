@@ -333,7 +333,7 @@ CREATE TABLE smells (
     method_name character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    smell_type character varying(255)
+    trait character varying(255)
 );
 
 

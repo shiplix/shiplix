@@ -59,7 +59,7 @@ module Analyzers
         method_name: method_name,
         message: reek_smell.message,
         score: SMELL_SCORES[reek_smell.smell_type],
-        smell_type: reek_smell.smell_type
+        trait: reek_smell.smell_type
       )
 
       reek_smell.lines.each do |line|
