@@ -18,22 +18,23 @@
         10
 
   %td
-    %label.switch
-      - if repo.active?
-        = check_box_tag "#{repo.id}_switch",
-                        1,
-                        true,
-                        data: {remote: true,
-                               url: repo_activation_url(id: repo.id),
-                               method: 'delete',
-                               confirm: 'Are you sure?'},
-                        class: 'js-repo-deactivate'
-      - else
-        = check_box_tag "#{repo.id}_switch",
-                        1,
-                        false,
-                        data: {remote: true,
-                               url: repo_activation_url(id: repo.id),
-                               method: 'put'},
-                        class: 'js-repo-activate'
-      %span
+    - if policy(repo).manage?
+      %label.switch
+        - if repo.active?
+          = check_box_tag "#{repo.id}_switch",
+                          1,
+                          true,
+                          data: {remote: true,
+                                 url: repo_activation_url(id: repo.id),
+                                 method: 'delete',
+                                 confirm: 'Are you sure?'},
+                          class: 'js-repo-deactivate'
+        - else
+          = check_box_tag "#{repo.id}_switch",
+                          1,
+                          false,
+                          data: {remote: true,
+                                 url: repo_activation_url(id: repo.id),
+                                 method: 'put'},
+                          class: 'js-repo-activate'
+        %span

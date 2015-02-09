@@ -4,6 +4,8 @@ class RepoActivatorService
   pattr_initialize :user, :repo
 
   def call
+    return false unless Pundit.policy(user, repo).manage?
+
     repo.transaction do
       repo.activate(user)
       add_hooks
