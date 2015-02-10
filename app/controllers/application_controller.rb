@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include ErrorsCatch
   include PageInfo
+  include Pundit
 
   protect_from_forgery with: :exception
 

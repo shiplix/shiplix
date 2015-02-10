@@ -73,7 +73,7 @@ class GithubApi
   private
 
   def user_repos
-    authorized_repos(api.repos)
+    api.repos.map(&:to_hash)
   end
 
   def org_repos
@@ -81,10 +81,6 @@ class GithubApi
       api.org_repos(org[:login])
     end
 
-    authorized_repos(repos)
-  end
-
-  def authorized_repos(repos)
-    repos.select { |repo| repo.permissions.admin }.map(&:to_hash)
+    repos.map(&:to_hash)
   end
 end
