@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -150,7 +149,8 @@ CREATE TABLE klass_source_files (
     klass_id integer NOT NULL,
     source_file_id integer NOT NULL,
     line integer NOT NULL,
-    line_end integer NOT NULL
+    line_end integer NOT NULL,
+    loc integer DEFAULT 0
 );
 
 
@@ -815,4 +815,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150203095935');
 INSERT INTO schema_migrations (version) VALUES ('20150203173145');
 
 INSERT INTO schema_migrations (version) VALUES ('20150209113215');
+
+INSERT INTO schema_migrations (version) VALUES ('20150211190216');
 

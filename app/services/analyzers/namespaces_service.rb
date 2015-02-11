@@ -4,30 +4,41 @@ module Analyzers
   class NamespacesService < BaseService
     def call
       build.source_locator.paths.each do |path|
-        ast_node = parse_file(path)
-        find_namespaces(ast_node, path)
+        find_namespaces(Source.new(path))
       end
     end
 
     private
 
-    def parse_file(path)
-      Parser::CurrentRuby.parse(File.read(path)) || Parser::AST::EmptyNode.new
-    rescue Parser::SyntaxError
-      Parser::AST::EmptyNode.new
-    end
-
-    def find_namespaces(ast_node, path)
-      ast_node.namespaces.each do |namespace|
+    def find_namespaces(source)
+      source.to_ast.namespaces.each do |namespace|
         klass = klass_by_name(namespace.name)
-        source_file = source_file_by_path(path)
+        source_file = source_file_by_path(source.path)
 
         unless klass.source_files.where(path: source_file.path).exists?
           KlassSourceFile.create!(klass_id: klass.id,
                                   source_file_id: source_file.id,
                                   line: namespace.line,
-                                  line_end: namespace.line_end)
+                                  line_end: namespace.line_end,
+                                  loc: source.loc_for_namespace(namespace))
         end
+      end
+    end
+
+    Source = Struct.new(:path) do
+      def source
+        @source ||= File.read(path)
+      end
+
+      def to_ast
+        Parser::CurrentRuby.parse(source) || Parser::AST::EmptyNode.new
+      rescue Parser::SyntaxError
+        Parser::AST::EmptyNode.new
+      end
+
+      def loc_for_namespace(namespace)
+        source.lines[namespace.line - 1..namespace.line_end - 1]
+          .each.reject{ |line| line.strip.blank? }.size
       end
     end
   end
