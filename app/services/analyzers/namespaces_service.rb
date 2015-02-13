@@ -25,7 +25,10 @@ module Analyzers
       end
     end
 
-    Source = Struct.new(:path) do
+    class Source
+      attr_initialize :path
+      attr_reader :path
+
       def source
         @source ||= File.read(path)
       end
