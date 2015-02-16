@@ -11,11 +11,12 @@ module Analyzers
     private
 
     def find_namespaces(source)
+      source_file = source_file_by_path(source.path)
+
       source.to_ast.namespaces.each do |namespace|
         klass = klass_by_name(namespace.name)
-        source_file = source_file_by_path(source.path)
 
-        unless klass.source_files.where(path: source_file.path).exists?
+        unless klass.source_files.where(path: source.path).exists?
           KlassSourceFile.create!(klass_id: klass.id,
                                   source_file_id: source_file.id,
                                   line: namespace.line,
