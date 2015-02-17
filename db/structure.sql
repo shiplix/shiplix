@@ -118,7 +118,8 @@ CREATE TABLE builds (
     pull_request_number integer,
     state build_state NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    smells_count integer DEFAULT 0
 );
 
 
@@ -184,7 +185,8 @@ CREATE TABLE klasses (
     rating integer,
     complexity integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    smells_count integer DEFAULT 0
 );
 
 
@@ -368,7 +370,8 @@ CREATE TABLE source_files (
     rating integer,
     complexity integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    smells_count integer DEFAULT 0
 );
 
 
@@ -815,4 +818,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150203095935');
 INSERT INTO schema_migrations (version) VALUES ('20150203173145');
 
 INSERT INTO schema_migrations (version) VALUES ('20150209113215');
+
+INSERT INTO schema_migrations (version) VALUES ('20150215134254');
 

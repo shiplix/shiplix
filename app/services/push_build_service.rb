@@ -16,11 +16,11 @@ class PushBuildService
   def call
     create_build
     update
-    build.transaction do
+    transaction do
       analyze
+      build.collections.save
+      build.finish!
     end
-
-    build.finish!
   rescue Exception
     build.fail! if build.present?
     raise
@@ -39,5 +39,20 @@ class PushBuildService
 
   def analyze
     ANALYZERS.each { |analyzer| analyzer.new(build).call }
+  end
+
+  def transaction
+    inner_exception = nil
+
+    build.transaction do
+      begin
+        yield
+      rescue ActiveRecord::Rollback => e
+        inner_exception = e
+        raise
+      end
+    end
+
+    raise inner_exception if inner_exception
   end
 end

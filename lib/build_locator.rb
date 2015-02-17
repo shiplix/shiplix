@@ -16,4 +16,9 @@ class BuildLocator
   def revision_path
     @revision ||= repo_path.join(build.revision)
   end
+
+  def relative_path(path)
+    @revision_path ||= revision_path.to_s + '/'
+    path.sub(@revision_path, '')
+  end
 end
