@@ -5,9 +5,6 @@ describe Analyzers::NamespacesService do
 
   before do
     stub_build(build, path_to_repo_files('namespace').to_s)
-  end
-
-  before do
     described_class.new(build).call
   end
 
@@ -30,5 +27,12 @@ describe Analyzers::NamespacesService do
 
     expect(klass).to be_present
     expect(klass.klass_source_files.first.loc).to eq 5
+  end
+
+  it 'creates source file' do
+    source_file = build.source_files.find_by(path: 'lib/test.rb')
+
+    expect(source_file).to be_present
+    expect(source_file.loc).to eq 24
   end
 end
