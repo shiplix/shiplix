@@ -14,7 +14,7 @@ class Build < ActiveRecord::Base
   scope :recent, -> { where(state: 'finished').order(id: :desc) }
 
   delegate :repo, to: :branch
-  delegate :revision_path, to: :locator
+  delegate :revision_path, :relative_path, to: :locator
 
   include AASM
 
@@ -41,5 +41,9 @@ class Build < ActiveRecord::Base
 
     paths = %w(app lib config spec).map { |dir| locator.revision_path.join(dir).to_s }
     @source_locator = SourceLocator.new(paths)
+  end
+
+  def collections
+    @collections ||= BuildCollections.new(self)
   end
 end
