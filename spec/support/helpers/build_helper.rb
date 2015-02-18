@@ -7,7 +7,7 @@ module BuildHelper
     allow(build).to receive(:source_locator)
       .and_return(SourceLocator.new(path_to_folder_or_file))
 
-    allow(build).to receive(:revision_path).and_return path_to_repo_files(path_to_folder_or_file)
+    allow(build.locator).to receive(:revision_path).and_return path_to_repo_files(path_to_folder_or_file)
   end
 
   def path_to_repo_files(path)
@@ -15,8 +15,10 @@ module BuildHelper
   end
 
   def stub_env
-    stub_const('ENV', {'SHIPLIX_BUILDS_PATH' => fixture_path})
-    stub_const('ENV', {'SHIPLIX_GITHUB_CLIENT_ID' => '111'})
-    stub_const('ENV', {'SHIPLIX_GITHUB_CLIENT_SECRET' => '222'})
+    stub_const('ENV', {
+      'SHIPLIX_BUILDS_PATH' => fixture_path,
+      'SHIPLIX_GITHUB_CLIENT_ID' => '111',
+      'SHIPLIX_GITHUB_CLIENT_SECRET' => '222'
+    })
   end
 end
