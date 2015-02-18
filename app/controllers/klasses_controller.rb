@@ -1,5 +1,9 @@
 class KlassesController < ApplicationController
+  add_breadcrumb 'Home', :root_path
+  add_breadcrumb 'Repositories', :repos_path
+
   def index
+    add_breadcrumb "Classes #{repo.full_github_name}", :repo_klasses_path
     self.title_variables = {repo: repo.full_github_name}
 
     @klasses = build.klasses.paginate(page: params[:page], per_page: 20) if build.present?

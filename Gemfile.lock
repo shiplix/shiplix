@@ -63,6 +63,7 @@ GEM
       ruby_parser (~> 3.5.0)
       sass (~> 3.0)
       terminal-table (~> 1.4)
+    breadcrumbs_on_rails (2.3.0)
     builder (3.2.2)
     byebug (3.5.1)
       columnize (~> 0.8)
@@ -409,6 +410,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap_form
   brakeman (~> 3.0)
+  breadcrumbs_on_rails (~> 2.3)
   capistrano (~> 3.2)
   capistrano-bundler
   capistrano-rails

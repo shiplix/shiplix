@@ -18,7 +18,10 @@
       = render 'shared/navbar'
       .page-content
         = render 'shared/x_navbar'
-        = render 'shared/breadcrumbs'
+
+        %ul.breadcrumb
+          = render_breadcrumbs tag: 'li', separator: ''
+
         = render 'shared/page_header'
 
         .page-content-wrap
