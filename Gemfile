@@ -34,7 +34,7 @@ gem 'dalli', '~> 2.7'
 gem 'rails-cache-tags', '~> 1.3'
 gem 'redis-mutex', '~> 3.0'
 gem 'omniauth-github'
-gem 'attr_extras'
+gem 'attr_extras', github: 'barsoom/attr_extras' # TODO: change to version after realeze > 4.2
 gem 'resque', '~> 1.25'
 gem 'resque-retry'
 gem 'resque-god'

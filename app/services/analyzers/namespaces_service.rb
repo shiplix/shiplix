@@ -17,19 +17,21 @@ module Analyzers
       source.to_ast.namespaces.each do |namespace|
         klass = klass_by_name(namespace.name)
 
+        klass_loc = source.loc_for_namespace(namespace)
+        klass.loc += klass_loc
+
         unless klass.source_files.where(path: source.path).exists?
           KlassSourceFile.create!(klass: klass,
                                   source_file: source_file,
                                   line: namespace.line,
                                   line_end: namespace.line_end,
-                                  loc: source.loc_for_namespace(namespace))
+                                  loc: klass_loc)
         end
       end
     end
 
     class Source
-      attr_initialize :path
-      attr_reader :path
+      rattr_initialize :path
 
       # Public: body of readed file
       #

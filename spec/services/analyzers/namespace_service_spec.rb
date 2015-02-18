@@ -9,31 +9,36 @@ describe Analyzers::NamespacesService do
     described_class.new(build).call
   end
 
-  it 'adds Lib module to build klasses collection' do
+  it 'calculates loc on module Lib' do
     klass = build.collections.klasses['Lib']
 
-    expect(klass).to be_present
-    expect(klass.klass_source_files.first.loc).to eq 24
+    expect(klass.klass_source_files.by_path('lib/test.rb').loc).to eq 24
+    expect(klass.klass_source_files.by_path('lib/another.rb').loc).to eq 6
+    expect(klass.loc).to eq 30
   end
 
-  it 'adds Lib::FirstTestClass to build klasses collection' do
+  it 'calculates loc on Lib::FirstTestClass' do
     klass = build.collections.klasses['Lib::FirstTestClass']
 
-    expect(klass).to be_present
-    expect(klass.klass_source_files.first.loc).to eq 17
+    expect(klass.klass_source_files.by_path('lib/test.rb').loc).to eq 17
+    expect(klass.klass_source_files.by_path('lib/another.rb').loc).to eq 4
+    expect(klass.loc).to eq 21
   end
 
-  it 'adds Lib::SecondTestClass to build klasses collection' do
+  it 'calculates loc on Lib::SecondTestClass' do
     klass = build.collections.klasses['Lib::SecondTestClass']
 
     expect(klass).to be_present
-    expect(klass.klass_source_files.first.loc).to eq 5
+    expect(klass.klass_source_files.by_path('lib/test.rb').loc).to eq 5
   end
 
-  it 'adds source file to build source files collection' do
-    source_file = build.collections.source_files[build_dir.join('lib/test.rb').to_s]
+  it 'calculates loc on source files' do
+    source_files = build.collections.source_files
 
-    expect(source_file).to be_present
-    expect(source_file.loc).to eq 24
+    test_rb = source_files[build_dir.join('lib/test.rb').to_s]
+    another_rb = source_files[build_dir.join('lib/another.rb').to_s]
+
+    expect(test_rb.loc).to eq 24
+    expect(another_rb.loc).to eq 6
   end
 end
