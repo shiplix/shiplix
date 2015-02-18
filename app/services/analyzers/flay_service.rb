@@ -26,7 +26,7 @@ module Analyzers
     def find_smells(nodes, score)
       nodes.each_with_object({}) do |node, smells|
         source_file = source_file_by_path(node.file)
-        klass = source_file.klass_by_line(node.line)
+        klass = klass_by_line(source_file, node.line)
         next unless klass
 
         smells[klass.id] ||= Smells::Flay.create!(

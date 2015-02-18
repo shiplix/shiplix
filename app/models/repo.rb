@@ -8,8 +8,8 @@ class Repo < ActiveRecord::Base
   validates :full_github_name, presence: true
   validates :github_id, uniqueness: true, presence: true
 
-  def self.active
-    where(active: true)
+  def self.active(value = true)
+    where(active: value)
   end
 
   def self.find_or_create_with(attributes)
