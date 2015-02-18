@@ -2,35 +2,36 @@ require 'rails_helper'
 
 describe Analyzers::NamespacesService do
   let(:build) { create :push }
+  let(:build_dir) { path_to_repo_files('namespace') }
 
   before do
-    stub_build(build, path_to_repo_files('namespace').to_s)
+    stub_build(build, build_dir.to_s)
     described_class.new(build).call
   end
 
-  it 'creates namespace for root module Lib' do
-    klass = build.klasses.find_by(name: 'Lib')
+  it 'adds Lib module to build klasses collection' do
+    klass = build.collections.klasses['Lib']
 
     expect(klass).to be_present
     expect(klass.klass_source_files.first.loc).to eq 24
   end
 
-  it 'creates namespace for FirstTestClass' do
-    klass = build.klasses.find_by(name: 'Lib::FirstTestClass')
+  it 'adds Lib::FirstTestClass to build klasses collection' do
+    klass = build.collections.klasses['Lib::FirstTestClass']
 
     expect(klass).to be_present
     expect(klass.klass_source_files.first.loc).to eq 17
   end
 
-  it 'creates namespace for SecondTestClass' do
-    klass = build.klasses.find_by(name: 'Lib::SecondTestClass')
+  it 'adds Lib::SecondTestClass to build klasses collection' do
+    klass = build.collections.klasses['Lib::SecondTestClass']
 
     expect(klass).to be_present
     expect(klass.klass_source_files.first.loc).to eq 5
   end
 
-  it 'creates source file' do
-    source_file = build.source_files.find_by(path: 'lib/test.rb')
+  it 'adds source file to build source files collection' do
+    source_file = build.collections.source_files[build_dir.join('lib/test.rb').to_s]
 
     expect(source_file).to be_present
     expect(source_file.loc).to eq 24

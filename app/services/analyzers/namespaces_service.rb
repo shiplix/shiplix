@@ -11,9 +11,8 @@ module Analyzers
     private
 
     def find_namespaces(source)
-      source_file = source_file_by_path(source.path, save: false)
+      source_file = source_file_by_path(source.path)
       source_file.loc = source.loc
-      source_file.save!
 
       source.to_ast.namespaces.each do |namespace|
         klass = klass_by_name(namespace.name)
