@@ -151,7 +151,8 @@ CREATE TABLE klass_source_files (
     klass_id integer NOT NULL,
     source_file_id integer NOT NULL,
     line integer NOT NULL,
-    line_end integer NOT NULL
+    line_end integer NOT NULL,
+    loc integer DEFAULT 0
 );
 
 
@@ -186,6 +187,7 @@ CREATE TABLE klasses (
     complexity integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
+    loc integer DEFAULT 0,
     smells_count integer DEFAULT 0
 );
 
@@ -371,6 +373,7 @@ CREATE TABLE source_files (
     complexity integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
+    loc integer DEFAULT 0,
     smells_count integer DEFAULT 0
 );
 
@@ -818,6 +821,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150203095935');
 INSERT INTO schema_migrations (version) VALUES ('20150203173145');
 
 INSERT INTO schema_migrations (version) VALUES ('20150209113215');
+
+INSERT INTO schema_migrations (version) VALUES ('20150211190216');
 
 INSERT INTO schema_migrations (version) VALUES ('20150215134254');
 

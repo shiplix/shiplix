@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/barsoom/attr_extras.git
+  revision: a17efe492c34edc9d06b1f69aeba021e7baa19ee
+  specs:
+    attr_extras (4.2.0)
+
+GIT
   remote: git://github.com/causes/mock_redis.git
   revision: f3abf289cb063fbac4e6ec974f4c3a47aa750f41
   specs:
@@ -42,7 +48,6 @@ GEM
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
     ast (2.0.0)
-    attr_extras (3.1.0)
     autoprefixer-rails (4.0.2.1)
       execjs
     awesome_print (1.2.0)
@@ -402,7 +407,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm (~> 4.0)
-  attr_extras
+  attr_extras!
   autoprefixer-rails
   awesome_print
   better_errors
