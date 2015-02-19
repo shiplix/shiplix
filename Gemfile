@@ -42,6 +42,7 @@ gem 'resque-single'
 gem 'octokit'
 gem 'pluggable_js'
 gem 'cocaine', require: false
+gem 'breadcrumbs_on_rails', '~> 2.3'
 
 gem 'flog', '~> 4.3'
 gem 'flay', '~> 2.6'

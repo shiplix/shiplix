@@ -1,5 +1,9 @@
 class ReposController < ApplicationController
+  add_breadcrumb 'Home', :root_path
+
   def index
+    add_breadcrumb 'Repositories', :repos_path
+
     @repos = current_user.
       repos.
       active.
