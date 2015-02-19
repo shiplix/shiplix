@@ -18,7 +18,7 @@ module Analyzers
         klass = klass_by_name(namespace.name)
 
         klass_loc = source.loc_for_namespace(namespace)
-        klass.loc += klass_loc
+        klass.increment(:loc, klass_loc)
 
         unless klass.source_files.where(path: source.path).exists?
           KlassSourceFile.create!(klass: klass,
