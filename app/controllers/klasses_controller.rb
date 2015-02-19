@@ -6,7 +6,10 @@ class KlassesController < ApplicationController
     add_breadcrumb "Classes #{repo.full_github_name}", :repo_klasses_path
     self.title_variables = {repo: repo.full_github_name}
 
-    @klasses = build.klasses.paginate(page: params[:page], per_page: 20) if build.present?
+    @klasses = build.
+      klasses.
+      order(smells_count: :desc).
+      paginate(page: params[:page], per_page: 20) if build.present?
   end
 
   private
@@ -15,11 +18,7 @@ class KlassesController < ApplicationController
     @repo ||= current_user.repos.active.find(params[:repo_id])
   end
 
-  def branch
-    @branch ||= repo.branches.find_by!(default: true)
-  end
-
   def build
-    @build ||= branch.push_builds.recent.first
+    @build ||= repo.default_branch.try(:recent_push_build)
   end
 end

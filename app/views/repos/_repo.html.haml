@@ -15,7 +15,7 @@
   %td
     - if repo.active?
       %h3
-        10
+        = repo.default_branch.try(:recent_push_build).try(:smells_count)
 
   %td
     - if policy(repo).manage?
