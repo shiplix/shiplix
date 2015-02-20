@@ -1,3 +1,5 @@
+- content_for(:header_icon, 'fa-arrow-circle-o-left')
+
 .row
   .col-md-12
     .panel.panel-default
@@ -26,7 +28,7 @@
             %tbody
               - if @repos.present?
                 = render(@repos)
-              -else
+              - else
                 There is no repositories loaded yet
 
 

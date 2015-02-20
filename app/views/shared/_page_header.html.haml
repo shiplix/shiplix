@@ -1,6 +1,7 @@
 - if (header = page_header).present?
   .page-title
     %h2
-      %span.fa.fa-arrow-circle-o-left
+      - if content_for?(:header_icon)
+        %span.fa{class: yield(:header_icon)}
       = header
       = yield(:page_header_links) if content_for?(:page_header_links)

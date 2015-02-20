@@ -7,7 +7,8 @@ class ReposController < ApplicationController
     @repos = current_user.
       repos.
       active.
-      order(full_github_name: :asc)
+      order(full_github_name: :asc).
+      includes(default_branch: [:recent_push_build])
 
     @repos |= current_user.
       repos.
