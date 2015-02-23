@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def authenticate
-    redirect_to root_path unless signed_in?
+    render_error(403) unless signed_in?
   end
 
   def signed_in?

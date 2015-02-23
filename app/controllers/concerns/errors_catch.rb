@@ -3,11 +3,13 @@ module ErrorsCatch
 
   included do
     def self.catch_errors
-      rescue_from Exception, :with => :catch_500
-      rescue_from ActiveRecord::RecordNotFound, ActionController::ParameterMissing, :with => :catch_404
+      rescue_from Exception, with: :catch_500
+      rescue_from ActiveRecord::RecordNotFound, with: :catch_404
+      rescue_from ActionController::ParameterMissing, with: :catch_404
+      rescue_from Pundit::NotAuthorizedError, with: :catch_404
     end
 
-    catch_errors unless Rails.env.deve?
+    catch_errors unless Rails.env.development?
   end
 
   def catch_404(exception = nil)
