@@ -24,8 +24,16 @@ describe KlassesController, type: :controller do
     context 'when user is not a member' do
       let!(:membership) { nil }
 
-      Then { expect(assigns(:klasses)).to be_nil }
-      And { expect(response.status).to eq 404 }
+      context 'when repo is public' do
+        Then { expect(assigns(:klasses)).to be_present }
+        And { expect(response.status).to eq 200 }
+      end
+
+      context 'when repo is private' do
+        let(:repo) { create :repo, private: true }
+        Then { expect(assigns(:klasses)).to be_nil }
+        And { expect(response.status).to eq 404 }
+      end
     end
 
     context 'when repo is not active' do

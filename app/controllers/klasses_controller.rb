@@ -15,10 +15,14 @@ class KlassesController < ApplicationController
   private
 
   def repo
-    @repo ||= current_user.repos.active.find(params[:repo_id])
+    @repo ||= Repo.active.find(params[:repo_id])
   end
 
   def build
     @build ||= repo.default_branch.try(:recent_push_build)
+  end
+
+  def authenticate
+    authorize repo, :show?
   end
 end

@@ -8,4 +8,9 @@ class RepoPolicy
       !!user.memberships.find_by(repo_id: repo.id).try(:admin?)
     end
   end
+
+  def show?
+    return true unless repo.private?
+    user.present? && user.memberships.where(repo_id: repo.id).exists?
+  end
 end
