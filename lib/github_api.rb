@@ -4,7 +4,10 @@ class GithubApi
   attr_reader :api
 
   def initialize(token)
-    @api ||= Octokit::Client.new(access_token: token, auto_paginate: true)
+    # TODO: remove after 20 april 2015
+    Octokit.default_media_type = 'application/vnd.github.moondragon+json'
+
+    @api = Octokit::Client.new(access_token: token, auto_paginate: true)
   end
 
   # Repo branches
@@ -67,20 +70,6 @@ class GithubApi
   #
   # Returns Array of Hash
   def repos
-    user_repos + org_repos
-  end
-
-  private
-
-  def user_repos
     api.repos.map(&:to_hash)
-  end
-
-  def org_repos
-    repos = api.orgs.flat_map do |org|
-      api.org_repos(org[:login])
-    end
-
-    repos.map(&:to_hash)
   end
 end
