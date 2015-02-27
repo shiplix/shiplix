@@ -1,69 +1,39 @@
-require 'ast_node'
-
 module Analyzers
   class NamespacesService < BaseService
     def call
       build.source_locator.paths.each do |path|
-        find_namespaces(Source.new(path))
+        find_namespaces(ProcessedSource.new(path))
       end
     end
 
     private
 
-    def find_namespaces(source)
-      source_file = source_file_by_path(source.path)
-      source_file.loc = source.loc
+    def find_namespaces(processed_source)
+      source_file = source_file_by_path(processed_source.path)
+      source_file.loc = processed_source.loc
 
-      source.to_ast.namespaces.each do |namespace|
-        klass = klass_by_name(namespace.name)
+      processed_source.ast.each_node(:module, :class) do |node|
+        klass = klass_by_name(node.namespace)
 
-        klass_loc = source.loc_for_namespace(namespace)
+        klass_loc = processed_source.loc(node.first_line..node.last_line)
         klass.increment(:loc, klass_loc)
+        klass.increment(:methods_count, count_methods(node))
 
-        unless klass.source_files.where(path: source.path).exists?
+        unless klass.source_files.where(path: processed_source.path).exists?
           KlassSourceFile.create!(klass: klass,
                                   source_file: source_file,
-                                  line: namespace.line,
-                                  line_end: namespace.line_end,
+                                  line: node.first_line,
+                                  line_end: node.last_line,
                                   loc: klass_loc)
         end
       end
     end
 
-    class Source
-      rattr_initialize :path
-
-      # Public: body of readed file
-      #
-      # Returns String
-      def source
-        @source ||= File.read(path)
-      end
-
-      # Public: convert source file to Parser::AST::Node
-      #
-      # Returns Parser::AST::Node or Parser::AST::EmptyNode
-      def to_ast
-        Parser::CurrentRuby.parse(source) || Parser::AST::EmptyNode.new
-      rescue Parser::SyntaxError
-        Parser::AST::EmptyNode.new
-      end
-
-      # Public: returns LOC for klass in source file
-      #
-      # namespace - Parser::AST::Node::Namespace
-      #
-      # Returns integer
-      def loc_for_namespace(namespace)
-        source.lines[namespace.line - 1..namespace.line_end - 1]
-          .reject{ |line| line.strip.blank? }.size
-      end
-
-      # Public: returns LOC for source file
-      #
-      # Returns Integer
-      def loc
-        source.lines.reject{ |line| line.strip.blank? }.size
+    def count_methods(node)
+      node.each_descendant(:def, :defs).reduce(0) do |count_methods, method_node|
+        parent = method_node.each_ancestor(:class, :module).first
+        count_methods += 1 if parent == node
+        count_methods
       end
     end
   end
