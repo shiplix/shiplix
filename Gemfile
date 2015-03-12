@@ -63,7 +63,7 @@ gem 'cocaine', require: false
 # Analyzers
 gem 'flog', '~> 4.3'
 gem 'flay', '~> 2.6'
-gem 'reek', '~> 1.6'
+gem 'reek', '~> 2.0'
 gem 'brakeman', '~> 3.0'
 gem 'astrolabe'
 
