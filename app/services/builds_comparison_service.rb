@@ -6,42 +6,39 @@ class BuildsComparisonService
       raise 'Builds should be in same repo'
     end
 
-    process_klasses
+    process(Klass, :name)
+    process(SourceFile, :path)
   end
 
   protected
 
-  def process_klasses
-    build_id = target.id
-    subject_type = 'Klass'
-
-    Klass.each_row_by_sql(changed_klasses_sql) do |row|
-      Changeset.create!(build_id: build_id,
-                        subject_type: subject_type,
-                        subject_id: row['klass_id'],
+  def process(subject, unique_field)
+    subject.each_row_by_sql(changes_query(subject, unique_field).to_sql) do |row|
+      Changeset.create!(build_id: target.id,
+                        subject_type: subject.name,
+                        subject_id: row['id'],
                         rating: row['rating'],
                         prev_rating: row['prev_rating'])
     end
   end
 
-  def changed_klasses_sql
-    t_k = Klass.arel_table
-    s_k = Klass.arel_table.alias(:s_klasses)
+  def changes_query(subject, unique_field)
+    t = subject.arel_table
+    s = t.alias(:source)
 
-    t_k.
-      join(s_k, Arel::Nodes::OuterJoin).
+    t.
+      join(s, Arel::Nodes::OuterJoin).
       on(
-        t_k[:name].eq(s_k[:name]).
-          and(s_k[:build_id].eq source.id)
+        t[unique_field].eq(s[unique_field]).
+          and(s[:build_id].eq source.id)
       ).
-      where(t_k[:build_id].eq target.id).
+      where(t[:build_id].eq target.id).
       where(
-        s_k[:id].eq(nil).
-          or(t_k[:rating].not_eq s_k[:rating])
+        s[:id].eq(nil).
+          or(t[:rating].not_eq s[:rating])
       ).
-      project(t_k[:id].as('klass_id'),
-              t_k[:rating],
-              s_k[:rating].as('prev_rating')).
-      to_sql
+      project(t[:id],
+              t[:rating],
+              s[:rating].as('prev_rating'))
   end
 end
