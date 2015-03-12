@@ -454,8 +454,8 @@ DEPENDENCIES
   pundit
   quiet_assets
   rails (~> 4.1.0)
-  rails-assets-bootstrap-sass-official (= 3.3.1)
-  rails-assets-jquery-ui (= 1.11.2)
+  rails-assets-bootstrap-sass-official (= 3.3.1)!
+  rails-assets-jquery-ui (= 1.11.2)!
   rails-cache-tags
   rails-i18n
   redis
