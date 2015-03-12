@@ -143,6 +143,41 @@ ALTER SEQUENCE builds_id_seq OWNED BY builds.id;
 
 
 --
+-- Name: changesets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE changesets (
+    id integer NOT NULL,
+    build_id integer NOT NULL,
+    subject_type smell_subject_type NOT NULL,
+    subject_id integer NOT NULL,
+    rating integer DEFAULT 1 NOT NULL,
+    prev_rating integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: changesets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE changesets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: changesets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE changesets_id_seq OWNED BY changesets.id;
+
+
+--
 -- Name: klass_source_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -183,7 +218,7 @@ CREATE TABLE klasses (
     id integer NOT NULL,
     build_id integer NOT NULL,
     name character varying(255) NOT NULL,
-    rating integer,
+    rating integer DEFAULT 1 NOT NULL,
     complexity integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -370,7 +405,7 @@ CREATE TABLE source_files (
     build_id integer NOT NULL,
     path character varying(2048) NOT NULL,
     name character varying(255) NOT NULL,
-    rating integer,
+    rating integer DEFAULT 1 NOT NULL,
     complexity integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -451,6 +486,13 @@ ALTER TABLE ONLY builds ALTER COLUMN id SET DEFAULT nextval('builds_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY changesets ALTER COLUMN id SET DEFAULT nextval('changesets_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY klass_source_files ALTER COLUMN id SET DEFAULT nextval('klass_source_files_id_seq'::regclass);
 
 
@@ -517,6 +559,14 @@ ALTER TABLE ONLY branches
 
 ALTER TABLE ONLY builds
     ADD CONSTRAINT builds_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: changesets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY changesets
+    ADD CONSTRAINT changesets_pkey PRIMARY KEY (id);
 
 
 --
@@ -595,6 +645,20 @@ CREATE UNIQUE INDEX index_branches_on_repo_id_and_name ON branches USING btree (
 --
 
 CREATE UNIQUE INDEX index_builds_on_branch_id_and_pull_request_number ON builds USING btree (branch_id, pull_request_number);
+
+
+--
+-- Name: index_changesets_on_build_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_changesets_on_build_id ON changesets USING btree (build_id);
+
+
+--
+-- Name: index_changesets_on_subject_type_and_subject_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_changesets_on_subject_type_and_subject_id ON changesets USING btree (subject_type, subject_id);
 
 
 --
@@ -709,6 +773,14 @@ ALTER TABLE ONLY branches
 
 ALTER TABLE ONLY builds
     ADD CONSTRAINT builds_branch_id_fk FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE;
+
+
+--
+-- Name: changesets_build_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY changesets
+    ADD CONSTRAINT changesets_build_id_fk FOREIGN KEY (build_id) REFERENCES builds(id) ON DELETE CASCADE;
 
 
 --
@@ -828,4 +900,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150211190216');
 INSERT INTO schema_migrations (version) VALUES ('20150215134254');
 
 INSERT INTO schema_migrations (version) VALUES ('20150305100200');
+
+INSERT INTO schema_migrations (version) VALUES ('20150308062951');
+
+INSERT INTO schema_migrations (version) VALUES ('20150311152127');
 

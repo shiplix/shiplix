@@ -19,6 +19,7 @@ class PushBuildService
     transaction do
       analyze
       build.collections.save
+      compare_builds
       build.finish!
     end
   rescue Exception
@@ -39,6 +40,11 @@ class PushBuildService
 
   def analyze
     ANALYZERS.each { |analyzer| analyzer.new(build).call }
+  end
+
+  def compare_builds
+    source = branch.push_builds.recent.first
+    BuildsComparisonService.new(build, source).call if source
   end
 
   def transaction
