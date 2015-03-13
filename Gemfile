@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
 
 gem 'rails', '~> 4.1.0'
 gem 'rails-i18n'
@@ -37,9 +36,12 @@ gem 'breadcrumbs_on_rails'
 gem 'pluggable_js'
 
 # Assets
-gem 'rails-assets-bootstrap-sass-official', '= 3.3.1'
-gem 'rails-assets-jquery-ui', '= 1.11.2'
 gem 'font-awesome-rails'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-bootstrap-sass-official', '= 3.3.1'
+  gem 'rails-assets-jquery-ui', '= 1.11.2'
+end
 
 # Auth
 gem 'pundit'
@@ -61,7 +63,7 @@ gem 'cocaine', require: false
 # Analyzers
 gem 'flog', '~> 4.3'
 gem 'flay', '~> 2.6'
-gem 'reek', '~> 1.6'
+gem 'reek', '~> 2.0'
 gem 'brakeman', '~> 3.0'
 gem 'astrolabe'
 
