@@ -8,7 +8,7 @@ module Analyzers
       return if paths.empty?
 
       Reek::Examiner.new(paths).smells.each do |smell|
-        create_smell(smell)
+        make_smell(smell)
       end
     end
 
@@ -48,14 +48,14 @@ module Analyzers
     # Internal: creates smells and locations for this smells
     #
     # Returns nothing
-    def create_smell(reek_smell)
+    def make_smell(reek_smell)
       klass = klass_by_name(klass_name_from_context(reek_smell.context))
       method_name = method_name_from_context(reek_smell.context)
       source_file = source_file_by_path(reek_smell.source)
 
-      smell = Smells::Reek.create!(
-        build: build,
-        subject: klass,
+      smell = create_smell(
+        Smells::Reek,
+        klass,
         method_name: method_name,
         message: reek_smell.message,
         score: SMELL_SCORES[reek_smell.smell_type],

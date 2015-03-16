@@ -1,6 +1,7 @@
 class Build < ActiveRecord::Base
-  has_many :klasses
-  has_many :source_files
+  has_many :klass_metrics
+  has_many :source_file_metrics
+  has_many :klass_source_files
   has_many :smells
   has_many :changesets
 

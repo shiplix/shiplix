@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Analyzers::FlayService do
   let(:build) { create :push }
+  let(:repo) { build.branch.repo }
 
   before do
     stub_build(build, path_to_repo_files('flay').to_s)
@@ -9,7 +10,13 @@ describe Analyzers::FlayService do
 
   context 'when we have knowledge about klass in database' do
     let!(:klass) do
-      create :klass_in_file, line: 2, line_end: 4, path: 'dirty.rb', name: 'Flay::Dirty', build: build
+      create :klass_in_file,
+             line: 2,
+             line_end: 4,
+             path: 'dirty.rb',
+             name: 'Flay::Dirty',
+             build: build,
+             repo: repo
     end
     let(:source_file) { klass.source_files.first }
 

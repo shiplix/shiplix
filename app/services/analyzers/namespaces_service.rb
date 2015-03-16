@@ -10,17 +10,18 @@ module Analyzers
 
     def find_namespaces(processed_source)
       source_file = source_file_by_path(processed_source.path)
-      source_file.loc = processed_source.loc
+      source_file.metric.loc = processed_source.loc
 
       processed_source.ast.each_node(:module, :class) do |node|
         klass = klass_by_name(node.namespace)
 
         klass_loc = processed_source.loc(node.first_line..node.last_line)
-        klass.increment(:loc, klass_loc)
-        klass.increment(:methods_count, count_methods(node))
+        klass.metric.increment(:loc, klass_loc)
+        klass.metric.increment(:methods_count, count_methods(node))
 
         unless klass.source_files.where(path: processed_source.path).exists?
-          KlassSourceFile.create!(klass: klass,
+          KlassSourceFile.create!(build: build,
+                                  klass: klass,
                                   source_file: source_file,
                                   line: node.first_line,
                                   line_end: node.last_line,
