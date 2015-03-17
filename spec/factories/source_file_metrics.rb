@@ -1,7 +1,6 @@
 FactoryGirl.define do
-  factory :klass_source_file do
+  factory :source_file_metric do
     association :build
-    association :klass
     association :source_file
   end
 end

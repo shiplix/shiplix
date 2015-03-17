@@ -14,5 +14,5 @@ describe PushBuildService do
 
   Then { expect(build.finished?).to be true }
   And { expect(build.smells_count).to eq 2 }
-  And { expect(build.klasses.find_by(name: 'DirtyModule::Dirty').smells_count).to eq 2 }
+  And { expect(build.klass_metrics.for('DirtyModule::Dirty').first.smells_count).to eq 2 }
 end

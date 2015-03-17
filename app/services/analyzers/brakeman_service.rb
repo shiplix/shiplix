@@ -10,25 +10,24 @@ module Analyzers
       )
 
       tracker.warnings.each do |warn|
-        create_smell(warn)
+        make_smell(warn)
       end
-
     rescue Brakeman::NoApplication
       # no-op
     end
 
     private
 
-    def create_smell(warn)
+    def make_smell(warn)
       if (klass_name = klass_name_from_warning(warn)).present?
         klass = klass_by_name(klass_name)
       end
 
       source_file = source_file_by_path(warn.relative_path)
 
-      smell = Smells::Brakeman.create!(
-        build: build,
-        subject: klass || source_file,
+      smell = create_smell(
+        Smells::Brakeman,
+        klass || source_file,
         method_name: warn.method.to_s,
         message: warn.message,
         trait: warn.warning_type

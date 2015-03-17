@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Analyzers::BrakemanService do
   let(:build) { create :push }
+  let(:repo) { build.branch.repo }
 
   context "when repo looks like rails app" do
     before do
@@ -10,9 +11,9 @@ describe Analyzers::BrakemanService do
     end
 
     it "creates smell for dirty_controller" do
-      klass = build.klasses.find_by(name: "Brakeman::DirtyController")
+      klass = repo.klasses.find_by(name: "Brakeman::DirtyController")
       smell = Smells::Brakeman.find_by(build: build, subject: klass, method_name: "redirect_to_some_places")
-      source_file = build.source_files.find_by(name: "dirty_controller.rb")
+      source_file = repo.source_files.find_by(name: "dirty_controller.rb")
 
       expect(klass).to be_present
       expect(smell).to be_present
@@ -21,9 +22,9 @@ describe Analyzers::BrakemanService do
     end
 
     it "creates smell for application_controller" do
-      klass = build.klasses.find_by(name: "ApplicationController")
+      klass = repo.klasses.find_by(name: "ApplicationController")
       smell = Smells::Brakeman.find_by(build: build, subject: klass)
-      source_file = build.source_files.find_by(name: "application_controller.rb")
+      source_file = repo.source_files.find_by(name: "application_controller.rb")
 
       expect(klass).to be_present
       expect(smell).to be_present
@@ -32,9 +33,9 @@ describe Analyzers::BrakemanService do
     end
 
     it "creates smells for model" do
-      klass = build.klasses.find_by(name: "Brakeman::Account")
+      klass = repo.klasses.find_by(name: "Brakeman::Account")
       smell = Smells::Brakeman.find_by(build: build, subject: klass)
-      source_file = build.source_files.find_by(name: "account.rb")
+      source_file = repo.source_files.find_by(name: "account.rb")
 
       expect(klass).to be_present
       expect(smell).to be_present
@@ -43,7 +44,7 @@ describe Analyzers::BrakemanService do
     end
 
     it "creates smell for view" do
-      source_file = build.source_files.find_by(name: "index.html.erb")
+      source_file = repo.source_files.find_by(name: "index.html.erb")
       smell = Smells::Brakeman.find_by(build: build, subject: source_file)
 
       expect(source_file).to be_present

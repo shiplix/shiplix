@@ -2,6 +2,8 @@ class Repo < ActiveRecord::Base
   has_many :memberships
   has_many :users, through: :memberships
   has_many :branches
+  has_many :klasses
+  has_many :source_files
   has_one :default_branch, -> { where(default: true) }, class_name: 'Branch'
 
   alias_attribute :name, :full_github_name

@@ -18,5 +18,4 @@
 .ruby-gemset
 .env
 .capistrano/
-db/schema.rb
 /coverage

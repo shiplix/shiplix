@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Analyzers::ReekService do
   let(:push_build) { create :push }
+  let(:repo) { push_build.branch.repo }
   let(:smell_scores) do
     {
       'IrresponsibleModule' => 10,
@@ -20,10 +21,10 @@ describe Analyzers::ReekService do
     let(:test_file_path) { path_to_repo_files('reek/dirty.rb').to_s }
 
     When { service.call }
-    Given(:klass) { push_build.klasses.find_by(name: 'DirtyModule::Dirty') }
+    Given(:klass) { repo.klasses.find_by(name: 'DirtyModule::Dirty') }
 
     Then { expect(klass).to be_present }
-    And { expect(push_build.source_files.where(path: test_file_path)).to be_exists }
+    And { expect(repo.source_files.where(path: test_file_path)).to be_exists }
 
     Given(:klass_smell) { push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: nil) }
     And { expect(klass_smell.message).to eq 'has no descriptive comment' }
@@ -42,8 +43,8 @@ describe Analyzers::ReekService do
     let(:test_file_path) { path_to_repo_files('reek/clean.rb').to_s }
 
     When { service.call }
-    Then { expect(push_build.klasses).to be_empty }
-    And { expect(push_build.source_files).to be_empty }
+    Then { expect(repo.klasses).to be_empty }
+    And { expect(repo.source_files).to be_empty }
     And { expect(push_build.smells).to be_empty }
   end
 end
