@@ -1,11 +1,11 @@
 require 'cocaine'
 
 class ScmUpdateService
+  include CommandLineable
+
   pattr_initialize :build
 
   def call
-    Cocaine::CommandLine.logger = Logger.new(STDOUT)
-
     check
     release
   end
@@ -23,40 +23,34 @@ class ScmUpdateService
   def clone
     make_cache_path unless File.directory?(build.locator.cache_path.to_s)
 
-    Cocaine::CommandLine.
-      new('git', 'clone --mirror :url :path').
+    cmd('git', 'clone --mirror :url :path').
       run(url: build.repo.scm_url, path: build.locator.cache_path.to_s)
   end
 
   def update
-    Cocaine::CommandLine.
-      new('cd', ':cache_path && git remote set-url origin :url').
+    cmd('cd', ':cache_path && git remote set-url origin :url').
       run(cache_path: build.locator.cache_path.to_s, url: build.repo.scm_url)
 
-    Cocaine::CommandLine.
-      new('cd', ':cache_path && git remote update').
+    cmd('cd', ':cache_path && git remote update').
       run(cache_path: build.locator.cache_path.to_s)
   end
 
   def release
     make_revision_path unless File.directory?(build.locator.revision_path.to_s)
 
-    Cocaine::CommandLine.
-      new('cd', ':cache_path && git archive :revision | tar -x -f - -C :revision_path').
+    cmd('cd', ':cache_path && git archive :revision | tar -x -f - -C :revision_path').
       run(revision: build.revision,
           cache_path: build.locator.cache_path.to_s,
           revision_path: build.locator.revision_path.to_s)
   end
 
   def make_cache_path
-    Cocaine::CommandLine.
-      new('mkdir', '-p :path').
+    cmd('mkdir', '-p :path').
       run(path: build.locator.cache_path.to_s)
   end
 
   def make_revision_path
-    Cocaine::CommandLine.
-      new('mkdir', '-p :path').
+    cmd('mkdir', '-p :path').
       run(path: build.locator.revision_path.to_s)
   end
 end
