@@ -16,7 +16,10 @@ module Shiplix
   class Application < Rails::Application
     Dotenv::Railtie.load unless Rails.env.production?
 
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W(
+      #{config.root}/lib
+      #{config.root}/app/services/concerns
+    )
 
     config.active_record.schema_format = :sql
 
