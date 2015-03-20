@@ -7,4 +7,8 @@ class Smell < ActiveRecord::Base
   validates :subject_id, presence: true
   validates :subject_type, presence: true
   validates :type, presence: true
+
+  def rating
+    1
+  end
 end

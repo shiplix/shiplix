@@ -10,7 +10,10 @@ module Analyzers
 
     def create_smell(type_class, subject, params = {})
       smell = type_class.create!(params.merge(build: build, subject: subject))
+
       subject.metric.increment(:smells_count)
+      subject.metric.total_rating = subject.metric.total_rating.to_i + smell.rating
+
       build.increment(:smells_count)
 
       smell

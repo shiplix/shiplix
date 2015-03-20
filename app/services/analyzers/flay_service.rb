@@ -2,10 +2,12 @@ require 'flay'
 
 module Analyzers
   class FlayService < BaseService
+    THRESHOLD = 25
+
     attr_reader :flay
 
     def call
-      @flay = Flay.new
+      @flay = Flay.new(mass: THRESHOLD)
 
       flay.process(*build.source_locator.paths)
       flay.analyze
