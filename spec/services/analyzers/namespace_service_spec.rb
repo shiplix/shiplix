@@ -45,4 +45,8 @@ describe Analyzers::NamespacesService do
     expect(test_rb.metric.loc).to eq 23
     expect(another_rb.metric.loc).to eq 10
   end
+
+  it 'not find metrics for files without code' do
+    expect(build.collections.source_files.keys).not_to include build_dir.join('lib/without_code.rb')
+  end
 end
