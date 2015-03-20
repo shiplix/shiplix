@@ -3,8 +3,6 @@ class BranchesSyncService
 
   pattr_initialize :repo
 
-  delegate :user, to: 'repo.owner'
-
   def call
     cleanup_branches
     add_branches
@@ -46,5 +44,9 @@ class BranchesSyncService
     prev_default.update(default: false) if prev_default
 
     branch.update(default: true)
+  end
+
+  def user
+    repo.owner
   end
 end
