@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     resources :klasses, only: [:index]
   end
 
+  resources :builds, only: :create
+
   resources :repo_syncs, only: [:create]
   resources :repo_activations, only: [:update, :destroy]
   resources :github_events, only: [:create]
