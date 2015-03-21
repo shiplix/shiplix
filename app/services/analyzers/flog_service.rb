@@ -53,7 +53,7 @@ module Analyzers
 
       smell = create_smell(
         Smells::Flog,
-        subject: klass,
+        klass,
         score: score,
         method_name: method_name
       )
