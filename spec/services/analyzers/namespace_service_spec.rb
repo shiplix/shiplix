@@ -39,14 +39,14 @@ describe Analyzers::NamespacesService do
   it 'calculates loc on source files' do
     source_files = build.collections.source_files
 
-    test_rb = source_files[build_dir.join('lib/test.rb').to_s]
-    another_rb = source_files[build_dir.join('lib/another.rb').to_s]
+    test_rb = source_files['lib/test.rb']
+    another_rb = source_files['lib/another.rb']
 
     expect(test_rb.metric.loc).to eq 23
     expect(another_rb.metric.loc).to eq 10
   end
 
   it 'not find metrics for files without code' do
-    expect(build.collections.source_files.keys).not_to include build_dir.join('lib/without_code.rb')
+    expect(build.collections.source_files.keys).not_to include 'lib/without_code.rb'
   end
 end
