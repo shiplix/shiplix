@@ -22,7 +22,7 @@ module Analyzers
         klass.metric.increment(:loc, klass_loc)
         klass.metric.increment(:methods_count, count_methods(node))
 
-        unless klass.source_files.where(path: processed_source.path).exists?
+        unless klass.source_file_in_build(build, processed_source.path).exists?
           KlassSourceFile.create!(build: build,
                                   klass: klass,
                                   source_file: source_file,
