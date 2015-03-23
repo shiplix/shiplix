@@ -1,5 +1,5 @@
 class SourceFileMetric < ActiveRecord::Base
-  include Metricable
+  include Ratingable
 
   belongs_to :source_file
   belongs_to :build

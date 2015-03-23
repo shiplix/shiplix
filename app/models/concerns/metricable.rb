@@ -2,16 +2,11 @@ module Metricable
   extend ActiveSupport::Concern
 
   included do
-    attr_accessor :total_rating
-
-    before_save :calc_rating
+    attr_writer :metric
   end
 
-  protected
-
-  def calc_rating
-    return if smells_count.to_i.zero?
-
-    self.rating = (total_rating / smells_count.to_f).round
+  def metric
+    return @metric if defined?(@metric)
+    metrics[0] if metrics.loaded?
   end
 end
