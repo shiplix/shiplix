@@ -1,5 +1,5 @@
 class Klass < ActiveRecord::Base
-  attr_accessor :metric
+  include Metricable
 
   has_many :metrics, class_name: '::KlassMetric'
   has_many :smells, as: :subject

@@ -1,5 +1,5 @@
 class KlassMetric < ActiveRecord::Base
-  include Metricable
+  include Ratingable
 
   belongs_to :klass
   belongs_to :build
