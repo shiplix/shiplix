@@ -12,5 +12,8 @@ FactoryGirl.define do
 
     factory :smell_flog, class: Smells::Flog do
     end
+
+    factory :smell_reek, class: Smells::Reek do
+    end
   end
 end

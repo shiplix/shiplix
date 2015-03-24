@@ -29,14 +29,12 @@ describe Analyzers::ReekService do
     Given(:klass_smell) { push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: nil) }
     And { expect(klass_smell.message).to eq 'has no descriptive comment' }
     And { expect(klass_smell.locations.where(line: 2)).to be_exists }
-    And { expect(klass_smell.score).to eq 10 }
 
     Given(:klass_method_smell) do
       push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: 'test_method')
     end
     And { expect(klass_method_smell.message).to eq "has unused parameter 'unused_param'" }
     And { expect(klass_method_smell.locations.where(line: 3)).to be_exists }
-    And { expect(klass_method_smell.score).to eq 5 }
   end
 
   context 'when tested file has not smells' do
