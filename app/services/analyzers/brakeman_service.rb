@@ -30,6 +30,7 @@ module Analyzers
         klass || source_file,
         method_name: warn.method.to_s,
         message: warn.message,
+        score: warn.confidence,
         trait: warn.warning_type
       )
 
