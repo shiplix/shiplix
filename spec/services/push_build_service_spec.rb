@@ -48,6 +48,7 @@ describe PushBuildService do
 
     Then { expect(build.smells_count).to eq 3 }
     And { expect(build.klass_metrics.for('DirtyModule::Dirty').first.smells_count).to eq 2 }
+    And { expect(build.klass_metrics.for('DirtyModule::Dirty').first.rating).to eq 2 }
     And { expect(build.klass_metrics.for('FlogTest').first.smells_count).to eq 1 }
     And { expect(build.klass_metrics.for('FlogTest').first.rating).to eq 2 }
   end
