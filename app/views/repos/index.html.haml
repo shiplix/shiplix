@@ -31,45 +31,6 @@
               - else
                 There is no repositories loaded yet
 
-
-#js-refreshing-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
-  .modal-dialog.modal-sm
-    .modal-content
-      .panel.panel-info
-        .panel-heading
-          %h3.panel-title Refreshing repositories
-        .panel-body
-          #js-refreshing-progressbar.progress
-            .progress-bar.progress-bar-striped.progress-bar-info.active{'role' => 'progressbar',
-                                                                        'aria-valuenow' => 100,
-                                                                        'aria-valuemin' => 0,
-                                                                        'aria-valuemax' => 100,
-                                                                        'style' => 'width: 100%'}
-
-#js-activating-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
-  .modal-dialog.modal-sm
-    .modal-content
-      .panel.panel-success
-        .panel-heading
-          %h3.panel-title Activating repository
-        .panel-body
-          #js-activating-progressbar.progress
-            .progress-bar.progress-bar-striped.progress-bar-success.active{'role' => 'progressbar',
-                                                                           'aria-valuenow' => 100,
-                                                                           'aria-valuemin' => 0,
-                                                                           'aria-valuemax' => 100,
-                                                                           'style' => 'width: 100%'}
-
-#js-deactivating-dialog.modal.fade{:data => {:backdrop => 'static', :keyboard => false}}
-  .modal-dialog.modal-sm
-    .modal-content
-      .panel.panel-danger
-        .panel-heading
-          %h3.panel-title Deactivating repository
-        .panel-body
-          #js-deactivating-progressbar.progress
-            .progress-bar.progress-bar-striped.progress-bar-danger.active{'role' => 'progressbar',
-                                                                          'aria-valuenow' => 100,
-                                                                          'aria-valuemin' => 0,
-                                                                          'aria-valuemax' => 100,
-                                                                          'style' => 'width: 100%'}
+= render partial: 'shared/progress_bar', locals: {id: 'refreshing', type: 'info', title: 'Refreshing repositories'}
+= render partial: 'shared/progress_bar', locals: {id: 'activating', type: 'success', title: 'Activating repository'}
+= render partial: 'shared/progress_bar', locals: {id: 'deactivating', type: 'danger', title: 'Deactivating repository'}

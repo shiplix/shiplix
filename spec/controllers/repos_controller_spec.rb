@@ -10,6 +10,7 @@ describe ReposController, type: :controller do
   describe '#index' do
     context 'when user has no repos' do
       before { get :index }
+
       it { expect(assigns(:repos)).to be_empty }
     end
 

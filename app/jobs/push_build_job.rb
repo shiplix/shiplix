@@ -21,6 +21,6 @@ class PushBuildJob
   private
 
   def self.find_branch(repo, branch_name)
-    repo.branches.where(name: branch_name).first
+    repo.branches.find_by(name: branch_name)
   end
 end

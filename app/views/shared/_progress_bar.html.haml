@@ -1,0 +1,14 @@
+.modal.fade{id: "js-#{id}-dialog",  data: {backdrop: 'static', keyboard: false}}
+  .modal-dialog.modal-sm
+    .modal-content
+      .panel{class: "panel-#{type}"}
+        .panel-heading
+          %h3.panel-title= title
+        .panel-body
+          .progress{id: "js-#{id}-progressbar"}
+            .progress-bar.progress-bar-striped.active{'class' => "progress-bar-#{type}",
+                                                      'role' => 'progressbar',
+                                                      'aria-valuenow' => 100,
+                                                      'aria-valuemin' => 0,
+                                                      'aria-valuemax' => 100,
+                                                      'style' => 'width: 100%'}

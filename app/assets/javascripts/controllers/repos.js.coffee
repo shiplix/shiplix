@@ -34,3 +34,4 @@
         location.reload()
       onError: (data) ->
         alert('Error in deactivating repository')
+

@@ -14,26 +14,29 @@
           %li
             %a.panel-fullscreen{href: '#'}
               %i.fa.fa-expand
-          %li
-            %a.panel-refresh{href: '#'}
-              %i.fa.fa-refresh
+          - if policy(@repo).manage?
+            - branch_name = @build.present? ? @build.branch.name : @repo.default_branch.name
+            %li
+              = link_to builds_path(repo_id: @repo.id, branch: branch_name), remote: true, method: :post, class: 'js-build-repo' do
+                %i.fa.fa-refresh
 
       .panel-body.panel-body-table
         .table-responsive
-          %table.table.table-bordered.table-striped
-            %thead
-              %tr
-                %th{style: 'width: 90px'} Marks
-                %th Class name
-                %th{style: 'width: 90px'} Complexity
-                %th{style: 'width: 90px'} LOC
-                %th{style: 'width: 90px'} Smells
-            %tbody
-              - if @klasses.present?
-                = render(@klasses)
-              - else
-                There is no classes yet.
-
-        .panel-footer
           - if @klasses.present?
-            = will_paginate @klasses, renderer: BootstrapPagination::Rails
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th{style: 'width: 90px'} Marks
+                  %th Class name
+                  %th{style: 'width: 90px'} Complexity
+                  %th{style: 'width: 90px'} LOC
+                  %th{style: 'width: 90px'} Smells
+              %tbody
+                = render(@klasses)
+          - else
+            There is no classes yet.
+
+      - if @klasses.present?
+        .panel-footer= will_paginate @klasses, renderer: BootstrapPagination::Rails
+
+= render partial: 'shared/progress_bar', locals: {id: 'refreshing', type: 'info', title: 'Rebuild'}
