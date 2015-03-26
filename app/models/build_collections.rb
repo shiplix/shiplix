@@ -7,8 +7,8 @@ class BuildCollections
   def initialize(build)
     @build = build
     @repo = build.branch.repo
-    @klasses = {}
-    @source_files = {}
+    @klasses = {}.with_indifferent_access
+    @source_files = {}.with_indifferent_access
   end
 
   def klass_by_name(name)
@@ -34,6 +34,7 @@ class BuildCollections
   end
 
   def source_file_by_path(path)
+    path = build.relative_path(path)
     return source_files[path] if source_files.key?(path)
 
     source_file = SourceFile.
@@ -45,7 +46,7 @@ class BuildCollections
   end
 
   def save
-    [klasses, source_files].each { |x| save_collection(x) }
+    [source_files, klasses].each { |x| save_collection(x) }
   end
 
   private

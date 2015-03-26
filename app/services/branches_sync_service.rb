@@ -3,11 +3,7 @@ class BranchesSyncService
 
   pattr_initialize :repo
 
-  attr_reader :user
-
   def call
-    @user = repo.owner
-
     cleanup_branches
     add_branches
     set_default
@@ -25,7 +21,10 @@ class BranchesSyncService
 
   def cleanup_branches
     repo.branches.each do |branch|
-      branch.destroy unless api_branches.key?(branch.name)
+      next if api_branches.key?(branch.name)
+      last_build = branch.recent_push_build
+      ScmCleanService.new(last_build).call if last_build
+      branch.destroy
     end
   end
 
@@ -41,9 +40,13 @@ class BranchesSyncService
     branch = repo.branches.detect { |branch| branch.name == api_default_branch }
     return if branch.default?
 
-    prev_default = repo.branches.detect(&:default?)
+    prev_default = repo.branches.find(&:default?)
     prev_default.update(default: false) if prev_default
 
     branch.update(default: true)
+  end
+
+  def user
+    repo.owner
   end
 end

@@ -19,11 +19,10 @@ class PushBuildService
     transaction do
       analyze
       build.collections.save
-      compare_builds
-      build.finish!
+      finish_build
     end
   rescue Exception
-    build.fail! if build.present?
+    fail_build if build.present?
     raise
   end
 
@@ -34,6 +33,20 @@ class PushBuildService
     @build = Builds::Push.create!(branch: branch, revision: revision)
   end
 
+  def fail_build
+    build.fail!
+    ScmCleanService.new(build).call
+  end
+
+  def finish_build
+    if last_build
+      BuildsComparisonService.new(build, last_build).call
+      ScmCleanService.new(last_build).call
+    end
+
+    build.finish!
+  end
+
   def update
     ScmUpdateService.new(build).call
   end
@@ -42,9 +55,9 @@ class PushBuildService
     ANALYZERS.each { |analyzer| analyzer.new(build).call }
   end
 
-  def compare_builds
-    source = branch.push_builds.recent.first
-    BuildsComparisonService.new(build, source).call if source
+  def last_build
+    return @last_build if @last_build
+    @last_build = branch.recent_push_build
   end
 
   def transaction

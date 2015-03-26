@@ -2,7 +2,10 @@ module Analyzers
   class NamespacesService < BaseService
     def call
       build.source_locator.paths.each do |path|
-        find_namespaces(ProcessedSource.new(path))
+        processed_source = ProcessedSource.new(path)
+        next if processed_source.ast.nil?
+
+        find_namespaces(processed_source)
       end
     end
 
@@ -19,7 +22,7 @@ module Analyzers
         klass.metric.increment(:loc, klass_loc)
         klass.metric.increment(:methods_count, count_methods(node))
 
-        unless klass.source_files.where(path: processed_source.path).exists?
+        unless klass.source_file_in_build(build, processed_source.path).exists?
           KlassSourceFile.create!(build: build,
                                   klass: klass,
                                   source_file: source_file,

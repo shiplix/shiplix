@@ -1,5 +1,5 @@
 class Klass < ActiveRecord::Base
-  attr_accessor :metric
+  include Metricable
 
   has_many :metrics, class_name: '::KlassMetric'
   has_many :smells, as: :subject
@@ -11,4 +11,9 @@ class Klass < ActiveRecord::Base
   validates :name, presence: true
 
   scope :in_build, ->(build) { joins(:metrics).where(klass_metrics: {build_id: build.id}) }
+
+  def source_file_in_build(build, path)
+    source_files.where(klass_source_files: {build_id: build.id},
+                       path: path)
+  end
 end

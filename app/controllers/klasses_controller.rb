@@ -9,7 +9,8 @@ class KlassesController < ApplicationController
     @klasses = repo.
       klasses.
       in_build(build).
-      order('klass_metrics.smells_count desc').
+      preload(:metrics).
+      order('klass_metrics.rating desc').
       paginate(page: params[:page], per_page: 20) if build.present?
   end
 

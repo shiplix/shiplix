@@ -1,5 +1,5 @@
 class SourceFile < ActiveRecord::Base
-  attr_accessor :metric
+  include Metricable
 
   has_many :metrics, class_name: '::SourceFileMetric'
   has_many :smells, as: :subject

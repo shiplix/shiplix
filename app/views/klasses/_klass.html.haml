@@ -1,10 +1,11 @@
 %tr
   %td
+    = rating_badge(klass.metric.rating)
   %td
     %h4= klass.name
   %td
-    -#%h3= klass.complexity.to_i
+    %h3= klass.metric.complexity.to_i
   %td
-    -#%h3= klass.loc
+    %h3= klass.metric.loc
   %td
-    -#%h3= klass.smells_count
+    %h3= klass.metric.smells_count
