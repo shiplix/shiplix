@@ -46,10 +46,12 @@ describe PushBuildService do
   context 'when calc metrics' do
     before { service.call }
 
-    Then { expect(build.smells_count).to eq 3 }
+    Then { expect(build.smells_count).to eq 4 }
     And { expect(build.klass_metrics.for('DirtyModule::Dirty').first.smells_count).to eq 2 }
     And { expect(build.klass_metrics.for('DirtyModule::Dirty').first.rating).to eq 2 }
     And { expect(build.klass_metrics.for('FlogTest').first.smells_count).to eq 1 }
     And { expect(build.klass_metrics.for('FlogTest').first.rating).to eq 2 }
+    And { expect(build.klass_metrics.for('Brakeman').first.smells_count).to eq 1 }
+    And { expect(build.klass_metrics.for('Brakeman').first.rating).to eq 5 }
   end
 end
