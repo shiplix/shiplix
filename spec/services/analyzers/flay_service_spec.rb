@@ -27,6 +27,7 @@ describe Analyzers::FlayService do
 
       expect(smell.locations.where(source_file: source_file, line: 3)).to be_exists
       expect(smell.locations.where(source_file: source_file, line: 10)).to be_exists
+      expect(build.collections.klasses[klass.name].metric.duplication).to eq 54
     end
   end
 

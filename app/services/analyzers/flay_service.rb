@@ -31,11 +31,15 @@ module Analyzers
         klass = klass_by_line(source_file, node.line)
         next unless klass
 
-        smells[klass.id] ||= create_smell(
-          Smells::Flay,
-          klass,
-          score: score
-        )
+        unless smells.key?(klass.id)
+          klass.metric.increment(:duplication, score)
+
+          smells[klass.id] = create_smell(
+            Smells::Flay,
+            klass,
+            score: score
+          )
+        end
       end
     end
 
