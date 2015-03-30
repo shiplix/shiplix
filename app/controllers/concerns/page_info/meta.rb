@@ -3,8 +3,9 @@ module PageInfo
     attr_accessor :controller
     alias :c :controller
 
-    attr_accessor :title_variables,
-                  :title_key,
+    attr_writer :title_variables
+
+    attr_accessor :title_key,
                   :header_key,
                   :description_key,
                   :custom_title,
@@ -12,6 +13,10 @@ module PageInfo
 
     def initialize(controller)
       @controller = controller
+    end
+
+    def title_variables
+      @title_variables ||= {}
     end
 
     # вычисление названия страницы

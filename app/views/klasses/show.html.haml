@@ -1,0 +1,14 @@
+.panel.panel-default= @klass.inspect
+
+.panel.panel-default= @metric.inspect
+
+
+- @smells.each do |smell|
+  .panel.panel-default
+    = smell.inspect
+
+- @source_files.each do |source_file|
+  .panel.panel-default
+    = source_file.inspect
+    %br
+    = source_file.klass_source_files[0].inspect
