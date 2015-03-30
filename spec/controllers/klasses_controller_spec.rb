@@ -50,4 +50,13 @@ describe KlassesController, type: :controller do
       And { expect(response.status).to eq 200 }
     end
   end
+
+  # TODO: write specs
+  # describe '#show' do
+  #   before { get :show, repo_id: repo.id, id: klass.id }
+
+  #   context 'when user is member' do
+  #     Then { expect(assigns(:klass)).to eq klass }
+  #   end
+  # end
 end

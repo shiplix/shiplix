@@ -35,5 +35,9 @@ en:
       postfix: ' - %{repo}'
 
       index:
-        title: 'Classes & files'
-        header: 'Classes & files'
+        title: 'Classes & Files'
+        header: 'Classes & Files'
+
+      show:
+        title: '%{klass}'
+        header: '%{klass}'
