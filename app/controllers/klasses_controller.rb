@@ -6,22 +6,19 @@ class KlassesController < ApplicationController
     @klasses = repo.
       klasses.
       in_build(build).
-      includes(:metrics).
       order('klass_metrics.rating desc, klass_metrics.smells_count desc').
       paginate(page: params[:page], per_page: 20) if build.present?
+
+    Klass.preload_metric(@klasses, build)
 
     add_index_vars
   end
 
   def show
     @klass = repo.klasses.find_by!(name: params[:id])
-    @metric = @klass.metrics.find_by!(build_id: build.id)
-    @smells = @klass.smells.where(build_id: build.id)
-    @source_files = @klass.
-      source_files.
-      joins(:klass_source_files).
-      includes(:klass_source_files).
-      where(klass_source_files: {build_id: build.id})
+    Klass.preload_metric(@klass, build)
+    Klass.preload_smells(@klass, build)
+    Klass.preload_source_files(@klass, build)
 
     add_index_vars
     add_show_vars

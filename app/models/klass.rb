@@ -12,6 +12,24 @@ class Klass < ActiveRecord::Base
 
   scope :in_build, ->(build) { joins(:metrics).where(klass_metrics: {build_id: build.id}) }
 
+  def self.preload_metric(records, build)
+    ActiveRecord::Associations::Preloader.new.
+      preload(records, :metrics, KlassMetric.where(build_id: build.id))
+  end
+
+  def self.preload_smells(records, build)
+    ActiveRecord::Associations::Preloader.new.
+      preload(records, :smells, Smell.where(build_id: build.id))
+  end
+
+  def self.preload_source_files(records, build)
+    ActiveRecord::Associations::Preloader.new.
+      preload(records, :klass_source_files, KlassSourceFile.where(build_id: build.id))
+
+    ksf = Array.wrap(records).flat_map(&:klass_source_files)
+    ActiveRecord::Associations::Preloader.new.preload(ksf, :source_file)
+  end
+
   def source_file_in_build(build, path)
     source_files.where(klass_source_files: {build_id: build.id},
                        path: path)
