@@ -13,7 +13,12 @@ class SourceFile < ActiveRecord::Base
 
   before_validation :extract_name, unless: :name?
 
-  scope :in_build, ->(build) { joins(:metrics).where(metrics: {build_id: build.id}) }
+  scope :in_build, ->(build) { joins(:metrics).where(source_file_metrics: {build_id: build.id}) }
+
+  def self.preload_metric(records, build)
+    ActiveRecord::Associations::Preloader.new.
+      preload(records, :metrics, SourceFileMetric.where(build_id: build.id))
+  end
 
   protected
 

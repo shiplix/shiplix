@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :repos, only: [:index] do
     resources :klasses, only: [:index, :show]
+    resources :source_files, only: [:index]
   end
 
   resources :builds, only: :create

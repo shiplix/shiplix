@@ -22,7 +22,11 @@
         %ul.breadcrumb
           = render_breadcrumbs tag: 'li', separator: ''
 
-        = render 'shared/page_header'
+        .col-md-8
+          = render 'shared/page_header'
+        .col-md-4
+          - if content_for?(:header_right_col)
+            = yield(:header_right_col)
 
         .page-content-wrap
           = yield
