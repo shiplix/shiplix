@@ -154,9 +154,6 @@ GEM
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jquery-turbolinks (2.1.0)
-      railties (>= 3.1.0)
-      turbolinks
     json (1.8.2)
     jwt (1.2.1)
     less (2.6.0)
@@ -383,8 +380,6 @@ GEM
     thread_safe (0.3.4)
     tilt (1.4.1)
     timecop (0.7.3)
-    turbolinks (2.5.3)
-      coffee-rails
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.0)
@@ -439,7 +434,6 @@ DEPENDENCIES
   haml
   hiredis
   jquery-rails
-  jquery-turbolinks
   less-rails
   mock_redis!
   multi_json
@@ -477,7 +471,6 @@ DEPENDENCIES
   test_after_commit
   therubyracer
   timecop
-  turbolinks
   uglifier
   vicar
   will_paginate-bootstrap

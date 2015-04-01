@@ -27,8 +27,6 @@ gem 'coffee-rails'
 gem 'therubyracer', platforms: :ruby
 gem 'haml'
 gem 'jquery-rails'
-gem 'turbolinks'
-gem 'jquery-turbolinks'
 gem 'autoprefixer-rails'
 gem 'bootstrap_form'
 gem 'will_paginate-bootstrap'

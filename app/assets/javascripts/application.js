@@ -1,7 +1,5 @@
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
-//= require turbolinks
 //= require jquery-ui
 //= require bootstrap-sass-official
 //= require atlant/plugins
