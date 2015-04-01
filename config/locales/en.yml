@@ -41,3 +41,10 @@ en:
       show:
         title: '%{klass}'
         header: '%{klass}'
+
+    source_files:
+      postfix: ' - %{repo}'
+
+      index:
+        title: 'Source files'
+        header: 'Source files'
