@@ -49,6 +49,13 @@ describe KlassesController, type: :controller do
       Then { expect(assigns(:klasses)).to be_present }
       And { expect(response.status).to eq 200 }
     end
+
+    context 'when has no build' do
+      let(:build) { nil }
+      let(:klass) { nil }
+
+      it { expect(response.status).to eq 200 }
+    end
   end
 
   # TODO: write specs

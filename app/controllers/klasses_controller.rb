@@ -3,13 +3,15 @@ class KlassesController < ApplicationController
   add_breadcrumb 'Repositories', :repos_path
 
   def index
-    @klasses = repo.
-      klasses.
-      in_build(build).
-      order('klass_metrics.rating desc, klass_metrics.smells_count desc').
-      paginate(page: params[:page], per_page: 20) if build.present?
+    if build
+      @klasses = repo.
+        klasses.
+        in_build(build).
+        order('klass_metrics.rating desc, klass_metrics.smells_count desc').
+        paginate(page: params[:page], per_page: 20)
 
-    Klass.preload_metric(@klasses, build)
+      Klass.preload_metric(@klasses, build)
+    end
 
     add_index_vars
   end
