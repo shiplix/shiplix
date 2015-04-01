@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe SourceLocator, fakefs: true do
-  let(:path) { Rails.root.join('spec', 'fixtures') }
-
   before do
     FileUtils.mkdir_p '/tmp/repo/app'
 
