@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :jobs, only: [:show]
 
-  resources :repos, only: [:index] do
+  resources :repos, only: [:index, :show] do
     resources :klasses, only: [:index, :show]
     resources :source_files, only: [:index]
   end
