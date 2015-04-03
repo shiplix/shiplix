@@ -1,6 +1,5 @@
 class SourceFilesController < ApplicationController
-  add_breadcrumb 'Home', :root_path
-  add_breadcrumb 'Repositories', :repos_path
+  before_action only: [:index] { title_variables[:repo] = repo.full_github_name }
 
   # Public: show list of source files in repo
   #
@@ -13,8 +12,6 @@ class SourceFilesController < ApplicationController
       .paginate(page: params[:page], per_page: 20) if build.present?
 
     SourceFile.preload_metric(@source_files, build)
-
-    add_index_vars
   end
 
   private
@@ -25,10 +22,5 @@ class SourceFilesController < ApplicationController
 
   def build
     @build ||= repo.default_branch.try(:recent_push_build)
-  end
-
-  def add_index_vars
-    add_breadcrumb "Source files #{repo.full_github_name}", :repo_source_files_path
-    self.title_variables = {repo: repo.full_github_name}
   end
 end

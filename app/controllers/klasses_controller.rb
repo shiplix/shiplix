@@ -1,29 +1,25 @@
 class KlassesController < ApplicationController
-  add_breadcrumb 'Home', :root_path
-  add_breadcrumb 'Repositories', :repos_path
+  before_action only: [:index, :show] { title_variables[:repo] = repo.full_github_name }
+  before_action only: [:show] { title_variables[:klass] = klass.name }
 
   def index
-    if build
-      @klasses = repo.
-        klasses.
-        in_build(build).
-        order('klass_metrics.rating desc, klass_metrics.smells_count desc').
-        paginate(page: params[:page], per_page: 20)
+    return unless build
 
-      Klass.preload_metric(@klasses, build)
-    end
+    @klasses = repo.
+      klasses.
+      in_build(build).
+      order('klass_metrics.rating desc, klass_metrics.smells_count desc').
+      paginate(page: params[:page], per_page: 20)
 
-    add_index_vars
+    Klass.preload_metric(@klasses, build)
   end
 
   def show
-    @klass = repo.klasses.find_by!(name: params[:id])
-    Klass.preload_metric(@klass, build)
-    Klass.preload_smells(@klass, build)
-    Klass.preload_source_files(@klass, build)
+    return render_error(404) unless build
 
-    add_index_vars
-    add_show_vars
+    Klass.preload_metric(klass, build)
+    Klass.preload_smells(klass, build)
+    Klass.preload_source_files(klass, build)
   end
 
   private
@@ -36,17 +32,11 @@ class KlassesController < ApplicationController
     @build ||= repo.default_branch.try(:recent_push_build)
   end
 
+  def klass
+    @klass ||= repo.klasses.find_by!(name: params[:id])
+  end
+
   def authenticate
     authorize repo, :show?
-  end
-
-  def add_index_vars
-    add_breadcrumb "Classes #{repo.full_github_name}", :repo_klasses_path
-    title_variables[:repo] = repo.full_github_name
-  end
-
-  def add_show_vars
-    add_breadcrumb @klass.name, :repo_klass_path
-    title_variables[:klass] = @klass.name
   end
 end

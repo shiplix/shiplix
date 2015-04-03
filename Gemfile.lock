@@ -66,7 +66,6 @@ GEM
       ruby_parser (~> 3.6.2)
       sass (~> 3.0)
       terminal-table (~> 1.4)
-    breadcrumbs_on_rails (2.3.0)
     builder (3.2.2)
     byebug (3.5.1)
       columnize (~> 0.8)
@@ -143,6 +142,8 @@ GEM
     given_core (3.7.0)
       sorcerer (>= 0.3.7)
     god (0.13.6)
+    gretel (3.0.8)
+      rails (>= 3.2.0)
     haml (4.0.6)
       tilt
     hashie (3.4.0)
@@ -415,7 +416,6 @@ DEPENDENCIES
   binding_of_caller
   bootstrap_form
   brakeman (~> 3.0)
-  breadcrumbs_on_rails
   capistrano (~> 3.2)
   capistrano-bundler
   capistrano-rails
@@ -431,6 +431,7 @@ DEPENDENCIES
   flog (~> 4.3)
   font-awesome-rails
   foreigner
+  gretel
   haml
   hiredis
   jquery-rails
