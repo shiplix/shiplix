@@ -7,5 +7,5 @@ class KlassSourceFile < ActiveRecord::Base
   validates :klass_id, presence: true
   validates :source_file_id, presence: true
 
-  scope :by_path, -> (path) { joins(:source_file).where(source_files: {path: path}).first }
+  scope :by_path, -> (path) { joins(:source_file).where(source_files: {path: path}) }
 end
