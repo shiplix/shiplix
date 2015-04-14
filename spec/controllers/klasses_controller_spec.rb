@@ -14,7 +14,7 @@ describe KlassesController, type: :controller do
   end
 
   describe '#index' do
-    before { get :index, repo_id: repo.id }
+    before { get :index, repo_id: repo.to_param }
 
     context 'when user is member' do
       Then { expect(assigns(:klasses)).to be_present }

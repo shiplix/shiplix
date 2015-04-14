@@ -58,6 +58,10 @@ class Repo < ActiveRecord::Base
     "https://#{owner.access_token}:@github.com/#{full_github_name}.git"
   end
 
+  def to_param
+    full_github_name
+  end
+
   private
 
   def organization

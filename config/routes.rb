@@ -4,9 +4,17 @@ Rails.application.routes.draw do
 
   resources :jobs, only: [:show]
 
-  resources :repos, only: [:index, :show] do
-    resources :klasses, only: [:index, :show]
-    resources :source_files, only: [:index]
+  # NOTE: we need build path without resources and use *id instead :id becouse
+  # rails escape slash in url helpers, eg repo_path(repo) renders as user_name%2Frepo_name
+  # instead user_name/repo_name
+  scope :repos do
+    get '*repo_id/klassses', to: 'klasses#index', as: :repo_klasses
+    get '*repo_id/klassses/:id', to: 'klasses#show', as: :repo_klass
+
+    get '*repo_id/source_files', to: 'source_files#index', as: :repo_source_files
+
+    get '*id', to: 'repos#show', as: :repo
+    get '/', to: 'repos#index', as: :repos
   end
 
   resources :builds, only: :create
