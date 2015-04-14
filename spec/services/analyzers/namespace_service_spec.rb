@@ -13,26 +13,26 @@ describe Analyzers::NamespacesService do
   it 'calculates code metrics on module Lib' do
     klass = build.collections.klasses['Lib']
 
-    expect(klass.klass_source_files.by_path('lib/test.rb').loc).to eq 23
-    expect(klass.klass_source_files.by_path('lib/another.rb').loc).to eq 10
-    expect(klass.metric.loc).to eq 33
+    expect(klass.klass_source_files.by_path('lib/test.rb')).not_to be_exists
+    expect(klass.klass_source_files.by_path('lib/another.rb').first.loc).to eq 2
+    expect(klass.metric.loc).to eq 2
     expect(klass.metric.methods_count).to eq 1
   end
 
   it 'calculates code metrics on Lib::Test::FirstTestClass' do
     klass = build.collections.klasses['Lib::Test::FirstTestClass']
 
-    expect(klass.klass_source_files.by_path('lib/test.rb').loc).to eq 14
-    expect(klass.klass_source_files.by_path('lib/another.rb').loc).to eq 4
-    expect(klass.metric.loc).to eq 18
+    expect(klass.klass_source_files.by_path('lib/test.rb').first.loc).to eq 12
+    expect(klass.klass_source_files.by_path('lib/another.rb').first.loc).to eq 2
+    expect(klass.metric.loc).to eq 14
     expect(klass.metric.methods_count).to eq 4
   end
 
   it 'calculates code metrics on Lib::Test::SecondTestClass' do
     klass = build.collections.klasses['Lib::Test::SecondTestClass']
 
-    expect(klass.klass_source_files.by_path('lib/test.rb').loc).to eq 5
-    expect(klass.metric.loc).to eq 5
+    expect(klass.klass_source_files.by_path('lib/test.rb').first.loc).to eq 3
+    expect(klass.metric.loc).to eq 3
     expect(klass.metric.methods_count).to eq 1
   end
 

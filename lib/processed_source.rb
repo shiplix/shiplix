@@ -1,4 +1,7 @@
 class ProcessedSource
+  LINE_OFFSET = 1
+  private_constant :LINE_OFFSET
+
   attr_reader :path, :ast, :raw_source
 
   def initialize(path)
@@ -10,12 +13,13 @@ class ProcessedSource
 
   # Public: returns LOC for source file or file part
   #
-  # range - Range first..end lines, default nil
+  # first_line - Fixnum, default nil
+  # last_line - Fixnum, default nil
   #
   # Returns Integer
-  def loc(range = nil)
-    if range.present?
-      source = lines[(range.first - LINE_OFFSET..range.last - LINE_OFFSET)]
+  def loc(first_line: nil, last_line: nil)
+    if first_line.present? && last_line.present?
+      source = lines[first_line - LINE_OFFSET..last_line - LINE_OFFSET]
     else
       source = lines
     end
@@ -35,7 +39,6 @@ class ProcessedSource
     line =~ /^\s*#/
   end
 
-  LINE_OFFSET = 1
 
   def parser
     builder = Shiplix::Builder.new

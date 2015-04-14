@@ -19,8 +19,7 @@
       .page-content
         = render 'shared/x_navbar'
 
-        %ul.breadcrumb
-          = render_breadcrumbs tag: 'li', separator: ''
+        = breadcrumbs style: :bootstrap
 
         .col-md-8
           = render 'shared/page_header'

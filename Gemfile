@@ -30,7 +30,7 @@ gem 'jquery-rails'
 gem 'autoprefixer-rails'
 gem 'bootstrap_form'
 gem 'will_paginate-bootstrap'
-gem 'breadcrumbs_on_rails'
+gem 'gretel'
 gem 'pluggable_js'
 
 # Assets

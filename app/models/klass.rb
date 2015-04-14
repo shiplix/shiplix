@@ -34,4 +34,8 @@ class Klass < ActiveRecord::Base
     source_files.where(klass_source_files: {build_id: build.id},
                        path: path)
   end
+
+  def to_param
+    name
+  end
 end
