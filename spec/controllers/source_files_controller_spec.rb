@@ -19,7 +19,7 @@ describe SourceFilesController, type: :controller do
     end
 
     it 'show list of source files' do
-      get :index, repo_id: repo.id
+      get :index, repo_id: repo.to_param
 
       expect(response.status).to eq 200
       expect(assigns(:source_files)).to be_present

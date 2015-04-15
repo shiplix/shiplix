@@ -25,7 +25,7 @@ class KlassesController < ApplicationController
   private
 
   def repo
-    @repo ||= Repo.active.find(params[:repo_id])
+    @repo ||= Repo.active.find_by!(full_github_name: params[:repo_id])
   end
 
   def build

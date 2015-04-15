@@ -22,7 +22,7 @@ class ReposController < ApplicationController
   private
 
   def repo
-    @repo ||= Repo.active.find(params[:id])
+    @repo ||= Repo.active.find_by!(full_github_name: params[:id])
   end
 
   def authenticate

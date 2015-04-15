@@ -3,7 +3,7 @@
     = rating_badge(klass.metric.rating)
   %td
     %h4
-      = link_to klass.name, repo_klass_path(repo_id: repo.id, id: klass.name)
+      = link_to klass.name, repo_klass_path(repo, klass)
   %td
     %h3= klass.metric.complexity.to_i
   %td
