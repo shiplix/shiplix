@@ -49,4 +49,8 @@ describe Analyzers::NamespacesService do
   it 'not find metrics for files without code' do
     expect(build.collections.source_files.keys).not_to include 'lib/without_code.rb'
   end
+
+  it 'not find metrics for rails generators' do
+    expect(build.collections.source_files.keys).not_to include 'lib/rails_generator.rb'
+  end
 end

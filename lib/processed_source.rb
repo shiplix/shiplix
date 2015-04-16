@@ -39,7 +39,6 @@ class ProcessedSource
     line =~ /^\s*#/
   end
 
-
   def parser
     builder = Shiplix::Builder.new
     Parser::CurrentRuby.new(builder)
@@ -50,5 +49,7 @@ class ProcessedSource
     buffer.raw_source = @raw_source
 
     @ast = parser.parse(buffer)
+  rescue Parser::SyntaxError
+    @ast = nil
   end
 end
