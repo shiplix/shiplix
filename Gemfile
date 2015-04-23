@@ -50,6 +50,7 @@ gem 'draper'
 gem 'vicar'
 gem 'aasm'
 gem 'attr_extras'
+gem 'whenever', require: false
 
 # Back
 gem 'resque', '~> 1.25'

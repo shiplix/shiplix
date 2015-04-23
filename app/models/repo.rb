@@ -1,4 +1,6 @@
 class Repo < ActiveRecord::Base
+  BASE_PATH = Pathname.new(ENV.fetch('SHIPLIX_BUILDS_PATH'))
+
   has_many :memberships
   has_many :users, through: :memberships
   has_many :branches
@@ -56,6 +58,10 @@ class Repo < ActiveRecord::Base
 
   def scm_url
     "https://#{owner.access_token}:@github.com/#{full_github_name}.git"
+  end
+
+  def path
+    @path ||= BASE_PATH.join(full_github_name)
   end
 
   def to_param

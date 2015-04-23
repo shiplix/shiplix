@@ -1,3 +1,5 @@
+require 'cocaine'
+
 module CommandLineable
   extend ActiveSupport::Concern
 
