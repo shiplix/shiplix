@@ -4,8 +4,12 @@
 //= require bootstrap-sass-official
 //= require atlant/plugins
 //= require atlant/actions
+//= require handlebars.runtime
+//= require highlightjs
+//= require highlightjs.linenumbers
 //= require progressbar
-//
+
 //= require common/progress_bar
-//
+
 //= require_tree ./controllers
+//= require_tree ./templates

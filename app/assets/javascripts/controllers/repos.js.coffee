@@ -1,5 +1,10 @@
 @['repos#index'] = (data) ->
   $('.js-refresh-repos').on 'ajax:success', (e, data, status, xhr) ->
+    renderProgresBarContainer
+      id: 'refreshing',
+      type: 'info',
+      title: 'Refreshing repositories'
+
     $('#js-refreshing-progressbar').progressBar
       url: '/jobs'
       pid: data.meta_id
@@ -12,6 +17,11 @@
         alert('Error in refreshing repositories')
 
   $('.js-repo-activate').on 'ajax:success', (e, data, status, xhr) ->
+    renderProgresBarContainer
+      id: 'activating',
+      type: 'success',
+      title: 'Activating repository'
+
     $('#js-activating-progressbar').progressBar
       url: '/jobs'
       pid: data.meta_id
@@ -24,6 +34,11 @@
         alert('Error in activating repository')
 
   $('.js-repo-deactivate').on 'ajax:success', (e, data, status, xhr) ->
+    renderProgresBarContainer
+      id: 'deactivating',
+      type: 'danger',
+      title: 'Deactivating repository'
+
     $('#js-deactivating-progressbar').progressBar
       url: '/jobs'
       pid: data.meta_id

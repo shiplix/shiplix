@@ -1,6 +1,4 @@
-class RepoSyncService
-  include Apiable
-
+class RepoSyncService < ApplicationService
   ORGANIZATION_TYPE = 'Organization'.freeze
 
   pattr_initialize :user

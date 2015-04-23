@@ -1,6 +1,4 @@
-class BranchesSyncService
-  include Apiable
-
+class BranchesSyncService < ApplicationService
   pattr_initialize :repo
 
   def call

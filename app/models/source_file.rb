@@ -1,6 +1,8 @@
 class SourceFile < ActiveRecord::Base
   include Metricable
 
+  attr_accessor :content
+
   has_many :metrics, class_name: '::SourceFileMetric'
   has_many :smells, as: :subject
   has_many :klass_source_files

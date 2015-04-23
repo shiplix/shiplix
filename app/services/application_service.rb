@@ -1,6 +1,6 @@
-require 'github_api'
+class ApplicationService
+  protected
 
-module Apiable
   def api
     @api ||= GithubApi.new(user.access_token)
   end

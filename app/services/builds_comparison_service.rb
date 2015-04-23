@@ -1,4 +1,4 @@
-class BuildsComparisonService
+class BuildsComparisonService < ApplicationService
   pattr_initialize :target, :source
 
   def call
