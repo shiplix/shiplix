@@ -38,7 +38,5 @@
       - if @source_files.present?
         .panel-footer= will_paginate @source_files, renderer: BootstrapPagination::Rails
 
-= render partial: 'shared/progress_bar', locals: {id: 'refreshing', type: 'info', title: 'Rebuild'}
-
 - content_for(:header_right_col) do
-  = render partial: 'shared/toggle_by_klasses_files', locals: {title: 'Show by source files'}
+  = render 'shared/toggle_by_klasses_files', title: 'Show by source files'

@@ -1,6 +1,6 @@
 require 'cocaine'
 
-class ScmUpdateService
+class ScmUpdateService < ApplicationService
   include CommandLineable
 
   pattr_initialize :build

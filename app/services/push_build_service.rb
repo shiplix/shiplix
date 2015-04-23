@@ -1,6 +1,6 @@
 require 'cocaine'
 
-class PushBuildService
+class PushBuildService < ApplicationService
   attr_reader :build
 
   pattr_initialize :branch, :revision

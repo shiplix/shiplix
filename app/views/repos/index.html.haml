@@ -19,20 +19,16 @@
               %i.fa.fa-refresh
 
       .panel-body.panel-body-table
-        .table-responsive
-          %table.table.table-bordered.table-striped
-            %thead
-              %tr
-                %th{style: 'width: 100px'} Marks
-                %th Repository name
-                %th{style: 'width: 100px'} Smells
-                %th{style: 'width: 75px'} Status
-            %tbody
-              - if @repos.present?
+        - if @repos.present?
+          .table-responsive
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th{style: 'width: 100px'} Marks
+                  %th Repository name
+                  %th{style: 'width: 100px'} Smells
+                  %th{style: 'width: 75px'} Status
+              %tbody
                 = render(@repos)
-              - else
-                There is no repositories loaded yet
-
-= render partial: 'shared/progress_bar', locals: {id: 'refreshing', type: 'info', title: 'Refreshing repositories'}
-= render partial: 'shared/progress_bar', locals: {id: 'activating', type: 'success', title: 'Activating repository'}
-= render partial: 'shared/progress_bar', locals: {id: 'deactivating', type: 'danger', title: 'Deactivating repository'}
+        - else
+          There is no repositories loaded yet

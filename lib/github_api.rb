@@ -1,6 +1,8 @@
 require 'octokit'
 
 class GithubApi
+  CACHE_TTL = 1.day
+
   attr_reader :api
 
   def initialize(token)
@@ -71,5 +73,33 @@ class GithubApi
   # Returns Array of Hash
   def repos
     api.repos.map(&:to_hash)
+  end
+
+  def file_contents(repo, path, revision)
+    with_cache('api/file_contents', repo, path, revision) do
+      begin
+        result = api.contents(repo, path: path, ref: revision)
+        if result && result.content
+          Base64.decode64(result.content).force_encoding("UTF-8")
+        end
+      rescue Octokit::NotFound
+        ""
+      rescue Octokit::Forbidden => exception
+        if exception.errors.any? && exception.errors.first[:code] == "too_large"
+          "File too large"
+        else
+          raise exception
+        end
+      end
+    end
+  end
+
+  private
+
+  def with_cache(namespace, *args)
+    cache_key = ActiveSupport::Cache.expand_cache_key(args, namespace)
+    Rails.cache.fetch(cache_key, expires_in: CACHE_TTL) do
+      yield
+    end
   end
 end

@@ -11,7 +11,8 @@ class SourceFilesController < ApplicationController
       .order('source_file_metrics.rating desc, source_file_metrics.smells_count desc')
       .paginate(page: params[:page], per_page: 20) if build.present?
 
-    SourceFile.preload_metric(@source_files, build)
+    build_id = build.id
+    Preloader.new(@source_files).preload(:metrics) { where(build_id: build_id) }
   end
 
   private

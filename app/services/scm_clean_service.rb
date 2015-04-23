@@ -1,4 +1,4 @@
-class ScmCleanService
+class ScmCleanService < ApplicationService
   include CommandLineable
 
   pattr_initialize :build

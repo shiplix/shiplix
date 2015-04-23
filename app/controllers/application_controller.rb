@@ -22,4 +22,8 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user ||= User.find_by(remember_token: session[:remember_token])
   end
+
+  def api
+    @api ||= GithubApi.new(current_user.access_token)
+  end
 end

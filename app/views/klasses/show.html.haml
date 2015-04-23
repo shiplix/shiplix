@@ -1,16 +1,33 @@
 - breadcrumb :klass, @repo, @klass
 
-.panel.panel-default= @klass.inspect
+- content_for(:header_icon, 'fa-code')
 
-.panel.panel-default= @klass.metric.inspect
+.row
+  .col-md-12
+    .form-group
+      - @klass.smells_statistics.each do |name, count|
+        - smell_class = "#{name}Decorator".constantize
+        %button.btn.btn-primary
+          %i.fa{class: smell_class.icon}
+          = smell_class.title
+          &nbsp;
+          %span.badge= count
 
+    - @klass.source_files.each do |source_file|
+      .panel.panel-warning
+        .panel-heading
+          %h3.panel-title= source_file.path
 
-- @klass.smells.each do |smell|
-  .panel.panel-default
-    = smell.inspect
+          %ul.panel-controls
+            %li
+              %a.panel-fullscreen{href: "#"}
+                %i.fa.fa-expand
+            %li
+              %a.panel-collapse{href: ""}
+                %i.fa.fa-angle-down
 
-- @klass.klass_source_files.each do |klass_source_file|
-  .panel.panel-default
-    = klass_source_file.source_file.inspect
-    %br
-    = klass_source_file.inspect
+          .shiplix-source.panel-body{data: {smells: @klass.smells.source_grouped[source_file.path].to_json}}
+            %pre
+              %code{class: 'ruby'}
+                = preserve do
+                  = source_file.content

@@ -32,13 +32,16 @@ gem 'bootstrap_form'
 gem 'will_paginate-bootstrap'
 gem 'gretel'
 gem 'pluggable_js'
+gem 'handlebars_assets'
+gem 'hamlbars'
 
 # Assets
 gem 'font-awesome-rails'
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-bootstrap-sass-official', '= 3.3.1'
-  gem 'rails-assets-jquery-ui', '= 1.11.2'
+  gem 'rails-assets-bootstrap-sass-official'
+  gem 'rails-assets-jquery-ui'
+  gem 'rails-assets-highlightjs'
 end
 
 # Auth

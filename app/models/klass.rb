@@ -1,6 +1,8 @@
 class Klass < ActiveRecord::Base
   include Metricable
 
+  IMPORTANCE_OF_SMELLS = %w(Smells::Flog Smells::Flay Smells::Reek Smells::Brakeman).freeze
+
   has_many :metrics, class_name: '::KlassMetric'
   has_many :smells, as: :subject
   has_many :klass_source_files
@@ -12,24 +14,6 @@ class Klass < ActiveRecord::Base
 
   scope :in_build, ->(build) { joins(:metrics).where(klass_metrics: {build_id: build.id}) }
 
-  def self.preload_metric(records, build)
-    ActiveRecord::Associations::Preloader.new.
-      preload(records, :metrics, KlassMetric.where(build_id: build.id))
-  end
-
-  def self.preload_smells(records, build)
-    ActiveRecord::Associations::Preloader.new.
-      preload(records, :smells, Smell.where(build_id: build.id))
-  end
-
-  def self.preload_source_files(records, build)
-    ActiveRecord::Associations::Preloader.new.
-      preload(records, :klass_source_files, KlassSourceFile.where(build_id: build.id))
-
-    ksf = Array.wrap(records).flat_map(&:klass_source_files)
-    ActiveRecord::Associations::Preloader.new.preload(ksf, :source_file)
-  end
-
   def source_file_in_build(build, path)
     source_files.where(klass_source_files: {build_id: build.id},
                        path: path)
@@ -37,5 +21,14 @@ class Klass < ActiveRecord::Base
 
   def to_param
     name
+  end
+
+  # Smells grouped by categories with statistics
+  #
+  # Returns Hash {smell_type => count}
+  def smells_statistics
+    @smells_statistics ||= smells.each_with_object({}) do |smell, memo|
+      memo[smell.type] = memo[smell.type].to_i + 1
+    end.sort_by { |key, _| IMPORTANCE_OF_SMELLS.index(key) }
   end
 end

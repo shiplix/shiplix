@@ -1,6 +1,4 @@
-class RepoActivatorService
-  include Apiable
-
+class RepoActivatorService < ApplicationService
   pattr_initialize :user, :repo
 
   def call

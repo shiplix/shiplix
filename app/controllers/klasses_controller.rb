@@ -11,15 +11,26 @@ class KlassesController < ApplicationController
       order('klass_metrics.rating desc, klass_metrics.smells_count desc').
       paginate(page: params[:page], per_page: 20)
 
-    Klass.preload_metric(@klasses, build)
+    build_id = build.id
+    Preloader.new(@klasses).
+      preload(:metrics) { where(build_id: build_id) }
   end
 
   def show
     return render_error(404) unless build
 
-    Klass.preload_metric(klass, build)
-    Klass.preload_smells(klass, build)
-    Klass.preload_source_files(klass, build)
+    build_id = build.id
+    Preloader.new(klass).
+      preload([:metrics, :smells, :klass_source_files]) { where(build_id: build_id) }.
+      preload([:source_files, {smells: {locations: :source_file}}])
+
+    klass.source_files.each do |source_file|
+      source_file.content = api.file_contents(repo.full_github_name,
+                                              source_file.path,
+                                              build.revision)
+    end
+
+    @klass = klass.decorate
   end
 
   private

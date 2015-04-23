@@ -15,4 +15,8 @@
  *= require atlant/introjs/introjs.min.css
  *= require atlant/animate/animate.min.css
  *= require atlant/styles
+
+ *= require highlightjs
+
+ *= require styles
 */

@@ -1,0 +1,39 @@
+.line-highlight{background-color:rgba(227, 71, 36, 0.17);border-left:2px solid #e0401d;border-radius: 5px}
+
+.messages .shiplix-comment {
+   padding-top:5px !important;
+   padding-bottom:15px !important
+}
+
+.shiplix-comment .ico {
+    width:40px !important;
+    float:left !important;
+    font-size: 32px !important;
+    color: #33414e  !important;
+    margin-top: 10px !important;
+    margin-left: 8px !important;
+}
+
+.shiplix-comment .text{
+    color: #656D78  !important;
+    border: 1px solid #D5D5D5  !important;
+    padding: 5px 15px 15px 15px !important;
+    border-radius: 3px !important;
+    margin-left: 50px !important;
+
+}
+
+.shiplix-comment .triangle-left{
+   width: 0 !important;
+   height: 0 !important;
+   border-top:5px solid transparent !important;
+   border-right: 5px solid #D5D5D5 !important;
+   border-bottom: 5px solid transparent !important;
+   float:left !important;
+   margin:17px 0px 0px -2px !important;
+}
+
+.shiplix-comment .text .heading span{
+    color: #33414e  !important;
+    font-weight:600 !important;
+}
