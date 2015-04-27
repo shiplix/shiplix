@@ -1,11 +1,10 @@
 %tr.source-inline-message
   %td{colspan: 2}
-    .messages.messages-img
-      .item.item-visible.shiplix-comment
-        .ico
-          %i.fa{class: hb('icon')}
-        .triangle-left
-        .text
-          .heading
+    .messages.messages-img><
+      .item.item-visible.shiplix-comment><
+        .ico><
+          %i{class: hb('icon')}><
+        .text><
+          .heading><
             %span {{name}}
           {{text}}

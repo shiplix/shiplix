@@ -8,7 +8,8 @@ class SmellsDecorator < Draper::CollectionDecorator
           name: smell.name,
           message: smell.message,
           icon: smell.class.icon,
-          line: location.line
+          line: location.line,
+          num_lines: location.num_lines
         }
       end
     end

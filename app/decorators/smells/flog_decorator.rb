@@ -5,7 +5,7 @@ module Smells
     end
 
     def self.icon
-      "fa-signal"
+      "fa fa-dashboard"
     end
 
     def name
