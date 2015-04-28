@@ -86,6 +86,7 @@ GEM
     capistrano3-puma (0.8.5)
       capistrano (~> 3.0)
       puma (>= 2.6)
+    chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.5)
@@ -409,6 +410,8 @@ GEM
       rack (>= 1.0.0)
     vicar (0.0.2)
       actionpack (>= 3.1.0, < 5.0)
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
     will_paginate (3.0.7)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
@@ -488,5 +491,6 @@ DEPENDENCIES
   timecop
   uglifier
   vicar
+  whenever
   will_paginate-bootstrap
   wirble
