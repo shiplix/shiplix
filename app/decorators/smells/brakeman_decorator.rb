@@ -5,7 +5,7 @@ module Smells
     end
 
     def self.icon
-      "fa-bug"
+      "fa fa-lock"
     end
 
     def name

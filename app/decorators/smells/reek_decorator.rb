@@ -5,7 +5,7 @@ module Smells
     end
 
     def self.icon
-      "fa-heartbeat"
+      "fa fa-heartbeat"
     end
 
     def name

@@ -5,7 +5,7 @@ module Smells
     end
 
     def self.icon
-      "fa-files-o"
+      "fa fa-files-o"
     end
 
     def name

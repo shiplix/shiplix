@@ -7,6 +7,7 @@
 //= require handlebars.runtime
 //= require highlightjs
 //= require highlightjs.linenumbers
+//= require highlightjs.smells
 //= require progressbar
 
 //= require common/progress_bar
