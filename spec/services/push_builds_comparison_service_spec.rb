@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe BuildsComparisonService do
+describe PushBuildsComparisonService do
   let(:branch) { create :branch }
   let(:target) { create :push, branch: branch }
   let(:source) { create :push, branch: branch }

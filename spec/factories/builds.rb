@@ -8,6 +8,7 @@ FactoryGirl.define do
     end
 
     factory :push, class: Builds::Push do
+      payload { build 'payload/push' }
     end
   end
 end

@@ -1,9 +1,9 @@
 require 'cocaine'
 
 class PushBuildService < ApplicationService
-  attr_reader :build
+  pattr_initialize :branch, :payload
 
-  pattr_initialize :branch, :revision
+  attr_reader :build
 
   ANALYZERS = [
     Analyzers::NamespacesService,
@@ -13,41 +13,36 @@ class PushBuildService < ApplicationService
     Analyzers::BrakemanService
   ]
 
+  # Returns Builds::Push
   def call
     create_build
-    update
+    update_scm
+
     transaction do
-      analyze
+      analyze # TODO: long transaction!, move outside of block if has no write queries
       build.collections.save
-      finish_build
+      build.finish!
     end
+
+    compare_builds
+
+    build
   rescue Exception
-    fail_build if build.present?
+    build.fail! if build.present? && build.may_fail?
     raise
+  ensure
+    scm_clean if build.present?
   end
 
   private
 
   def create_build
-    branch.push_builds.where(revision: revision).first.try(:destroy)
-    @build = Builds::Push.create!(branch: branch, revision: revision)
+    branch.push_builds.find_by(revision: payload.revision).try(:destroy)
+
+    @build = Builds::Push.create!(branch: branch, payload: payload)
   end
 
-  def fail_build
-    build.fail!
-    ScmCleanService.new(build).call
-  end
-
-  def finish_build
-    if last_build
-      BuildsComparisonService.new(build, last_build).call
-      ScmCleanService.new(last_build).call
-    end
-
-    build.finish!
-  end
-
-  def update
+  def update_scm
     ScmUpdateService.new(build).call
   end
 
@@ -55,9 +50,13 @@ class PushBuildService < ApplicationService
     ANALYZERS.each { |analyzer| analyzer.new(build).call }
   end
 
-  def last_build
-    return @last_build if @last_build
-    @last_build = branch.recent_push_build
+  def compare_builds
+    return unless build.prev_build
+    PushBuildsComparisonJob.enqueue(build.id, build.prev_build.id)
+  end
+
+  def scm_clean
+    ScmCleanService.new(build).call
   end
 
   def transaction

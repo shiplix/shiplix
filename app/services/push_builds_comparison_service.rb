@@ -1,4 +1,4 @@
-class BuildsComparisonService < ApplicationService
+class PushBuildsComparisonService < ApplicationService
   pattr_initialize :target, :source
 
   def call
@@ -6,8 +6,10 @@ class BuildsComparisonService < ApplicationService
       raise 'Builds should be in same repo'
     end
 
-    process(KlassMetric, :klass_id, 'Klass')
-    process(SourceFileMetric, :source_file_id, 'SourceFile')
+    target.transaction do
+      process(KlassMetric, :klass_id, 'Klass')
+      process(SourceFileMetric, :source_file_id, 'SourceFile')
+    end
   end
 
   protected

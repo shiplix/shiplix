@@ -2,6 +2,8 @@ class GithubEventsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create]
   skip_before_action :authenticate, only: [:create]
 
+  attr_reader :payload
+
   def create
     case request.env['HTTP_X_GITHUB_EVENT']
     when 'ping'
@@ -27,6 +29,6 @@ class GithubEventsController < ApplicationController
 
   def process_push
     @payload = Payload::Push.new(payload_data)
-    PushBuildJob.enqueue(repo.id, @payload.branch, @payload.revision)
+    PushBuildJob.enqueue(repo.id, payload.branch, payload.revision, payload.data.to_json)
   end
 end

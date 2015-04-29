@@ -11,5 +11,13 @@ module Payload
     def [](key)
       data[key]
     end
+
+    def []=(key, value)
+      data[key] = value
+    end
+
+    def as_json(*)
+      data.as_json
+    end
   end
 end

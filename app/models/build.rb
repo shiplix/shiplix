@@ -10,10 +10,12 @@ class Build < ActiveRecord::Base
   validates :branch_id, presence: true
   validates :type, presence: true
   validates :revision, presence: true
+  validates :head_timestamp, presence: true
+  validates :payload_data, presence: true
 
   scope :push_builds, -> { where(type: 'Builds::Push') }
   scope :pull_request_builds, -> { where(type: 'Builds::PullRequest') }
-  scope :recent, -> { where(state: 'finished').order(id: :desc) }
+  scope :recent, -> { where(state: 'finished').order(head_timestamp: :desc) }
 
   delegate :repo, to: :branch
   delegate :revision_path, :relative_path, to: :locator
@@ -32,6 +34,10 @@ class Build < ActiveRecord::Base
     event :fail do
       transitions from: :pending, to: :failed
     end
+  end
+
+  def prev_build
+    @prev_build ||= self.class.where(branch_id: branch.id, revision: prev_revision).first
   end
 
   def locator
