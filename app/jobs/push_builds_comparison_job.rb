@@ -1,4 +1,4 @@
-class PushBuildsComparisonJob
+class PushBuildsComparisonJob < ApplicationJob
   include Retryable
   extend Resque::Single
 

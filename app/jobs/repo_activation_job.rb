@@ -1,4 +1,4 @@
-class RepoActivationJob
+class RepoActivationJob < ApplicationJob
   include Retryable
   extend Resque::Single
 

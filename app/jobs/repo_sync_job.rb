@@ -1,4 +1,4 @@
-class RepoSyncJob
+class RepoSyncJob < ApplicationJob
   include Retryable
   extend Resque::Single
 

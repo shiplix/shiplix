@@ -13,6 +13,7 @@ module Payload
     end
 
     def revision=(value)
+      data[:head_commit] ||= {}
       data[:head_commit][:id] = value
     end
 
@@ -25,6 +26,7 @@ module Payload
     end
 
     def timestamp
+      return Time.now unless data.fetch(:head_commit, {})[:timestamp]
       DateTime.parse(data[:head_commit][:timestamp]).utc
     end
   end

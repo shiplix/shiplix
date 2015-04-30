@@ -2,10 +2,11 @@ require 'json'
 
 module Payload
   class Base
-    pattr_initialize :unparsed_data
+    attr_reader :data
 
-    def data
-      @data ||= JSON.parse(unparsed_data).with_indifferent_access
+    def initialize(data = nil)
+      data = JSON.parse(data) if data.is_a?(String)
+      @data = (data || {}).with_indifferent_access
     end
 
     def [](key)
