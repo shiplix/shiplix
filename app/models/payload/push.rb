@@ -4,6 +4,10 @@ module Payload
       data[:ref].sub('refs/heads/', '')
     end
 
+    def branch=(value)
+      data[:ref] = "refs/heads/#{value}"
+    end
+
     def repo_id
       data[:repository][:id]
     end

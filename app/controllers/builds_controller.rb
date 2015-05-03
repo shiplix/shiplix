@@ -5,15 +5,20 @@ class BuildsController < ApplicationController
   #
   # Returns text/json
   def create
-    repo = Repo.find(params[:repo_id])
-    return head(:bad_request) unless RepoPolicy.new(current_user, repo).manage?
+    repo = Repo.find(params.require(:repo_id))
 
-    if revision = api.recent_revision(repo.name, params[:branch])
-      meta_id = PushBuildJob.enqueue(repo.id, params[:branch], revision).meta_id
+    unless RepoPolicy.new(current_user, repo).manage?
+      render json: {status: 'error'}, status: :forbidden
+      return
+    end
 
+    branch_name = params.require(:branch)
+    meta_id = Builds::Pushes::EnqueueRecentService.new(current_user, repo, branch_name: branch_name).call
+
+    if meta_id
       render json: {meta_id: meta_id}
     else
-      head(:bad_request)
+      render json: {status: 'error'}, status: :bad_request
     end
   end
 end

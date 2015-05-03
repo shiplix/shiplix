@@ -8,6 +8,7 @@ FactoryGirl.define do
     initialize_with do
       Payload::Push.new(
         {
+          ref: 'refs/heads/master',
           head_commit: {id: revision,
                         timestamp: 1.day.ago.to_s},
           before: prev_revision

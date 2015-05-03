@@ -17,6 +17,10 @@ module Payload
       data[key] = value
     end
 
+    def ==(other)
+      to_json == other.to_json
+    end
+
     def as_json(*)
       data.as_json
     end
