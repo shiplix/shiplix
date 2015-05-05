@@ -27,6 +27,6 @@ class GithubEventsController < ApplicationController
 
   def process_push
     @payload = Payload::Push.new(payload_data)
-    PushBuildJob.enqueue(repo.id, @payload.branch, @payload.revision)
+    Builds::Pushes::LaunchJob.enqueue(repo.id, @payload.to_json)
   end
 end

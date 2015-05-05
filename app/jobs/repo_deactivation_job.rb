@@ -1,4 +1,4 @@
-class RepoDeactivationJob
+class RepoDeactivationJob < ApplicationJob
   include Retryable
   extend Resque::Single
 

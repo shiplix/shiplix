@@ -19,6 +19,7 @@ module Shiplix
     config.autoload_paths += %W(
       #{config.root}/lib
       #{config.root}/app/services/concerns
+      #{config.root}/app/jobs/concerns
     )
 
     config.active_record.schema_format = :sql
