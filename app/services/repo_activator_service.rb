@@ -15,12 +15,8 @@ class RepoActivatorService < ApplicationService
   private
 
   def add_hooks
-    api.add_hooks(repo.full_github_name, callback_endpoint) do |hook_id|
+    api.add_hooks(repo.full_github_name, GithubApi::CALLBACK_ENDPOINT) do |hook_id|
       repo.update(hook_id: hook_id)
     end
-  end
-
-  def callback_endpoint
-    "#{ENV.fetch('SHIPLIX_PROTOCOL', 'http')}://#{HOST}/github_events"
   end
 end

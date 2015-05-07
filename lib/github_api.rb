@@ -2,6 +2,7 @@ require 'octokit'
 
 class GithubApi
   CACHE_TTL = 1.day
+  CALLBACK_ENDPOINT = "#{ENV.fetch('SHIPLIX_PROTOCOL', 'http')}://#{HOST}/github_events"
 
   attr_reader :api
 
@@ -51,8 +52,13 @@ class GithubApi
     hook = api.create_hook(
       repo,
       'web',
-      {url: endpoint},
-      {events: %w(push pull_request), active: true}
+      {
+        url: endpoint,
+        secret: ENV['GITHUB_SECRET_TOKEN']
+      },
+      {
+        events: %w(push pull_request), active: true,
+      }
     )
 
     yield hook.id
