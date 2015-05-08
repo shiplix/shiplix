@@ -33,6 +33,12 @@
       onError: (data) ->
         alert('Error in activating repository')
 
+  # Do not uncheck checkbox when confirmation canceled
+  $('.js-repo-deactivate').on 'confirm:complete', (e, answer) ->
+    if !answer
+      e.target.checked = true
+    answer
+
   $('.js-repo-deactivate').on 'ajax:success', (e, data, status, xhr) ->
     renderProgresBarContainer
       id: 'deactivating',
