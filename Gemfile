@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.1.0'
+gem 'rails', '~> 4.2.0'
+gem 'responders', '~> 2.0'
 gem 'rails-i18n'
 gem 'dotenv-rails'
 

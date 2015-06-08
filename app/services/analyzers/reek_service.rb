@@ -7,7 +7,10 @@ module Analyzers
       paths = build.source_locator.paths
       return if paths.empty?
 
-      Reek::Examiner.new(paths).smells.each do |smell|
+      # TODO: in new version examinder back to Reek::Examiner, but this
+      # version not yet relized
+      # see: https://github.com/troessner/reek/pull/532/files
+      Reek::Core::Examiner.new(paths).smells.each do |smell|
         make_smell(smell)
       end
     end
