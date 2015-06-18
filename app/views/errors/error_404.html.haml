@@ -18,4 +18,4 @@
         Home
 
 - if @exception && (Rails.env.staging? || !Rails.env.production?)
-  = render 'layouts/exception', exception: @exception
+  = render 'errors/exception', exception: @exception

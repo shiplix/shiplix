@@ -30,7 +30,7 @@ module ErrorsCatch
     @exception = exception
 
     respond_to do |format|
-      format.html { render "layouts/error_#{status}", status: status }
+      format.html { render "errors/error_#{status}", status: status }
       format.all { render nothing: true, status: status }
     end
   end
