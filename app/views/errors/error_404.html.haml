@@ -1,21 +1,20 @@
-.jumbotron.clearfix
-  %h1 Oops
+.rows
+  .col-md-12
+    .error-container
+      .error-code 404
+      .error-text page not found
+      .error-subtext
+        %p The content that you requested could not be found.
+        %p Maybe the repository, branch, pull request have been deleted/merged/fixed/closed/deactivated.
 
-  %p 404 not found. That page doesn't exist!
+      .error-actions
+        .row
+          .col-md-6
+            %a.btn.btn-info.btn-block.btn-lg{href: root_path} Home
+          .col-md-6
+            %button.btn.btn-primary.btn-block.btn-lg{onclick: 'history.back();'} Previous page
 
-  %p &nbsp;
-  %p &nbsp;
-
-  %p The content that you requested could not be found.
-  %p May be the repository, branch, pull request have been deleted/merged/fixed/closed/deactivated.
-
-  %p &nbsp;
-  %p &nbsp;
-
-  %p
-    %a.btn.btn-primary.btn-lg{:href => '/'}
-      %span.glyphicon.glyphicon-home
-        Home
-
-- if @exception && (Rails.env.staging? || !Rails.env.production?)
-  = render 'errors/exception', exception: @exception
+  - if @exception && (Rails.env.staging? || !Rails.env.production?)
+    .col-md-12
+      .panel.panel-danger.error-exception
+        .panel-body= render 'errors/exception', exception: @exception
