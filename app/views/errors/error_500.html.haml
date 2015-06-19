@@ -1,20 +1,19 @@
-.jumbotron.clearfix
-  %h1 Oops
+.rows
+  .col-md-12
+    .error-container
+      .error-code 500 response error
+      .error-text page not found
+      .error-subtext
+        %p Sorry... It's not you. It's us.
 
-  %p 500 response error
+      .error-actions
+        .row
+          .col-md-6
+            %a.btn.btn-info.btn-block.btn-lg{href: root_path} Home
+          .col-md-6
+            %button.btn.btn-primary.btn-block.btn-lg{onclick: 'history.back();'} Previous page
 
-  %p &nbsp;
-  %p &nbsp;
-
-  %p Sorry... It's not you. It's us.
-
-  %p &nbsp;
-  %p &nbsp;
-
-  %p
-    %a.btn.btn-primary.btn-lg{:href => '/'}
-      %span.glyphicon.glyphicon-home
-        Home
-
-- if @exception && (Rails.env.staging? || !Rails.env.production?)
-  = render 'errors/exception', exception: @exception
+  - if @exception && (Rails.env.staging? || !Rails.env.production?)
+    .col-md-12
+      .panel.panel-danger.error-exception
+        .panel-body= render 'errors/exception', exception: @exception
