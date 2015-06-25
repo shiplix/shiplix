@@ -17,6 +17,9 @@ class ReposController < ApplicationController
   end
 
   def show
+    title_variables[:repo] = repo.full_github_name
+
+    @changesets = ChangesetsFinder.new(repo.default_branch).call
   end
 
   private

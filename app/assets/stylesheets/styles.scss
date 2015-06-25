@@ -52,3 +52,29 @@
 .error-exception {
   margin-top: 20px;
 }
+
+
+
+.timeline-class-name>.leftside-badge { float: left !important; margin:0px 20px 0px 0px; }
+.timeline-footer-without-padding { padding:0px !important; }
+.progress-in-timeline { width:250px; }
+.old-class-mark {opacity: 0.4;}
+.timeline-marks .badge {width:130px;}
+.timeline-marks {float:left; margin-right: 20px;}
+.list-group-item {min-height: 60px;}
+.new-mark, .timeline-class-name {padding-top: 10px}
+.progress-timeline-arrow{
+    position: absolute;
+    margin: 10px 0px 0px -10px;
+    z-index: 100;
+    border-radius: 12px;
+    opacity: 0.8;
+    background: #fff;
+    width: 20px;
+    height: 20px;
+}
+.progress-timeline-arrow .fa{
+    margin-left: 6px;
+    font-size: 12px;
+    margin-top: 2px;
+}

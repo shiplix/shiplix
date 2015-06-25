@@ -32,8 +32,8 @@ en:
         header: 'Repositories'
 
       show:
-        title: 'Repo'
-        header: 'Repo'
+        title: '%{repo}'
+        header: '%{repo}'
 
     klasses:
       postfix: ' - %{repo}'
