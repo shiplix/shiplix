@@ -19,6 +19,7 @@ module Builds
       def process(subject, field, type)
         subject.each_row_by_sql(changes_query(subject, field).to_sql) do |row|
           Changeset.create!(build_id: target.id,
+                            branch_id: target.branch_id,
                             subject_type: type,
                             subject_id: row['subject_id'],
                             rating: row['rating'],
