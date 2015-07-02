@@ -11,6 +11,7 @@
 //= require progressbar
 
 //= require common/progress_bar
+//= require common/homepage_video
 
 //= require_tree ./controllers
 //= require_tree ./templates

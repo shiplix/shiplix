@@ -1,0 +1,42 @@
+!!! 5
+%html(lang="en")
+  %head
+    %meta(charset="utf-8")
+    %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    %title= page_title
+    = csrf_meta_tags
+    / Le HTML5 shim, for IE6-8 support of HTML elements
+    /[if lt IE 9]
+      = javascript_include_tag 'http://html5shim.googlecode.com/svn/trunk/html5.js'
+    = stylesheet_link_tag 'front', :media => 'all'
+
+  %body
+    .page-container.homepage
+      .page-header
+        .page-header-holder
+          .logo Shiplix
+          %nav.nav
+            %a{href: '#'} Features
+            %a{href: '#'} Pricing
+            %a{href: '#'} Documentation
+            %a{href: '#'} Blog
+            %a{href: '#'} Status
+            %a.pull-right.last{href: '/auth/github'}
+              %i.fa.fa-github
+              Sign in
+
+      .page-content
+        = yield
+
+      .page-footer
+        .page-footer-wrap.bg-dark-gray
+          .page-footer-holder.page-footer-holder-main
+            %nav.nav.pull-right
+              %a{href: '#'} Features
+              %a{href: '#'} Pricing
+              %a{href: '#'} Documentation
+              %a{href: '#'} Blog
+              %a{href: '#'} Status
+            © 2015 Shiplix Team All rights reserved.
+    = javascript_include_tag 'front'

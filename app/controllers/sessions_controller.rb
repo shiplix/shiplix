@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     create_session_for(user)
     update_access_token(user)
 
-    redirect_to root_path
+    redirect_to repos_path
   end
 
   def destroy

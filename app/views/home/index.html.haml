@@ -1,2 +1,66 @@
-.jumbotron
-  %h1 Wellcome to Shiplix!
+.page-content-wrap
+  .homepage-hero-module
+    .video-container
+      .title-container
+        %h1.title-container__title
+          %strong Shiplix
+        %h2.title-container__sub-title Awesome code anylyze tool for Ruby projects
+
+        %a.btn.btn-lg.btn-login{href: '/auth/github'}
+          %i.fa.fa-lg.fa-github
+          Sign in with GitHub
+      .filter
+      = video_tag(['hello_world/hello_world.mp4', 'hello_world/hello_world.webm'], autoplay: true, loop: true, class: 'fillWidth')
+      .poster.hidden
+        = image_tag('/videos/hello_world/hello_world.jpg', alt: '')
+
+      .bottom-arrow.fa.fa-chevron-down
+.page-content-wrap
+  .page-content-holder
+    .features
+      %h1.text-center Features
+      .row
+        .col-md-4
+          .text-column.text-column-centralized.tex-column-icon-lg
+            .text-column-icon
+              %span.fa.fa-code
+            %h4 Quality
+            .text-column-info support for each customer who purchase template. We will do our best to help you
+        .col-md-4
+          .text-column.text-column-centralized.tex-column-icon-lg
+            .text-column-icon
+              %span.fa.fa-shield
+            %h4 Security
+            .text-column-info support for each customer who purchase template. We will do our best to help you
+        .col-md-4
+          .text-column.text-column-centralized.tex-column-icon-lg
+            .text-column-icon
+              %span.fa.fa-gears
+            %h4 Integration
+            .text-column-info support for each customer who purchase template. We will do our best to help you
+      .row
+        .col-md-4
+          .text-column.text-column-centralized.tex-column-icon-lg
+            .text-column-icon
+              %span.fa.fa-bar-chart
+            %h4 Reports
+            .text-column-info support for each customer who purchase template. We will do our best to help you
+        .col-md-4
+          .text-column.text-column-centralized.tex-column-icon-lg
+            .text-column-icon
+              %span.fa.fa-area-chart
+            %h4 Code ratings
+            .text-column-info support for each customer who purchase template. We will do our best to help you
+        .col-md-4
+          .text-column.text-column-centralized.tex-column-icon-lg
+            .text-column-icon
+              %span.fa.fa-clock-o
+            %h4 Support
+            .text-column-info support for each customer who purchase template. We will do our best to help you
+
+      .row
+        .text-center
+          %h3 Shiplix totaly free for open-source projects.
+          %a.btn.btn.btn-primary.btn-xl{href: '/auth/github'}
+            %span.fa.fa-github
+              Try it now for free
