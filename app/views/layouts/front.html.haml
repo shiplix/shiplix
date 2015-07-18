@@ -11,32 +11,33 @@
       = javascript_include_tag 'http://html5shim.googlecode.com/svn/trunk/html5.js'
     = stylesheet_link_tag 'front', :media => 'all'
 
-  %body
-    .page-container.homepage
+  %body{class: yield(:body_css_class)}
+    .page-container
       .page-header
         .page-header-holder
-          .logo Shiplix
+          .logo= link_to 'Shiplix', root_path
           %nav.nav
-            %a{href: '#'} Features
-            %a{href: '#'} Pricing
-            %a{href: '#'} Documentation
-            %a{href: '#'} Blog
-            %a{href: '#'} Status
+            = render partial: 'shared/front/menu_links'
             %a.pull-right.last{href: '/auth/github'}
               %i.fa.fa-github
               Sign in
 
       .page-content
-        = yield
+        - if current_page?(root_path)
+          = yield
+        - else
+          .page-content-wrap.bg-light
+            .page-content-holder.no-padding
+              .page-title
+                %h1= page_header
+          .page-content-wrap.no-border
+            .page-content-holder
+              = yield
 
       .page-footer
         .page-footer-wrap.bg-dark-gray
           .page-footer-holder.page-footer-holder-main
             %nav.nav.pull-right
-              %a{href: '#'} Features
-              %a{href: '#'} Pricing
-              %a{href: '#'} Documentation
-              %a{href: '#'} Blog
-              %a{href: '#'} Status
+              = render partial: 'shared/front/menu_links'
             © 2015 Shiplix Team All rights reserved.
     = javascript_include_tag 'front'

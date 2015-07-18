@@ -35,6 +35,7 @@ gem 'gretel'
 gem 'pluggable_js'
 gem 'handlebars_assets'
 gem 'hamlbars'
+gem 'high_voltage'
 
 # Assets
 gem 'font-awesome-rails'

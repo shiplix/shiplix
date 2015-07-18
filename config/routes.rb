@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :repo_activations, only: [:update, :destroy]
   resources :github_events, only: [:create]
 
+  get "/*id", to: 'pages#show', as: :page, format: false
   root 'home#index'
 
   match '*path', to: 'application#catch_404', via: :all
