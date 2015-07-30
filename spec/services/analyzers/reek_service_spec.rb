@@ -18,23 +18,40 @@ describe Analyzers::ReekService do
   end
 
   context 'when tested file has smells' do
-    let(:test_file_path) { path_to_repo_files('reek/dirty.rb').to_s }
+    context 'when inspected file has method in klass' do
+      let(:test_file_path) { path_to_repo_files('reek/dirty.rb').to_s }
 
-    When { service.call }
-    Given(:klass) { repo.klasses.find_by(name: 'DirtyModule::Dirty') }
+      it 'cretes smell for method in klass' do
+        service.call
 
-    Then { expect(klass).to be_present }
-    And { expect(repo.source_files.where(path: test_file_path)).to be_exists }
+        klass = repo.klasses.find_by(name: 'DirtyModule::Dirty')
 
-    Given(:klass_smell) { push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: nil) }
-    And { expect(klass_smell.message).to eq 'has no descriptive comment' }
-    And { expect(klass_smell.locations.where(line: 2)).to be_exists }
+        expect(klass).to be_present
+        expect(repo.source_files.where(path: test_file_path)).to be_exists
 
-    Given(:klass_method_smell) do
-      push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: 'test_method')
+        klass_smell = push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: nil)
+
+        expect(klass_smell.message).to eq 'has no descriptive comment'
+        expect(klass_smell.locations.where(line: 2)).to be_exists
+
+        klass_method_smell = push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: 'test_method')
+
+        expect(klass_method_smell.message).to eq "has unused parameter 'unused_param'"
+        expect(klass_method_smell.locations.where(line: 3)).to be_exists
+      end
     end
-    And { expect(klass_method_smell.message).to eq "has unused parameter 'unused_param'" }
-    And { expect(klass_method_smell.locations.where(line: 3)).to be_exists }
+
+    context 'when inspected files has not klasses' do
+      let(:test_file_path) { path_to_repo_files('reek/without_klasses.rb').to_s }
+
+      it 'creates smell on source file' do
+        service.call
+
+        expect(repo.klasses).to be_empty
+        expect(repo.source_files.find_by(path: test_file_path).smells)
+          .to be_exists(method_name: 'settings_list')
+      end
+    end
   end
 
   context 'when tested file has not smells' do
