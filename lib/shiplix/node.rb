@@ -30,5 +30,12 @@ module Shiplix
     def last_line
       loc.end.line
     end
+
+    # Returns ast Shiplix::Node from line.
+    def by_line(line)
+      each_node do |node|
+        return node if node.loc.expression.try(:line) == line
+      end
+    end
   end
 end

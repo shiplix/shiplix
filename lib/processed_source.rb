@@ -1,3 +1,9 @@
+# ProcessedSource class builds ast map for ruby file.
+#
+# Example:
+#   source = ProcessedSource.new(/path/to/file)
+#   source.ast
+#
 class ProcessedSource
   LINE_OFFSET = 1
   private_constant :LINE_OFFSET
