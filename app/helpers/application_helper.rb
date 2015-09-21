@@ -21,4 +21,8 @@ module ApplicationHelper
       )
     )
   end
+
+  def navbar_collapsed?
+    cookies[:navbar_collapsed] == 'true'
+  end
 end
