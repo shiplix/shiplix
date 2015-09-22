@@ -53,8 +53,6 @@
   margin-top: 20px;
 }
 
-
-
 .timeline-class-name>.leftside-badge { float: left !important; margin:0px 20px 0px 0px; }
 .timeline-footer-without-padding { padding:0px !important; }
 .progress-in-timeline { width:250px; }
@@ -73,8 +71,23 @@
     width: 20px;
     height: 20px;
 }
+
 .progress-timeline-arrow .fa{
     margin-left: 6px;
     font-size: 12px;
     margin-top: 2px;
+}
+
+.x-navigation > li > a {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.x-navigation.x-navigation-minimized {
+  ul .xn-text { display: inline }
+}
+
+.x-navigation > li:last-child > a {
+    border-radius: 0;
 }

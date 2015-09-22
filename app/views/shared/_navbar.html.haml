@@ -1,12 +1,21 @@
 .page-sidebar
-  %ul.x-navigation
+  %ul.x-navigation{class: navbar_collapsed? && 'x-navigation-minimized'}
     %li.xn-logo
       %a{href: root_path} Shiplix
       %a.x-navigation-control{href: '#'}
     %li.xn-title
       Navigation
-    %li{class: current_page?(repos_path) && 'active'}
-      %a{href: repos_path}
-        %i.fa.fa-desktop
-        %span.xn-text
-          Repositories
+
+    = render_navigation(renderer: Shiplix::NavbarRenderer) do |primary|
+      - primary.item(:repos, 'Repositories', repos_path, html: {icon: 'fa-desktop'})
+
+      - if @repo.present?
+        - primary.item(:current_repo, @repo.name, repo_path(@repo), highlights_on: :subpath, html: {icon: 'fa-pencil'}) do |sub_nav|
+          - sub_nav.item(:classes, 'Classes', repo_klasses_path(@repo), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
+          - sub_nav.item(:classes, 'Files', repo_source_files_path(@repo), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
+
+    %li.xn-icon-button
+      %a.x-navigation-minimize{href: '#'}
+        %i.fa.fa-dedent
+        %span.xn-text Collapse navigation
+

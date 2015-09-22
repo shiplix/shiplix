@@ -1,6 +1,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery-cookie
 //= require bootstrap-sass-official
 //= require atlant/plugins
 //= require atlant/actions

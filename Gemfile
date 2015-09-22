@@ -36,6 +36,7 @@ gem 'pluggable_js'
 gem 'handlebars_assets'
 gem 'hamlbars'
 gem 'high_voltage'
+gem 'simple-navigation'
 
 # Assets
 gem 'font-awesome-rails'
@@ -44,6 +45,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass-official'
   gem 'rails-assets-jquery-ui'
   gem 'rails-assets-highlightjs'
+  gem 'rails-assets-jquery-cookie'
 end
 
 # Auth
