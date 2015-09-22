@@ -13,6 +13,12 @@ class Repo < ActiveRecord::Base
   validates :full_github_name, presence: true
   validates :github_id, uniqueness: true, presence: true
 
+  scope :low_activity, -> do
+    joins(branches: :builds)
+      .where("builds.updated_at <= '#{30.days.ago}'")
+      .where.not('builds.state' => :pending)
+  end
+
   def self.active(value = true)
     where(active: value)
   end
