@@ -1,4 +1,4 @@
-server '54.149.182.233', roles: [:web, :app, :db, :job]
+server 'test.shiplix.com', roles: [:web, :app, :db, :job]
 
 set :deploy_name, 'Staging'
 set :slack_channel, 'general'

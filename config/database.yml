@@ -3,6 +3,7 @@ defaults: &DEFAULTS
   username: <%= ENV["SHIPLIX_DB_USER"] %>
   host: <%= ENV["SHIPLIX_DB_HOST"] %>
   port: <%= ENV["SHIPLIX_DB_PORT"] %>
+  password: <%= ENV["SHIPLIX_DB_PASSWORD"] %>
 
 development:
   <<: *DEFAULTS
