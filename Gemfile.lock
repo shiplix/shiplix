@@ -110,7 +110,7 @@ GEM
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)
-    dalli (2.7.4)
+    connection_pool (2.2.0)
     debug_inspector (0.0.2)
     diff-lcs (1.2.5)
     docile (1.1.5)
@@ -290,6 +290,9 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
     rake (10.4.2)
+    readthis (0.8.1)
+      connection_pool (~> 2.1)
+      redis (~> 3.0)
     redis (3.2.1)
     redis-classy (2.2.0)
       redis-namespace (~> 1.0)
@@ -457,7 +460,6 @@ DEPENDENCIES
   capistrano3-puma
   cocaine
   coffee-rails
-  dalli
   dotenv-rails
   draper
   factory_girl_rails
@@ -495,6 +497,7 @@ DEPENDENCIES
   rails-assets-jquery-ui!
   rails-cache-tags
   rails-i18n
+  readthis
   redis
   redis-mutex
   reek (~> 2.0)
@@ -519,3 +522,6 @@ DEPENDENCIES
   whenever
   will_paginate-bootstrap
   wirble
+
+BUNDLED WITH
+   1.10.6
