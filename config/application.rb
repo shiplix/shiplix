@@ -41,6 +41,24 @@ module Shiplix
     require 'multi_json'
     MultiJson.use :oj
 
+    # cache
+    cache_namespace = ENV.fetch('SHIPLIX_REDIS_CACHE_NAMESPACE').dup
+    if File.exists?(Rails.root.join('REVISION'))
+      rev = File.read(Rails.root.join('REVISION')).strip[0..3]
+      cache_namespace << "_#{rev}" if rev.present?
+    end
+
+    config.cache_store = :readthis_store, {
+      expires_in: 1.day.to_i,
+      namespace: cache_namespace,
+      redis: {
+        host: ENV.fetch('SHIPLIX_REDIS_HOST'),
+        post: ENV.fetch('SHIPLIX_REDIS_PORT'),
+        db: ENV.fetch('SHIPLIX_REDIS_CACHE_DB'),
+        driver: :hiredis
+      }
+    }
+
     config.generators do |g|
       g.orm :active_record
       g.template_engine :haml

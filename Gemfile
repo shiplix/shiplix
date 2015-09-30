@@ -15,10 +15,10 @@ gem 'multi_json'
 gem 'oj'
 gem 'redis'
 gem 'hiredis'
-gem 'dalli'
 gem 'rails-cache-tags'
 gem 'redis-mutex'
 gem 'octokit'
+gem 'readthis'
 
 # Front
 gem 'sass-rails'
