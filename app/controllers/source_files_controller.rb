@@ -5,11 +5,13 @@ class SourceFilesController < ApplicationController
   #
   # Returns text/html
   def index
+    return unless build.present?
+
     @source_files = repo
       .source_files
       .in_build(build)
       .order('source_file_metrics.rating desc, source_file_metrics.smells_count desc')
-      .paginate(page: params[:page], per_page: 20) if build.present?
+      .paginate(page: params[:page], per_page: 20)
 
     build_id = build.id
     Preloader.new(@source_files).preload(:metrics) { where(build_id: build_id) }
