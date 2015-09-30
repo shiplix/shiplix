@@ -1,4 +1,6 @@
 class Build < ActiveRecord::Base
+  include Ratingable
+
   has_many :klass_metrics
   has_many :source_file_metrics
   has_many :klass_source_files

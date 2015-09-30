@@ -8,15 +8,10 @@ module Analyzers
 
     protected
 
-    def create_smell(type_class, subject, params = {})
-      smell = type_class.create!(params.merge(build: build, subject: subject))
-
-      subject.metric.increment(:smells_count)
-      subject.metric.total_rating = subject.metric.total_rating.to_i + smell.rating
-
-      build.increment(:smells_count)
-
-      smell
+    def create_smell(smell_class, klass_or_file, attrs = {})
+      attrs[:build] ||= build
+      attrs[:subject] ||= klass_or_file
+      smell_class.create!(attrs)
     end
   end
 end
