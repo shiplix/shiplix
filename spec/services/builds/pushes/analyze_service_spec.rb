@@ -13,12 +13,25 @@ describe Builds::Pushes::AnalyzeService do
 
     before { service.call }
 
-    Then { expect(build.smells_count).to eq 4 }
-    And { expect(klass_metrics.for('DirtyModule::Dirty').first.smells_count).to eq 2 }
-    And { expect(klass_metrics.for('DirtyModule::Dirty').first.rating).to eq 2 }
-    And { expect(klass_metrics.for('FlogTest').first.smells_count).to eq 1 }
-    And { expect(klass_metrics.for('FlogTest').first.rating).to eq 2 }
-    And { expect(klass_metrics.for('Brakeman').first.smells_count).to eq 1 }
-    And { expect(klass_metrics.for('Brakeman').first.rating).to eq 5 }
+    it "saves statistics" do
+      expect(build.smells_count).to eq 4
+      expect(build.rating_smells_count).to eq 1
+      expect(build.total_rating).to eq 2
+
+      metric = klass_metrics.for('DirtyModule::Dirty').first
+      expect(metric.smells_count).to eq 2
+      expect(metric.rating_smells_count).to eq 0
+      expect(metric.total_rating).to eq 0
+
+      metric = klass_metrics.for('FlogTest').first
+      expect(metric.smells_count).to eq 1
+      expect(metric.rating_smells_count).to eq 1
+      expect(metric.total_rating).to eq 2
+
+      metric = klass_metrics.for('Brakeman').first
+      expect(metric.smells_count).to eq 1
+      expect(metric.rating_smells_count).to eq 0
+      expect(metric.total_rating).to eq 0
+    end
   end
 end

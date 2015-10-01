@@ -2,16 +2,18 @@ module Ratingable
   extend ActiveSupport::Concern
 
   included do
-    attr_accessor :total_rating
+    validates :rating_smells_count, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+    validates :total_rating, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+    validates :rating, numericality: {only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5}
 
-    before_save :calc_rating
+    before_save :compute_rating
   end
 
-  protected
+  private
 
-  def calc_rating
-    return if smells_count.to_i.zero?
+  def compute_rating
+    return if rating_smells_count.to_i.zero?
 
-    self.rating = (total_rating / smells_count.to_f).round
+    self.rating = (total_rating / rating_smells_count.to_f).round
   end
 end

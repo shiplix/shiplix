@@ -3,4 +3,3 @@
 --tty
 --format progress
 --order random
---backtrace
