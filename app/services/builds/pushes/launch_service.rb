@@ -11,7 +11,7 @@ module Builds
         update_scm
         analyze
         build.finish!
-        compare_builds
+        #compare_builds
       rescue Exception => e
         begin
           build.fail! if build.present? && build.may_fail?
@@ -24,7 +24,7 @@ module Builds
         scm_clean if build.present?
       end
 
-      protected
+      private
 
       def create_build
         branch.push_builds.find_by(revision: payload.revision).try(:destroy)

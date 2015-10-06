@@ -1,6 +1,4 @@
 class Build < ActiveRecord::Base
-  include Ratingable
-
   has_many :klass_metrics
   has_many :source_file_metrics
   has_many :klass_source_files
@@ -14,6 +12,7 @@ class Build < ActiveRecord::Base
   validates :revision, presence: true
   validates :head_timestamp, presence: true
   validates :payload_data, presence: true
+  validates :rating, numericality: {only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5}
 
   scope :push_builds, -> { where(type: 'Builds::Push') }
   scope :pull_request_builds, -> { where(type: 'Builds::PullRequest') }
@@ -56,4 +55,5 @@ class Build < ActiveRecord::Base
   def collections
     @collections ||= BuildCollections.new(self)
   end
+
 end

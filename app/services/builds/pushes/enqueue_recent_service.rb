@@ -21,7 +21,7 @@ module Builds
         Builds::Pushes::LaunchJob.enqueue(repo.id, payload.to_json).meta_id
       end
 
-      protected
+      private
 
       def revision
         @revision ||= api.recent_revision(repo.full_github_name, branch_name)
