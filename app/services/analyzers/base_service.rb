@@ -4,14 +4,13 @@ module Analyzers
 
     attr_implement :call
 
-    delegate :klass_by_name, :klass_by_line, :source_file_by_path, to: 'build.collections'
+    private
 
-    protected
+    delegate :block_by_name, :block_by_path, :block_by_line, to: 'build.collections'
 
-    def create_smell(smell_class, klass_or_file, attrs = {})
-      attrs[:build] ||= build
-      attrs[:subject] ||= klass_or_file
-      smell_class.create!(attrs)
+    def increment_smells(block)
+      block.increment(:smells_count)
+      build.increment(:smells_count)
     end
   end
 end

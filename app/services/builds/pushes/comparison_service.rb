@@ -14,7 +14,7 @@ module Builds
         end
       end
 
-      protected
+      private
 
       def process(subject, field, type)
         subject.each_row_by_sql(changes_query(subject, field).to_sql) do |row|

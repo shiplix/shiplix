@@ -1,8 +1,8 @@
 class Location < ActiveRecord::Base
-  belongs_to :smell
-  belongs_to :source_file
+  belongs_to :namespace, class_name: "::Blocks::Namespace"
+  belongs_to :file, class_name: "::Blocks::File"
 
-  validates :smell_id, presence: true
-  validates :source_file_id, presence: true
-  validates :line, presence: true
+  validates :namespace, presence: true
+  validates :file, presence: true
+  validates :position, presence: true
 end

@@ -7,9 +7,9 @@ gem 'dotenv-rails'
 
 # Data
 gem 'pg'
-gem 'pg_array_parser'
+#gem 'pg_array_parser'
 gem 'postgresql_cursor'
-gem 'foreigner'
+gem 'schema_plus'
 gem 'seedbank'
 gem 'multi_json'
 gem 'oj'

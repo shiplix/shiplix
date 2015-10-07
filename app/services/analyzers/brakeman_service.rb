@@ -19,26 +19,27 @@ module Analyzers
     private
 
     def make_smell(warn)
-      if (klass_name = klass_name_from_warning(warn)).present?
-        klass = klass_by_name(klass_name)
+      if (namespace = namespace_from_warning(warn)).present?
+        namespace = block_by_name(namespace)
       end
 
-      source_file = source_file_by_path(warn.relative_path)
+      file = block_by_path(warn.relative_path)
+      line = warn.line.to_i
 
-      smell = create_smell(
-        Smells::Brakeman,
-        klass || source_file,
-        method_name: warn.method.to_s,
-        message: warn.message,
-        score: warn.confidence,
-        trait: warn.warning_type
+      Smells::Brakeman.create!(
+        namespace: namespace,
+        file: file,
+        position: Range.new(line, line),
+        data: {
+          "confidence": warn.confidence,
+          "warning_type": warn.warning_type
+        }
       )
 
-      # NOTE: brakeman can return line as nil
-      smell.locations.create!(source_file: source_file, line: warn.line.to_i)
+      increment_smells(namespace || file)
     end
 
-    def klass_name_from_warning(warn)
+    def namespace_from_warning(warn)
       warn.class || warn.controller || warn.model
     end
   end

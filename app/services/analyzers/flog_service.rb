@@ -24,48 +24,49 @@ module Analyzers
     end
 
     def calculate(path)
-      flog.scores.each do |klass_name, total_score|
-        next unless valid_klass_name?(klass_name)
+      flog.scores.each do |name, total_score|
+        next unless valid_name?(name)
 
-        klass = klass_by_name(klass_name)
-        source_file = source_file_by_path(path)
-        klass.metric.increment(:complexity, total_score.round)
-
-        find_smells(klass, source_file)
+        namespace = block_by_name(name)
+        file = block_by_path(path)
+        namespace.increment_metric("complexity", total_score.round)
+        find_smells(namespace, file)
       end
     end
 
-    def find_smells(klass, source_file)
-      flog.method_scores[klass.name].each do |klass_method, score|
+    def find_smells(namespace, file)
+      flog.method_scores[namespace.name].each do |method_name, score|
         score = score.round
+        namespace.increment_metric("complexity", score)
+
         if score >= HIGH_COMPLEXITY_SCORE_THRESHOLD
-          make_smell(klass, klass_method, source_file, score)
+          make_smell(namespace, method_name, file, score)
         end
       end
     end
 
-    def make_smell(klass, klass_method, source_file, score)
-      path_line = flog.method_locations[klass_method]
+    def make_smell(namespace, method_name, file, score)
+      path_line = flog.method_locations[method_name]
       return if path_line.blank?
 
       line = path_line.split(':').last.to_i
-      method_name = klass_method.sub('::', '#').split('#').last
+      method_name = method_name.sub('::', '#').split('#').last
 
-      smell = create_smell(
-        Smells::Flog,
-        klass,
-        score: score,
-        method_name: method_name
+      Smells::Flog.create!(
+        namespace: namespace,
+        file: file,
+        position: Range.new(line, line),
+        data: {
+          "score": score,
+          "method_name": method_name
+        }
       )
 
-      smell.locations.create!(
-        source_file_id: source_file.id,
-        line: line
-      )
+      increment_smells(namespace)
     end
 
-    def valid_klass_name?(klass_name)
-      klass_name.split('::').all? { |name| name =~ /^[A-Z]{1}[A-Za-z0-9_]*$/ }
+    def valid_name?(name)
+      name.split('::').all? { |x| x =~ /^[A-Z]{1}[A-Za-z0-9_]*$/ }
     end
   end
 end

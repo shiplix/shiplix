@@ -10,31 +10,12 @@ module Builds
         Analyzers::FlogService,
         Analyzers::FlayService,
         Analyzers::ReekService,
-        Analyzers::BrakemanService
+        Analyzers::BrakemanService,
+        Analyzers::RatingService
       ]
 
       def call
-        transaction do
-          ANALYZERS.each { |analyzer| analyzer.new(build).call }
-          build.collections.save
-        end
-      end
-
-      protected
-
-      def transaction
-        inner_exception = nil
-
-        build.transaction do
-          begin
-            yield
-          rescue ActiveRecord::Rollback => e
-            inner_exception = e
-            raise
-          end
-        end
-
-        raise inner_exception if inner_exception
+        ANALYZERS.each { |analyzer| analyzer.new(build).call }
       end
     end
   end
