@@ -7,6 +7,9 @@ class Block < ActiveRecord::Base
   validates :name, presence: true
   validates :rating, numericality: {only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5}
 
+  scope :order_by_rating, ->(dir = 'ASC') { order("metrics->>'rating' #{dir}")}
+  scope :order_by_smells_count, ->(dir = 'ASC') { order("metrics->>'smells_count' #{dir}")}
+
   def increment_metric(name, by = 1)
     metrics[name] = metrics.fetch(name, 0) + by
   end

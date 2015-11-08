@@ -5,6 +5,8 @@ class Build < ActiveRecord::Base
   has_many :smells
   has_many :changesets
 
+  has_many :blocks
+
   belongs_to :branch
 
   validates :branch_id, presence: true

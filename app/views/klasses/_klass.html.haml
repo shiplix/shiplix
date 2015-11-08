@@ -1,14 +1,14 @@
 %tr
   %td
-    = rating_badge(klass.metric.rating)
+    = rating_badge(klass.metrics['rating'])
   %td
     %h4
       = link_to klass.name, repo_klass_path(repo, klass)
   %td
-    %h3= klass.metric.complexity.to_i
+    %h3= klass.metrics['complexity'].to_i
   %td
-    %h3= klass.metric.duplication.to_i
+    %h3= klass.metrics['duplication'].to_i
   %td
-    %h3= klass.metric.loc
+    %h3= klass.metrics['loc']
   %td
-    %h3= klass.metric.smells_count
+    %h3= klass.metrics['smells_count']
