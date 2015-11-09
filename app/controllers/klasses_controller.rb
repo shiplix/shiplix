@@ -5,15 +5,13 @@ class KlassesController < ApplicationController
   def index
     return unless build
 
-    @klasses = repo.
-      klasses.
-      in_build(build).
-      order('klass_metrics.rating desc, klass_metrics.smells_count desc').
-      paginate(page: params[:page], per_page: 20)
+    @klasses = build
+                .blocks
+                .where(type: Blocks::Namespace)
+                .order_by_rating(:desc)
+                .order_by_smells_count(:desc)
+                .paginate(page: params[:page], per_page: 20)
 
-    build_id = build.id
-    Preloader.new(@klasses).
-      preload(:metrics) { where(build_id: build_id) }
   end
 
   def show

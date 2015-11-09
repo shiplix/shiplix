@@ -1,53 +1,59 @@
 require 'rails_helper'
 
 describe KlassesController, type: :controller do
-  let(:repo) { create :repo, active: true }
   let(:user) { create :user }
+  let(:repo) { create :repo, active: true }
   let(:branch) { create :branch, repo: repo, default: true }
-  let(:build) { create :push, branch: branch, state: 'finished' }
 
+  let!(:build) { create :push, branch: branch, state: 'finished' }
+  let!(:klass) { create :namespace_block, build: build }
   let!(:membership) { create :membership, repo: repo, user: user }
-  let!(:klass) { create :klass, :with_metrics, repo: repo, build: build }
 
   before do
     allow(controller).to receive(:current_user).and_return(user)
   end
 
   describe '#index' do
+    shared_examples 'shows page with klasses' do
+      it { expect(response.status).to eq 200 }
+      it { expect(assigns(:klasses)).to eq [klass] }
+    end
+
+    shared_examples 'returns 404 page without klasses' do
+      it { expect(assigns(:klasses)).to be_nil }
+      it { expect(response.status).to eq 404 }
+    end
+
     before { get :index, repo_id: repo.to_param }
 
     context 'when user is member' do
-      Then { expect(assigns(:klasses)).to be_present }
-      And { expect(response.status).to eq 200 }
+      it_behaves_like 'shows page with klasses'
     end
 
     context 'when user is not a member' do
       let!(:membership) { nil }
 
       context 'when repo is public' do
-        Then { expect(assigns(:klasses)).to be_present }
-        And { expect(response.status).to eq 200 }
+        it_behaves_like 'shows page with klasses'
       end
 
       context 'when repo is private' do
         let(:repo) { create :repo, private: true }
-        Then { expect(assigns(:klasses)).to be_nil }
-        And { expect(response.status).to eq 404 }
+
+        it_behaves_like 'returns 404 page without klasses'
       end
     end
 
     context 'when repo is not active' do
       let(:repo) { create :repo, active: false }
 
-      Then { expect(assigns(:klasses)).to be_nil }
-      And { expect(response.status).to eq 404 }
+      it_behaves_like 'returns 404 page without klasses'
     end
 
     context 'when has many branches' do
       let!(:branch2) { create :branch, repo: repo, name: 'develop' }
 
-      Then { expect(assigns(:klasses)).to be_present }
-      And { expect(response.status).to eq 200 }
+      it_behaves_like 'shows page with klasses'
     end
 
     context 'when has no build' do
