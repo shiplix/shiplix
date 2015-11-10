@@ -64,12 +64,25 @@ describe KlassesController, type: :controller do
     end
   end
 
-  # TODO: write specs
-  # describe '#show' do
-  #   before { get :show, repo_id: repo.id, id: klass.id }
+  describe '#show' do
+    let(:klass) { create :namespace_block, build: build }
 
-  #   context 'when user is member' do
-  #     Then { expect(assigns(:klass)).to eq klass }
-  #   end
-  # end
+    context 'when repo has build' do
+      it 'renders klass page' do
+        get :show, id: klass.to_param, repo_id: repo.to_param
+
+        expect(response.status).to eq 200
+      end
+    end
+
+    context 'when repo has not build' do
+      let(:blank_repo) { create :repo }
+
+      it 'renders 404 for repo without build' do
+        get :show, id: klass.to_param, repo_id: blank_repo.to_param
+
+        expect(response.status).to eq 404
+      end
+    end
+  end
 end

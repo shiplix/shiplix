@@ -6,6 +6,8 @@ class Build < ActiveRecord::Base
   has_many :changesets
 
   has_many :blocks
+  has_many :namespaces, class_name: 'Blocks::Namespace'
+  has_many :files, class_name: 'Blocks::File'
 
   belongs_to :branch
 

@@ -13,10 +13,10 @@
           &nbsp;
           %span.badge= count
 
-    - @klass.source_files.each do |source_file|
+    - @klass.files.each do |file|
       .panel.panel-warning
         .panel-heading
-          %h3.panel-title= source_file.path
+          %h3.panel-title= file.name
 
           %ul.panel-controls
             %li
@@ -29,6 +29,6 @@
           .panel-body
             %pre
               %code{class: 'ruby',
-                    data: {smells: @klass.smells.source_grouped[source_file.path].to_json}}
+                    data: {smells: @klass.smells.decorate.source_grouped[file.name].to_json}}
                 = preserve do
-                  = source_file.content
+                  = file.content
