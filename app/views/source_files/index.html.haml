@@ -31,7 +31,7 @@
                   %th{style: 'width: 90px'} LOC
                   %th{style: 'width: 90px'} Smells
               %tbody
-                = render(@source_files)
+                = render partial: 'source_files/file', collection: @source_files
           - else
             There is no source files yet.
 

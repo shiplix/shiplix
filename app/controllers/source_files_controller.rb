@@ -7,14 +7,11 @@ class SourceFilesController < ApplicationController
   def index
     return unless build.present?
 
-    @source_files = repo
-      .source_files
-      .in_build(build)
-      .order('source_file_metrics.rating desc, source_file_metrics.smells_count desc')
+    @source_files = build
+      .files
+      .order_by_rating(:desc)
+      .order_by_smells_count(:desc)
       .paginate(page: params[:page], per_page: 20)
-
-    build_id = build.id
-    Preloader.new(@source_files).preload(:metrics) { where(build_id: build_id) }
   end
 
   private

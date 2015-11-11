@@ -14,17 +14,13 @@ describe SourceFilesController, type: :controller do
   describe '#index' do
     context 'when repo has build' do
       let!(:build) { create :push, branch: branch, state: 'finished' }
-
-      before do
-        source_file = create :source_file, repo: repo
-        create :source_file_metric, build: build, source_file: source_file
-      end
+      let!(:file) { create :file_block, build: branch.builds.first }
 
       it 'show list of source files' do
         get :index, repo_id: repo.to_param
 
         expect(response.status).to eq 200
-        expect(assigns(:source_files)).to be_present
+        expect(assigns(:source_files)).to eq [file]
       end
     end
 

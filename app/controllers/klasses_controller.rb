@@ -1,6 +1,5 @@
 class KlassesController < ApplicationController
   before_action only: [:index, :show] { title_variables[:repo] = repo.full_github_name }
-  before_action only: [:show] { title_variables[:klass] = klass.name }
 
   def index
     return unless build
@@ -16,19 +15,15 @@ class KlassesController < ApplicationController
 
   def show
     return render_error(404) unless build
+    title_variables[:klass] = klass.name
 
-    build_id = build.id
-    Preloader.new(klass).
-      preload([:metrics, :smells, :klass_source_files]) { where(build_id: build_id) }.
-      preload([:source_files, {smells: {locations: :source_file}}])
-
-    klass.source_files.each do |source_file|
-      source_file.content = api.file_contents(repo.full_github_name,
-                                              source_file.path,
-                                              build.revision)
+    # TODO: Think about where we can load file content from github
+    # and cache it. It`s not contoller role.
+    klass.files.each do |file|
+      file.content = api.file_contents(repo.full_github_name,
+                                       file.name,
+                                       build.revision)
     end
-
-    @klass = klass.decorate
   end
 
   private
@@ -42,7 +37,7 @@ class KlassesController < ApplicationController
   end
 
   def klass
-    @klass ||= repo.klasses.find_by!(name: params[:id])
+    @klass ||= build.namespaces.find_by!(name: params[:id])
   end
 
   def authenticate
