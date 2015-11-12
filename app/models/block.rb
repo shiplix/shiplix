@@ -2,6 +2,7 @@ class Block < ActiveRecord::Base
   attr_accessor :rating_smells_count, :total_rating
 
   belongs_to :build
+  has_many :smells
 
   validates :build, presence: true
   validates :name, presence: true
