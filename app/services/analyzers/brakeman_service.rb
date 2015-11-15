@@ -26,14 +26,18 @@ module Analyzers
       file = block_by_path(warn.relative_path)
       line = warn.line.to_i
 
+      data = {
+        "confidence": warn.confidence,
+        "warning_type": warn.warning_type,
+      }
+
+      data['method_name'] = warn.method.to_s if warn.method.present?
+
       Smells::Brakeman.create!(
         namespace: namespace,
         file: file,
         position: Range.new(line, line),
-        data: {
-          "confidence": warn.confidence,
-          "warning_type": warn.warning_type
-        }
+        data: data
       )
 
       increment_smells(namespace || file)

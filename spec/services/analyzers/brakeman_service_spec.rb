@@ -11,45 +11,40 @@ describe Analyzers::BrakemanService do
     end
 
     it "creates smell for dirty_controller" do
-      klass = repo.klasses.find_by(name: "Brakeman::DirtyController")
-      smell = Smells::Brakeman.find_by(build: build, subject: klass, method_name: "redirect_to_some_places")
-      source_file = repo.source_files.find_by(name: "dirty_controller.rb")
+      klass = build.namespaces.find_by(name: "Brakeman::DirtyController")
+
+      smell = klass
+                .smells
+                .where('data @> ?', {method_name: 'redirect_to_some_places'}.to_json)
+                .find_by(type: Smells::Brakeman)
 
       expect(klass).to be_present
-      expect(smell).to be_present
-      expect(source_file).to be_present
-      expect(smell.locations.where(source_file: source_file, line: 4)).to be_exists
+      expect(smell.file.name).to eq 'app/controllers/dirty_controller.rb'
+      expect(smell.position.first).to eq 4
     end
 
     it "creates smell for application_controller" do
-      klass = repo.klasses.find_by(name: "ApplicationController")
-      smell = Smells::Brakeman.find_by(build: build, subject: klass)
-      source_file = repo.source_files.find_by(name: "application_controller.rb")
+      klass = build.namespaces.find_by(name: "ApplicationController")
 
       expect(klass).to be_present
-      expect(smell).to be_present
-      expect(source_file).to be_present
-      expect(smell.locations.where(source_file: source_file, line: 0)).to be_exists
+      expect(klass.smells.first.file.name).to eq 'app/controllers/application_controller.rb'
+      expect(klass.smells.first.position.first).to eq 0
     end
 
     it "creates smells for model" do
-      klass = repo.klasses.find_by(name: "Brakeman::Account")
-      smell = Smells::Brakeman.find_by(build: build, subject: klass)
-      source_file = repo.source_files.find_by(name: "account.rb")
+      klass = build.namespaces.find_by(name: "Brakeman::Account")
 
       expect(klass).to be_present
-      expect(smell).to be_present
-      expect(source_file).to be_present
-      expect(smell.locations.where(source_file: source_file, line: 0)).to be_exists
+      expect(klass.smells.first.file.name).to eq 'app/models/account.rb'
+      expect(klass.smells.first.position.first).to eq 0
     end
 
     it "creates smell for view" do
-      source_file = repo.source_files.find_by(name: "index.html.erb")
-      smell = Smells::Brakeman.find_by(build: build, subject: source_file)
+      file = build.files.find_by(name: "app/views/index.html.erb")
 
-      expect(source_file).to be_present
-      expect(smell).to be_present
-      expect(smell.locations.where(source_file: source_file, line: 2)).to be_exists
+      expect(file).to be_present
+      expect(file.smells).to be_exists(type: Smells::Brakeman)
+      expect(file.smells.first.position.first).to eq 2
     end
   end
 

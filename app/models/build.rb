@@ -1,11 +1,7 @@
 class Build < ActiveRecord::Base
-  has_many :klass_metrics
-  has_many :source_file_metrics
-  has_many :klass_source_files
-  has_many :smells
   has_many :changesets
-
   has_many :blocks
+  has_many :smells, through: :blocks
   has_many :namespaces, class_name: 'Blocks::Namespace'
   has_many :files, class_name: 'Blocks::File'
 

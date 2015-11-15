@@ -24,20 +24,26 @@ describe Analyzers::ReekService do
       it 'cretes smell for method in klass' do
         service.call
 
-        klass = repo.klasses.find_by(name: 'DirtyModule::Dirty')
+        klass = push_build.namespaces.find_by(name: 'DirtyModule::Dirty')
 
         expect(klass).to be_present
-        expect(repo.source_files.where(path: test_file_path)).to be_exists
+        expect(push_build.files.where(name: test_file_path)).to be_exists
 
-        klass_smell = push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: nil)
+        klass_smell = klass
+                        .smells
+                        .where('data @> ?', {method_name: nil}.to_json)
+                        .find_by(type: Smells::Reek)
 
-        expect(klass_smell.message).to eq 'has no descriptive comment'
-        expect(klass_smell.locations.where(line: 2)).to be_exists
+        expect(klass_smell.data['message']).to eq 'has no descriptive comment'
+        expect(klass_smell.position).to eq 2...3
 
-        klass_method_smell = push_build.smells.find_by(type: Smells::Reek, subject: klass, method_name: 'test_method')
+        klass_method_smell = klass
+                              .smells
+                              .where('data @> ?', {method_name: 'test_method'}.to_json)
+                              .find_by(type: Smells::Reek)
 
-        expect(klass_method_smell.message).to eq "has unused parameter 'unused_param'"
-        expect(klass_method_smell.locations.where(line: 3)).to be_exists
+        expect(klass_method_smell.data['message']).to eq "has unused parameter 'unused_param'"
+        expect(klass_method_smell.position).to eq 3...4
       end
     end
 
@@ -47,9 +53,11 @@ describe Analyzers::ReekService do
       it 'creates smell on source file' do
         service.call
 
-        expect(repo.klasses).to be_empty
-        expect(repo.source_files.find_by(path: test_file_path).smells)
-          .to be_exists(method_name: 'settings_list')
+        expect(push_build.namespaces).to be_empty
+        expect(
+          push_build.files.find_by(name: test_file_path)
+            .smells.where('data @> ?', {method_name: 'settings_list'}.to_json)
+        ).to be_exists
       end
     end
   end
@@ -58,8 +66,8 @@ describe Analyzers::ReekService do
     let(:test_file_path) { path_to_repo_files('reek/clean.rb').to_s }
 
     When { service.call }
-    Then { expect(repo.klasses).to be_empty }
-    And { expect(repo.source_files).to be_empty }
+    Then { expect(push_build.namespaces).to be_empty }
+    And { expect(push_build.files).to be_empty }
     And { expect(push_build.smells).to be_empty }
   end
 end
