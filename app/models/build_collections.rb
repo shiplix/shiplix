@@ -16,10 +16,12 @@ class BuildCollections
   end
 
   def block_by_line(file, line)
-    file.
-      locations.
-      reverse.
-      find { |x| x.position.include?(line) }.
-      try(:namespace)
+    klass = file.
+              locations.
+              reverse.
+              find { |x| x.position.include?(line) }.
+              try(:namespace)
+
+    @blocks[klass.name] ||= klass if klass.present?
   end
 end

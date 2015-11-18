@@ -6,10 +6,13 @@ describe Analyzers::FlogService do
   let(:branch) { create :branch, repo: repo }
   let(:push_build) { create :push, branch: branch, payload: payload }
   let(:service) { described_class.new(push_build) }
-  let(:klasses) { repo.klasses.index_by(&:name) }
 
-  before { service.call }
+  subject(:klasses) { push_build.namespaces.index_by(&:name) }
 
-  Then { expect(klasses['FlogTest']).to be_present }
-  And { expect(klasses['FlogTest'].smells.size).to eq 1 }
+  it 'creates klass with smell' do
+    service.call
+
+    expect(klasses['FlogTest']).to be_present
+    expect(klasses['FlogTest'].smells.size).to eq 1
+  end
 end

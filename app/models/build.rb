@@ -55,5 +55,4 @@ class Build < ActiveRecord::Base
   def collections
     @collections ||= BuildCollections.new(self)
   end
-
 end
