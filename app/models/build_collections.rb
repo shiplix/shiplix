@@ -3,7 +3,7 @@ class BuildCollections
 
   def initialize(build)
     @build = build
-    @blocks = {}
+    @blocks = ActiveSupport::HashWithIndifferentAccess.new
   end
 
   def block_by_path(path)
