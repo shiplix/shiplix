@@ -15,23 +15,18 @@ describe Builds::Pushes::AnalyzeService do
 
     it "saves statistics" do
       expect(build.smells_count).to eq 4
-      expect(build.rating_smells_count).to eq 1
-      expect(build.total_rating).to eq 2
+      expect(build.rating).to eq 2
 
-      metric = klass_metrics.for('DirtyModule::Dirty').first
-      expect(metric.smells_count).to eq 2
-      expect(metric.rating_smells_count).to eq 0
-      expect(metric.total_rating).to eq 0
+      namespace = Blocks::Namespace.find_by(name: 'DirtyModule::Dirty')
+      expect(namespace.smells_count).to eq 2
+      expect(namespace.rating).to eq 1
 
-      metric = klass_metrics.for('FlogTest').first
-      expect(metric.smells_count).to eq 1
-      expect(metric.rating_smells_count).to eq 1
-      expect(metric.total_rating).to eq 2
+      namespace = Blocks::Namespace.find_by(name: 'FlogTest')
+      expect(namespace.smells_count).to eq 1
+      expect(namespace.rating).to eq 3
 
-      metric = klass_metrics.for('Brakeman').first
-      expect(metric.smells_count).to eq 1
-      expect(metric.rating_smells_count).to eq 0
-      expect(metric.total_rating).to eq 0
+      namespace = Blocks::Namespace.find_by(name: 'Brakeman')
+      expect(namespace.smells_count).to eq 1
     end
   end
 end
