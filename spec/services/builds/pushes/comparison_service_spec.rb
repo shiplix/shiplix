@@ -2,101 +2,75 @@ require 'rails_helper'
 
 describe Builds::Pushes::ComparisonService do
   let(:branch) { create :branch }
-  let(:target) { create :push, branch: branch }
-  let(:source) { create :push, branch: branch }
-  let(:klass) { create :klass, repo: branch.repo }
-  let(:source_file) { create :source_file, repo: branch.repo }
-  let(:service) { described_class.new(target, source) }
+  let(:target_build) { create :push, branch: branch }
+  let(:source_build) { create :push, branch: branch }
+  let(:service) { described_class.new(target_build, source_build) }
 
   context 'when repo empty' do
     before { service.call }
-    it { expect(target.changesets).to be_empty }
+    it { expect(target_build.changesets).to be_empty }
   end
 
   context 'when builds from different repos' do
-    let(:source) { create :push }
+    let(:source_build) { create :push }
     it { expect { service.call }.to raise_error }
   end
 
-  describe 'Klass' do
-    context 'when has klasses with same rating' do
-      before do
-        create :klass_metric, klass: klass, build: target, rating: 1
-        create :klass_metric, klass: klass, build: source, rating: 1
-        service.call
-      end
+  context 'when creates klass and file together' do
+    let!(:new_file) { create "file_block", build: target_build, rating: 1 }
+    let!(:new_klass) { create "namespace_block", build: target_build, rating: 1 }
 
-      it { expect(target.changesets).to be_empty }
-    end
+    it 'creates changesets for file and klass' do
+      service.call
 
-    context 'when has klasses with different rating' do
-      before do
-        create :klass_metric, klass: klass, build: target, rating: 1
-        create :klass_metric, klass: klass, build: source, rating: 2
-        service.call
-      end
-
-      let(:changeset) { target.changesets.first }
-
-      Then { expect(target.changesets.size).to eq 1 }
-      And { expect(changeset.subject).to eq klass }
-      And { expect(changeset.rating).to eq 1 }
-      And { expect(changeset.prev_rating).to eq 2 }
-    end
-
-    context 'when adds new klasses' do
-      before do
-        create :klass_metric, klass: klass, build: target, rating: 1
-        service.call
-      end
-
-      let(:changeset) { target.changesets.first }
-
-      Then { expect(target.changesets.size).to eq 1 }
-      And { expect(changeset.subject).to eq klass }
-      And { expect(changeset.rating).to eq 1 }
-      And { expect(changeset.prev_rating).to be_nil }
+      expect(target_build.changesets.size).to eq 2
+      expect(target_build.changesets.map(&:block)).to match_array [new_file, new_klass]
+      expect(target_build.changesets.map(&:prev_block)).to match_array [nil, nil]
     end
   end
 
-  describe 'SourceFile' do
-    context 'when has source files with same rating' do
-      before do
-        create :source_file_metric, source_file: source_file, build: target, rating: 1
-        create :source_file_metric, source_file: source_file, build: source, rating: 1
-        service.call
+  [:namespace, :file].each do |source|
+    describe "#{source}" do
+      context 'when has klasses with same rating' do
+        before do
+          create "#{source}_block", build: target_build, rating: 1
+          create "#{source}_block", build: source_build, rating: 1
+
+          service.call
+        end
+
+        it { expect(target_build.changesets).to be_empty }
       end
 
-      it { expect(target.changesets).to be_empty }
-    end
+      context "when has #{source} with different rating" do
+        let!(:target_klass) { create "#{source}_block", build: target_build, rating: 1 }
+        let!(:source_klass) { create "#{source}_block", build: source_build, rating: 2 }
 
-    context 'when has source files with different rating' do
-      before do
-        create :source_file_metric, source_file: source_file, build: target, rating: 1
-        create :source_file_metric, source_file: source_file, build: source, rating: 2
-        service.call
+        before { service.call }
+
+        subject(:changeset) { target_build.changesets.first }
+
+        it "saves changeset for that #{source}" do
+          expect(changeset.block).to eq target_klass
+          expect(changeset.prev_block).to eq source_klass
+        end
       end
 
-      let(:changeset) { target.changesets.first }
+      context "when adds new #{source}" do
+        let!(:new_klass) { create "#{source}_block", build: target_build, rating: 1 }
 
-      Then { expect(target.changesets.size).to eq 1 }
-      And { expect(changeset.subject).to eq source_file }
-      And { expect(changeset.rating).to eq 1 }
-      And { expect(changeset.prev_rating).to eq 2 }
-    end
+        before do
+          service.call
+        end
 
-    context 'when adds new klasses' do
-      before do
-        create :source_file_metric, source_file: source_file, build: target, rating: 1
-        service.call
+        let(:changeset) { target_build.changesets.first }
+
+        it "creates new changeset for new #{source}" do
+          expect(target_build.changesets.size).to eq 1
+          expect(changeset.block).to eq new_klass
+          expect(changeset.prev_block).to be_nil
+        end
       end
-
-      let(:changeset) { target.changesets.first }
-
-      Then { expect(target.changesets.size).to eq 1 }
-      And { expect(changeset.subject).to eq source_file }
-      And { expect(changeset.rating).to eq 1 }
-      And { expect(changeset.prev_rating).to be_nil }
     end
   end
 end
