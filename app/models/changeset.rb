@@ -1,11 +1,7 @@
 class Changeset < ActiveRecord::Base
-  belongs_to :branch
   belongs_to :build
-  belongs_to :subject, polymorphic: true
+  belongs_to :block
+  belongs_to :prev_block, class_name: 'Block'
 
-  validates :build_id, presence: true
-  validates :subject_id, presence: true
-  validates :subject_type, presence: true
-
-  before_create { self.branch ||= build.branch }
+  validates :build, :block, presence: true
 end
