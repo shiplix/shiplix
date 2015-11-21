@@ -14,7 +14,7 @@ class ChangesetsFinder
     @changesets.each do |month, changesets|
       @changesets[month] = changesets.group_by { |x| x.created_at.to_date }
       @changesets[month].each do |date, changesets|
-        @changesets[month][date] = changesets.group_by { |x| x.prev_rating.nil? }
+        @changesets[month][date] = changesets.group_by { |x| x.prev_block_id.nil? }
       end
     end
 
@@ -26,7 +26,7 @@ class ChangesetsFinder
   def find_changesets
     @changesets = branch.
       changesets.
-      includes(:subject).
+      includes(:block).
       where(created_at: period).
       order(created_at: :desc).
       to_a
