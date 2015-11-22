@@ -12,10 +12,10 @@ describe ChangesetsFinder do
   context "when branch has changesets" do
     before { Timecop.freeze(Time.utc(2015, 3, 10)) }
 
-    let!(:c1) { create :changeset, :with_class, build: build, created_at: 1.month.ago }
-    let!(:c2) { create :changeset, :with_class, build: build, created_at: 1.day.ago }
-    let!(:c3) { create :changeset, :with_class, build: build }
-    let!(:c4) { create :changeset, :with_class, build: build, prev_rating: nil }
+    let!(:c1) { create :changeset, :with_prev_block, build: build, created_at: 1.month.ago }
+    let!(:c2) { create :changeset, :with_prev_block, build: build, created_at: 1.day.ago }
+    let!(:c3) { create :changeset, :with_prev_block, build: build }
+    let!(:c4) { create :changeset, build: build }
 
     after { Timecop.return }
 

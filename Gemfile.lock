@@ -76,8 +76,7 @@ GEM
       sass (~> 3.0)
       terminal-table (~> 1.4)
     builder (3.2.2)
-    byebug (4.0.5)
-      columnize (= 0.9.0)
+    byebug (8.2.0)
     capistrano (3.4.0)
       i18n
       rake (>= 10.0.0)
@@ -105,7 +104,6 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     colorize (0.7.7)
-    columnize (0.9.0)
     commonjs (0.2.7)
     concord (0.1.5)
       adamantium (~> 0.2.0)
@@ -237,8 +235,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (3.1.0)
-      byebug (~> 4.0)
+    pry-byebug (3.3.0)
+      byebug (~> 8.0)
       pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)

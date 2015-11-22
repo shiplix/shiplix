@@ -1,12 +1,10 @@
 FactoryGirl.define do
   factory :changeset do
     association :build
+    association :block, factory: :namespace_block
 
-    trait :with_class do
-      association :subject, factory: :klass
+    trait :with_prev_block do
+      association :prev_block, factory: :namespace_block
     end
-
-    rating 1
-    prev_rating 0
   end
 end
