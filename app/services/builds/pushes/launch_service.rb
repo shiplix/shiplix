@@ -11,7 +11,7 @@ module Builds
         update_scm
         analyze
         build.finish!
-        #compare_builds
+        compare_builds
       rescue Exception => e
         begin
           build.fail! if build.present? && build.may_fail?
