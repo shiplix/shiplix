@@ -9,8 +9,7 @@ class SourceFilesController < ApplicationController
 
     @source_files = build
       .files
-      .order_by_rating(:desc)
-      .order_by_smells_count(:desc)
+      .order('rating desc, smells_count desc')
       .paginate(page: params[:page], per_page: 20)
   end
 

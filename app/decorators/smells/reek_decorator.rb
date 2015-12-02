@@ -9,7 +9,7 @@ module Smells
     end
 
     def name
-      trait
+      data['smell_type']
     end
   end
 end
