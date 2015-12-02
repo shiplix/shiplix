@@ -7,8 +7,7 @@ class KlassesController < ApplicationController
     @klasses = build
                 .blocks
                 .where(type: Blocks::Namespace)
-                .order_by_rating(:desc)
-                .order_by_smells_count(:desc)
+                .order('rating desc, smells_count desc')
                 .paginate(page: params[:page], per_page: 20)
 
   end
