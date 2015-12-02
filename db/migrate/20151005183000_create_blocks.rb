@@ -14,12 +14,10 @@ class CreateBlocks < ActiveRecord::Migration
 
     execute "truncate builds cascade"
 
-    create_enum :block_type, "Blocks::File", "Blocks::Namespace"
+    execute "CREATE TYPE block_type AS ENUM ('Blocks::File', 'Blocks::Namespace')"
 
     create_table :blocks do |t|
-      t.integer :build_id, null: false,
-        index: {with: [:type, :name], unique: true},
-        foreign_key: {on_delete: :cascade}
+      t.integer :build_id, null: false
       t.column :type, :block_type, null: false
       t.string :name, null: false, limit: 2048
       t.jsonb :metrics, null: false, default: '{}'
@@ -27,40 +25,42 @@ class CreateBlocks < ActiveRecord::Migration
       t.integer :smells_count, null: false, default: 0
     end
 
+    add_index :blocks, [:build_id, :type, :name], unique: true
+    add_foreign_key :blocks, :builds, on_delete: :cascade
+
     create_table :locations do |t|
-      t.integer :namespace_id, null: false,
-        index: {with: [:file_id]},
-        foreign_key: {references: :blocks, on_delete: :cascade}
-      t.integer :file_id, null: false,
-        index: true,
-        foreign_key: {references: :blocks, on_delete: :cascade}
+      t.integer :namespace_id, null: false
+      t.integer :file_id, null: false, index: true
       t.int4range :position, null: false
     end
 
+    add_index :locations, [:namespace_id, :file_id]
+    add_foreign_key :locations, :blocks, column: :namespace_id, on_delete: :cascade
+    add_foreign_key :locations, :blocks, column: :file_id, on_delete: :cascade
+
     create_table :smells do |t|
-      t.integer :namespace_id, null: false,
-        index: {with: [:file_id]},
-        foreign_key: {references: :blocks, on_delete: :cascade}
-      t.integer :file_id, null: false,
-        index: true,
-        foreign_key: {references: :blocks, on_delete: :cascade}
+      t.integer :namespace_id, null: false
+      t.integer :file_id, null: false, index: true
       t.column :type, :smell_type, null: false
       t.string :message, limit: 1024
       t.jsonb :data, null: false, default: '{}'
       t.int4range :position, null: false
     end
 
+    add_index :smells, [:namespace_id, :file_id]
+    add_foreign_key :smells, :blocks, column: :namespace_id, on_delete: :cascade
+    add_foreign_key :smells, :blocks, column: :file_id, on_delete: :cascade
+
     create_table :changesets do |t|
-      t.integer :build_id, null: false,
-        index: {with: [:block_id]},
-        foreign_key: {on_delete: :cascade}
-      t.integer :block_id, null: false,
-        index: true,
-        foreign_key: {on_delete: :cascade}
-      t.integer :prev_block_id,
-        index: true,
-        foreign_key: {references: :blocks, on_delete: :cascade}
+      t.integer :build_id, null: false
+      t.integer :block_id, null: false, index: true
+      t.integer :prev_block_id, index: true
     end
+
+    add_index :changesets, [:build_id, :block_id]
+    add_foreign_key :changesets, :builds, on_delete: :cascade
+    add_foreign_key :changesets, :blocks, column: :block_id, on_delete: :cascade
+    add_foreign_key :changesets, :blocks, column: :prev_block_id, on_delete: :cascade
   end
 
   def down
