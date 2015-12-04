@@ -26,7 +26,7 @@ class ChangesetsFinder
   def find_changesets
     @changesets = branch.
       changesets.
-      includes(:block).
+      includes(:block, :prev_block).
       where(created_at: period).
       order(created_at: :desc).
       to_a
