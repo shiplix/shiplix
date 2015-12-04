@@ -26,18 +26,18 @@
                       .list-group.border-bottom
                         - changesets.each do |changeset|
                           %li.list-group-item
-                            - if changeset.prev_rating
+                            - if changeset.prev_block_id.present?
                               .timeline-marks
                                 .progress-timeline-arrow
                                   %i.fa.fa-arrow-up
                                 %div
-                                  = rating_badge(changeset.rating)
+                                  = rating_badge(changeset.block.rating)
                                 %div
-                                  = rating_badge(changeset.prev_rating)
+                                  = rating_badge(changeset.prev_block.rating)
                             - else
                               .timeline-marks.new-mark
-                                = rating_badge(changeset.rating)
+                                = rating_badge(changeset.block.rating)
 
                             .timeline-class-name
-                              %h3= changeset.subject.name
+                              %h3= changeset.block.name
                 .timeline-footer.timeline-footer-without-padding

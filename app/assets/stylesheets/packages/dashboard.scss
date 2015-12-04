@@ -78,6 +78,12 @@
     margin-top: 2px;
 }
 
+.timeline-body {
+  .list-group-item {
+    overflow: hidden;
+  }
+}
+
 .x-navigation > li > a {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -91,3 +97,4 @@
 .x-navigation > li:last-child > a {
     border-radius: 0;
 }
+
