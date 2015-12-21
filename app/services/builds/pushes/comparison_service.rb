@@ -27,7 +27,8 @@ module Builds
           join(s, Arel::Nodes::OuterJoin).
           on(
             s[:build_id].eq(source.id)
-            .and(s['type'].eq(t['type']))
+            .and(s['type'].eq(t['type'])
+            .and(s['name'].eq(t['name'])))
           ).
           where(t[:build_id].eq target.id).
           where(

@@ -29,48 +29,51 @@ describe Builds::Pushes::ComparisonService do
     end
   end
 
-  [:namespace, :file].each do |source|
-    describe "#{source}" do
-      context 'when has klasses with same rating' do
-        before do
-          create "#{source}_block", build: target_build, rating: 1
-          create "#{source}_block", build: source_build, rating: 1
+  context "when adds new klass in new file" do
+    let!(:new_klass) { create "namespace_block", build: target_build, rating: 1 }
+    let!(:new_file) { create "file_block", build: target_build, rating: 1 }
 
-          service.call
-        end
+    before do
+      service.call
+    end
 
-        it { expect(target_build.changesets).to be_empty }
-      end
+    subject(:changesets) { target_build.changesets }
 
-      context "when has #{source} with different rating" do
-        let!(:target_klass) { create "#{source}_block", build: target_build, rating: 1 }
-        let!(:source_klass) { create "#{source}_block", build: source_build, rating: 2 }
+    it "creates new changeset for new klass and new file" do
+      expect(changesets.exists?(block_id: new_klass.id, prev_block_id: nil)).to eq true
+      expect(changesets.exists?(block_id: new_file.id, prev_block_id: nil)).to eq true
+      expect(changesets.size).to eq 2
+    end
+  end
 
-        before { service.call }
+  context 'when rating in klass and file was not change' do
+    before do
+      create "namespace_block", name: 'TestKlass', build: target_build, rating: 1
+      create "file_block", name: 'test_klass.rb', build: target_build, rating: 1
 
-        subject(:changeset) { target_build.changesets.first }
+      create "namespace_block", name: 'TestKlass', build: source_build, rating: 1
+      create "file_block", name: 'test_klass.rb', build: source_build, rating: 1
 
-        it "saves changeset for that #{source}" do
-          expect(changeset.block).to eq target_klass
-          expect(changeset.prev_block).to eq source_klass
-        end
-      end
+      service.call
+    end
 
-      context "when adds new #{source}" do
-        let!(:new_klass) { create "#{source}_block", build: target_build, rating: 1 }
+    it { expect(target_build.changesets).to be_empty }
+  end
 
-        before do
-          service.call
-        end
+  context 'when rating in klass was change' do
+    let!(:target_klass) { create "namespace_block", name: 'TestKlass', build: target_build, rating: 1 }
+    let!(:source_klass) { create "namespace_block", name: 'TestKlass', build: source_build, rating: 2 }
+    let!(:another_klass) { create "namespace_block", name: 'AnotherKlass', build: source_build, rating: 2 }
 
-        let(:changeset) { target_build.changesets.first }
+    let!(:target_file) { create "file_block", name: 'test.rb', build: target_build, rating: 1 }
+    let!(:source_file) { create "file_block", name: 'test.rb', build: source_build, rating: 1 }
+    let!(:another_file) { create "file_block", name: 'another_klass.rb', build: source_build, rating: 2 }
 
-        it "creates new changeset for new #{source}" do
-          expect(target_build.changesets.size).to eq 1
-          expect(changeset.block).to eq new_klass
-          expect(changeset.prev_block).to be_nil
-        end
-      end
+    it 'create changeset only for klass' do
+      service.call
+
+      expect(target_build.changesets.size).to eq 1
+      expect(target_build.changesets.exists?(block_id: target_klass.id, prev_block_id: source_klass.id)).to eq true
     end
   end
 end
