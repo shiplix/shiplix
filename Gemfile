@@ -80,14 +80,15 @@ group :development do
   gem 'capistrano', '~> 3.2'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
-  gem 'capistrano3-puma'
+  gem 'capistrano3-unicorn'
   gem 'quiet_assets'
   gem 'wirble'
   gem 'awesome_print'
 end
 
-group :production, :development do
-  gem 'puma'
+group :production do
+  gem "unicorn", ">= 5.0.1"
+  gem "unicorn-worker-killer", ">= 0.4.4"
 end
 
 group :development, :test do
