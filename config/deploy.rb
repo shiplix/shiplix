@@ -21,6 +21,12 @@ SSHKit.config.command_map[:rake] = 'bundle exec rake'
 SSHKit.config.command_map[:rails] = 'bundle exec rails'
 
 namespace :deploy do
+  task :restart do
+    invoke 'unicorn:reload'
+  end
+
+  after :publishing, :restart
+
   desc 'Configure environment'
   task :config_env do
     on roles(:app) do
