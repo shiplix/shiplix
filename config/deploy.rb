@@ -22,7 +22,7 @@ SSHKit.config.command_map[:rails] = 'bundle exec rails'
 
 namespace :deploy do
   task :restart do
-    invoke 'unicorn:reload'
+    invoke 'unicorn:restart'
   end
 
   after :publishing, :restart
