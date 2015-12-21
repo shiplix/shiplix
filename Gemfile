@@ -63,6 +63,7 @@ gem 'resque', '~> 1.25'
 gem 'resque-retry'
 gem 'resque-god'
 gem 'resque-single'
+gem 'resque-web', require: 'resque_web'
 gem 'cocaine', require: false
 
 # Analyzers
