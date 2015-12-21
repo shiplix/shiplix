@@ -1,4 +1,8 @@
+require "resque_web"
+
 Rails.application.routes.draw do
+  mount ResqueWeb::Engine => "/resque_web"
+
   get '/auth/github/callback', to: 'sessions#create'
   get '/sign_out', to: 'sessions#destroy'
 
