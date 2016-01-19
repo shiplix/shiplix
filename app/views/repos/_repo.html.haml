@@ -9,7 +9,7 @@
   %td
     %h3
       - if repo.active?
-        = link_to repo.full_github_name, repo_klasses_url(repo)
+        = link_to repo.full_github_name, repo_url(repo)
       - else
         = repo.full_github_name
 
