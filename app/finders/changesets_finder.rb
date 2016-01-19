@@ -1,6 +1,7 @@
 class ChangesetsFinder
-  pattr_initialize :branch, [:period] do
-    @period ||= 3.month.ago..Time.now
+  pattr_initialize :branch, [:period, :limit] do
+    @period ||= 3.month.ago..Time.current
+    @limit = 500
   end
 
   attr_reader :changesets
@@ -21,14 +22,17 @@ class ChangesetsFinder
     @changesets
   end
 
-  protected
+  private
 
   def find_changesets
     @changesets = branch.
       changesets.
-      includes(:block, :prev_block).
-      where(created_at: period).
+      preload(:block, :prev_block).
+      joins(:block).
+      where(blocks: {type: "Blocks::Namespace"}).
+      where(created_at: @period).
       order(created_at: :desc).
+      limit(@limit).
       to_a
   end
 end
