@@ -1,0 +1,17 @@
+%tr
+  %td
+    = rating_badge(block.rating)
+  %td
+    %h4
+      - if block.is_a?(Blocks::File)
+        = link_to block.name, repo_file_path(repo, block)
+      - else
+        = link_to block.name, repo_namespace_path(repo, block)
+  %td
+    %h3= block.metrics['complexity'].to_i
+  %td
+    %h3= block.metrics['duplication'].to_i
+  %td
+    %h3= block.metrics['loc']
+  %td
+    %h3= block.smells_count

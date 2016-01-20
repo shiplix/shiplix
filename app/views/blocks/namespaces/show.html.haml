@@ -1,11 +1,11 @@
-- breadcrumb :klass, @repo, @klass
+- breadcrumb :namespace, @repo, @namespace
 
 - content_for(:header_icon, 'fa-file-code-o')
 
 .row
   .col-md-12
     .panel-heading
-      - @klass.smells_statistics.each do |name, count|
+      - @namespace.smells_statistics.each do |name, count|
         - smell_class = "#{name}Decorator".constantize
         %button.btn.btn-default{disabled: true}
           %i{class: smell_class.icon}
@@ -13,7 +13,7 @@
           &nbsp;
           %span.badge= count
 
-    - @klass.files.each do |file|
+    - @namespace.files.each do |file|
       .panel.panel-warning
         .panel-heading
           %h3.panel-title= file.name
@@ -29,6 +29,6 @@
           .panel-body
             %pre
               %code{class: 'ruby',
-                    data: {smells: @klass.smells.decorate.source_grouped[file.name].to_json}}
+                    data: {smells: @namespace.smells.decorate.source_grouped[file.name].to_json}}
                 = preserve do
                   = file.content

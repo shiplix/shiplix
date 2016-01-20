@@ -35,20 +35,23 @@ en:
         title: '%{repo}'
         header: '%{repo}'
 
-    klasses:
+    blocks:
       postfix: ' - %{repo}'
 
       index:
-        title: 'Classes'
-        header: 'Classes'
+        title: 'Classes & files'
+        header: 'Classes & files'
 
-      show:
-        title: '%{klass}'
-        header: '%{klass}'
+      namespaces:
+        postfix: ' - %{repo}'
 
-    source_files:
-      postfix: ' - %{repo}'
+        show:
+          title: '%{name}'
+          header: '%{name}'
 
-      index:
-        title: 'Source files'
-        header: 'Source files'
+      files:
+        postfix: ' - %{repo}'
+
+        show:
+          title: '%{name}'
+          header: '%{name}'

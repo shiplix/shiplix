@@ -11,11 +11,8 @@
 
       - if @repo.present?
         - primary.item(:current_repo, @repo.name, repo_path(@repo), highlights_on: :subpath, html: {icon: 'fa-pencil'}) do |sub_nav|
-          - sub_nav.item(:classes, 'Classes', repo_klasses_path(@repo), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
-          - sub_nav.item(:classes, 'Files', repo_source_files_path(@repo), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
+          - sub_nav.item(:classes, 'Code', repo_blocks_path(@repo), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
 
     %li.xn-icon-button
       %a.x-navigation-minimize{href: '#'}
         %i.fa.fa-dedent
-        %span.xn-text Collapse navigation
-

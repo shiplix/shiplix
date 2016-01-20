@@ -11,17 +11,17 @@ crumb :repo do |repo|
   parent :repos
 end
 
-crumb :klasses do |repo|
-  link 'Classes', repo_klasses_path(repo)
+crumb :blocks do |repo|
+  link 'Classes & files', repo_blocks_path(repo)
   parent :repo, repo
 end
 
-crumb :klass do |repo, klass|
-  link klass.name, repo_klass_path(repo, klass)
-  parent :klasses, repo
+crumb :namespace do |repo, namespace|
+  link namespace.name, repo_namespace_path(repo, namespace)
+  parent :blocks, repo
 end
 
-crumb :source_files do |repo|
-  link 'Source files', repo_source_files_path(repo)
-  parent :repo, repo
+crumb :file do |repo, file|
+  link file.name, repo_file_path(repo, file)
+  parent :blocks, repo
 end

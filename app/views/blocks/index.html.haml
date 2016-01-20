@@ -1,4 +1,4 @@
-- breadcrumb :source_files, @repo
+- breadcrumb :blocks, @repo
 
 - content_for(:header_icon, 'fa-file-text-o')
 
@@ -7,36 +7,37 @@
     .panel.panel-default
       .panel-heading
         .panel-title-box
+          %h3 Classes & files
 
         %ul.panel-controls
           %li{style: 'width: 300px;'}
-            %input.form-control.ui-autocomplete-input{placeholder: 'Search...', autocomplete: 'off'}
+            %input.form-control.ui-autocomplete-input{placeholder: 'Search by name...', autocomplete: 'off'}
           %li
             %a.panel-fullscreen{href: '#'}
               %i.fa.fa-expand
           - if policy(@repo).manage?
             - branch_name = @build.present? ? @build.branch.name : @repo.default_branch.name
             %li
-              = link_to builds_path(repo_id: @repo.id, branch: branch_name), remote: true, method: :post, class: 'js-build-repo' do
+              = link_to builds_path(repo_id: @repo.id, branch: branch_name),
+                        remote: true, method: :post, class: 'js-build-repo' do
                 %i.fa.fa-refresh
 
       .panel-body.panel-body-table
         .table-responsive
-          - if @source_files.present?
+          - if @blocks.present?
             %table.table.table-bordered.table-striped
               %thead
                 %tr
                   %th{style: 'width: 90px'} Marks
-                  %th Source file
+                  %th Name
+                  %th{style: 'width: 90px'} Complexity
+                  %th{style: 'width: 90px'} Duplication
                   %th{style: 'width: 90px'} LOC
                   %th{style: 'width: 90px'} Smells
               %tbody
-                = render partial: 'source_files/file', collection: @source_files
+                = render partial: 'block', collection: @blocks, locals: {repo: @repo}
           - else
-            There is no source files yet.
+            There is no classes or files yet.
 
-      - if @source_files.present?
-        .panel-footer= will_paginate @source_files, renderer: BootstrapPagination::Rails
-
-- content_for(:header_right_col) do
-  = render 'shared/toggle_by_klasses_files', title: 'Show by source files'
+      - if @blocks.present?
+        .panel-footer= will_paginate @blocks, renderer: BootstrapPagination::Rails
