@@ -16,19 +16,9 @@ describe Blocks::NamespacesController, type: :controller do
   describe '#show' do
     context 'when repo has build' do
       it 'renders namespace page' do
-        get :show, id: namespace.to_param, repo_id: repo.to_param
+        get :show, id: namespace.to_param, repo_id: repo.to_param, build_id: build.to_param
 
         expect(response.status).to eq 200
-      end
-    end
-
-    context 'when repo has not build' do
-      let(:blank_repo) { create :repo }
-
-      it 'renders 404 for repo without build' do
-        get :show, id: namespace.to_param, repo_id: blank_repo.to_param
-
-        expect(response.status).to eq 404
       end
     end
   end

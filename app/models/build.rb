@@ -7,6 +7,7 @@ class Build < ActiveRecord::Base
 
   belongs_to :branch
 
+  validates :uid, presence: true
   validates :branch_id, presence: true
   validates :type, presence: true
   validates :revision, presence: true
@@ -20,6 +21,10 @@ class Build < ActiveRecord::Base
 
   delegate :repo, to: :branch
   delegate :revision_path, :relative_path, to: :locator
+
+  before_validation on: :create do
+    self.uid ||= SecureRandom.hex
+  end
 
   include AASM
 
@@ -35,6 +40,10 @@ class Build < ActiveRecord::Base
     event :fail do
       transitions from: :pending, to: :failed
     end
+  end
+
+  def to_param
+    uid
   end
 
   def prev_build

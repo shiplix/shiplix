@@ -1,10 +1,11 @@
 class BlocksController < ApplicationController
-  before_action only: [:index] { title_variables[:repo] = repo.full_github_name }
+  include CurrentBuildable
 
   def index
-    return unless build
+    title_variables[:repo] = current_repo.full_github_name
 
-    @blocks = build.
+    return unless current_build
+    @blocks = current_build.
                 blocks.
                 where("blocks.type = ? or blocks.smells_count > 0", Blocks::Namespace).
                 order("blocks.rating desc, blocks.smells_count desc").
@@ -13,15 +14,7 @@ class BlocksController < ApplicationController
 
   private
 
-  def repo
-    @repo ||= Repo.active.find_by!(full_github_name: params[:repo_id])
-  end
-
-  def build
-    @build ||= repo.default_branch.try(:recent_push_build)
-  end
-
   def authenticate
-    authorize repo, :show?
+    authorize current_repo, :show?
   end
 end

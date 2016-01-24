@@ -1,34 +1,25 @@
 module Blocks
   class NamespacesController < ApplicationController
-    before_action only: [:show] { title_variables[:repo] = repo.full_github_name }
+    include CurrentBuildable
 
     def show
-      return render_error(404) unless build
-      title_variables[:name] = namespace.name
+      title_variables[:repo] = current_repo.full_github_name
 
-      namespace.files.each do |file|
-        file.content = api.file_contents(repo.full_github_name,
+      @namespace = current_build.namespaces.find_by!(name: params.require(:id))
+
+      title_variables[:name] = @namespace.name
+
+      @namespace.files.each do |file|
+        file.content = api.file_contents(current_repo.full_github_name,
                                          file.name,
-                                         build.revision)
+                                         current_build.revision)
       end
     end
 
     private
 
-    def repo
-      @repo ||= Repo.active.find_by!(full_github_name: params[:repo_id])
-    end
-
-    def build
-      @build ||= repo.default_branch.try(:recent_push_build)
-    end
-
-    def namespace
-      @namespace ||= build.namespaces.find_by!(name: params[:id])
-    end
-
     def authenticate
-      authorize repo, :show?
+      authorize current_repo, :show?
     end
   end
 end
