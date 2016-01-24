@@ -11,17 +11,17 @@ crumb :repo do |repo|
   parent :repos
 end
 
-crumb :blocks do |repo|
-  link 'Classes & files', repo_blocks_path(repo)
+crumb :blocks do |repo, build|
+  link 'Code', repo_build_blocks_path(repo, build)
   parent :repo, repo
 end
 
 crumb :namespace do |repo, namespace|
-  link namespace.name, repo_namespace_path(repo, namespace)
-  parent :blocks, repo
+  link namespace.name, repo_build_namespace_path(repo, namespace.build, namespace)
+  parent :blocks, repo, namespace.build
 end
 
 crumb :file do |repo, file|
-  link file.name, repo_file_path(repo, file)
-  parent :blocks, repo
+  link file.name, repo_build_file_path(repo, file.build, file)
+  parent :blocks, repo, file.build
 end

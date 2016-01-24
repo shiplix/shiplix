@@ -39,5 +39,7 @@
                                 = rating_badge(changeset.block.rating)
 
                             .timeline-class-name
-                              %h3= link_to changeset.block.name, repo_namespace_path(@repo, changeset.block)
+                              %h3
+                                = link_to changeset.block.name,
+                                          repo_build_namespace_path(@repo, changeset.block.build, changeset.block)
                 .timeline-footer.timeline-footer-without-padding

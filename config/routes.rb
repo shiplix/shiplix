@@ -6,25 +6,31 @@ Rails.application.routes.draw do
   get '/auth/github/callback', to: 'sessions#create'
   get '/sign_out', to: 'sessions#destroy'
 
-  resources :jobs, only: [:show]
-
   # NOTE: we need build path without resources and use *id instead :id becouse
   # rails escape slash in url helpers, eg repo_path(repo) renders as user_name%2Frepo_name
   # instead user_name/repo_name
   scope :repos do
-    get '*repo_id/blocks', to: 'blocks#index', as: :repo_blocks
+    scope "*repo_id", as: :repo do
+      resources :branches, only: [] do
+        resources :blocks, only: :index
+      end
 
-    scope module: "blocks" do
-      get '*repo_id/namespaces/:id', to: 'namespaces#show', as: :repo_namespace
-      get '*repo_id/files/:id', to: 'files#show', as: :repo_file
+      resources :builds, only: [] do
+        resources :blocks, only: :index
+
+        scope module: "blocks" do
+          resources :namespaces, only: :show
+          get "files/*id", to: "files#show", as: :file, constraints: {id: /.*/}
+        end
+      end
     end
 
-    get '*id', to: 'repos#show', as: :repo
-    get '/', to: 'repos#index', as: :repos
+    get "*id", to: "repos#show", as: :repo
+    get "/", to: "repos#index", as: :repos
   end
 
+  resources :jobs, only: [:show]
   resources :builds, only: :create
-
   resources :repo_syncs, only: [:create]
   resources :repo_activations, only: [:update, :destroy]
   resources :github_events, only: [:create]

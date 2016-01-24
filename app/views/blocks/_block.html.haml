@@ -4,9 +4,9 @@
   %td
     %h4
       - if block.is_a?(Blocks::File)
-        = link_to block.name, repo_file_path(repo, block)
+        = link_to block.name, repo_build_file_path(repo, block.build, block)
       - else
-        = link_to block.name, repo_namespace_path(repo, block)
+        = link_to block.name, repo_build_namespace_path(repo, block.build, block)
   %td
     %h3= block.metrics['complexity'].to_i
   %td

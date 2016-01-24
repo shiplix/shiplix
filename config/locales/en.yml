@@ -39,8 +39,8 @@ en:
       postfix: ' - %{repo}'
 
       index:
-        title: 'Classes & files'
-        header: 'Classes & files'
+        title: 'Code'
+        header: 'Code'
 
       namespaces:
         postfix: ' - %{repo}'
