@@ -2,44 +2,4 @@
 
 .row
   .col-md-12
-
-    .timeline.timeline-right
-      - @changesets.each do |month, slice|
-        .timeline-item.timeline-main
-          .timeline-date= month.strftime("%B")
-
-        - slice.each do |date, slice2|
-          .timeline-item.timeline-item-right
-            .timeline-item-info{title: date}
-              = time_ago_in_words(date)
-              ago
-
-            - slice2.each do |is_new, changesets|
-              .timeline-item-icon
-                %i.fa{class: is_new ? "fa-plus" : "fa-exchange"}
-
-              .timeline-item-content
-                .timeline-heading
-                .timeline-body
-                  .panel.panel-default
-                    .panel-body
-                      .list-group.border-bottom
-                        - changesets.each do |changeset|
-                          %li.list-group-item
-                            - if changeset.prev_block_id.present?
-                              .timeline-marks
-                                .progress-timeline-arrow
-                                  %i.fa.fa-arrow-up
-                                %div
-                                  = rating_badge(changeset.block.rating)
-                                %div
-                                  = rating_badge(changeset.prev_block.rating)
-                            - else
-                              .timeline-marks.new-mark
-                                = rating_badge(changeset.block.rating)
-
-                            .timeline-class-name
-                              %h3
-                                = link_to changeset.block.name,
-                                          repo_build_namespace_path(@repo, changeset.block.build, changeset.block)
-                .timeline-footer.timeline-footer-without-padding
+    = render "changesets", changesets: @changesets if @changesets

@@ -9,9 +9,9 @@
     = render_navigation(renderer: Shiplix::NavbarRenderer) do |primary|
       - primary.item(:repos, 'Repositories', repos_path, html: {icon: 'fa-desktop'})
 
-      - if @repo.present?
+      - if @repo && branch = @repo.default_branch
         - primary.item(:current_repo, @repo.name, repo_path(@repo), highlights_on: :subpath, html: {icon: 'fa-pencil'}) do |sub_nav|
-          - sub_nav.item(:classes, 'Code', repo_branch_blocks_path(@repo, @repo.default_branch), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
+          - sub_nav.item(:classes, 'Code', repo_branch_blocks_path(@repo, branch), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
 
     %li.xn-icon-button
       %a.x-navigation-minimize{href: '#'}

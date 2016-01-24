@@ -15,7 +15,8 @@ module CurrentBuildable
             else
               build = Build.find_by!(uid: params.require(:build_id))
             end
-    build = nil unless build.repo == current_repo
+    
+    build = nil if build && build.repo != current_repo
     @build = build
   end
 end
