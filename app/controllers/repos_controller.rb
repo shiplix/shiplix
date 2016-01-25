@@ -17,25 +17,14 @@ class ReposController < ApplicationController
   end
 
   def show
-    title_variables[:repo] = repo.full_github_name
+    @repo = Repo.active.find_by!(full_github_name: params.require(:id))
 
-    @changesets = ChangesetsFinder.new(repo.default_branch).call
-  end
+    authorize @repo, :show?
 
-  private
+    title_variables[:repo] = @repo.full_github_name
 
-  def repo
-    @repo ||= Repo.active.find_by!(full_github_name: params[:id])
-  end
+    @branch = @repo.default_branch
 
-  def authenticate
-    case action_name
-    when 'index'
-      super
-    when 'show'
-      authorize repo, :show?
-    else
-      raise 'Unknown action'
-    end
+    @changesets = ChangesetsFinder.new(@branch).call if @branch
   end
 end

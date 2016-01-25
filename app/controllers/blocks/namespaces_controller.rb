@@ -3,6 +3,8 @@ module Blocks
     include CurrentBuildable
 
     def show
+      authorize current_repo, :show?
+      
       title_variables[:repo] = current_repo.full_github_name
 
       @namespace = current_build.namespaces.find_by!(name: params.require(:id))
@@ -14,12 +16,6 @@ module Blocks
                                          file.name,
                                          current_build.revision)
       end
-    end
-
-    private
-
-    def authenticate
-      authorize current_repo, :show?
     end
   end
 end
