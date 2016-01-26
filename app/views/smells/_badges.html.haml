@@ -1,0 +1,7 @@
+- block.smells_statistics.each do |name, count|
+  - smell_class = "#{name}Decorator".constantize
+  %button.btn.btn-default{disabled: true}
+    %i{class: smell_class.icon}
+    = smell_class.title
+    &nbsp;
+    %span.badge= count

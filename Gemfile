@@ -18,6 +18,7 @@ gem 'rails-cache-tags'
 gem 'redis-mutex'
 gem 'octokit'
 gem 'readthis'
+gem 'jbuilder'
 
 # Front
 gem 'sass-rails'

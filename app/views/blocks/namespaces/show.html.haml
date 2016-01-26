@@ -5,14 +5,9 @@
 .row
   .col-md-12
     .panel-heading
-      - @namespace.smells_statistics.each do |name, count|
-        - smell_class = "#{name}Decorator".constantize
-        %button.btn.btn-default{disabled: true}
-          %i{class: smell_class.icon}
-          = smell_class.title
-          &nbsp;
-          %span.badge= count
+      = render "smells/badges", block: @namespace
 
+    - smells = @namespace.smells.decorate.group_by { |x| x.file.name }
     - @namespace.files.each do |file|
       .panel.panel-warning
         .panel-heading
@@ -27,8 +22,5 @@
                 %i.fa.fa-angle-down
 
           .panel-body
-            %pre
-              %code{class: 'ruby',
-                    data: {smells: @namespace.smells.decorate.source_grouped[file.name].to_json}}
-                = preserve do
-                  = file.content
+            = render "blocks/files/content", file: file, smells: smells[file.name]
+            

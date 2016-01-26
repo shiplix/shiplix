@@ -1,11 +1,10 @@
-hljs.insertSmells = (block, groupedSmells) ->
+hljs.insertSmells = (block) ->
   $block = $(block)
-  groupedSmells = $block.data('smells')
+  smells = $block.data('smells')
 
-  for own type, smells of groupedSmells
-    for smell in smells
-      line_cont = $block.find('.js-index-' + smell.line)
+  for smell in smells
+    line_cont = $block.find('.js-index-' + smell.line)
 
-      line_cont.after(
-        JST['smells/message'](name: smell.name, text: smell.message, icon: smell.icon)
-      )
+    line_cont.after(
+      JST['smells/message'](name: smell.name, text: smell.message, icon: smell.icon)
+    )
