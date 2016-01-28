@@ -1,3 +1,4 @@
+-# TODO: move to controller, remove n+1 by preloading, will denormalize latest successful push-build?
 - build = repo.default_branch.try(:recent_push_build) || Builds::Push.new if repo.active?
 
 %tr
