@@ -13,14 +13,13 @@ module Analyzers
                   ) /
                  2.to_f
 
-        rating = rating.round + 1
         total_rating += rating
         total_blocks += 1
-        block.rating = rating
+        block.rating = rating.round(2)
         block.save!
       end
 
-      build.rating = (total_rating / total_blocks.to_f).round if total_blocks > 0
+      build.rating = (total_rating.to_f / total_blocks).round(2) if total_blocks > 0
     end
 
     private
@@ -28,29 +27,29 @@ module Analyzers
     # http://jakescruggs.blogspot.ru/2008/08/whats-good-flog-score.html
     def complexity_rate(score)
       if score < 25
-        0
-      elsif score < 40
         1
-      elsif score < 60
+      elsif score < 40
         2
-      elsif score < 100
+      elsif score < 60
         3
-      else
+      elsif score < 100
         4
+      else
+        5
       end
     end
 
     def duplication_rate(score)
       if score < 25
-        0
-      elsif score < 50
         1
-      elsif score < 100
+      elsif score < 50
         2
-      elsif score < 200
+      elsif score < 100
         3
-      else
+      elsif score < 200
         4
+      else
+        5
       end
     end
   end

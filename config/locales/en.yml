@@ -1,17 +1,11 @@
 en:
   rating:
     levels:
-      1: 'S1'
-      2: 'S2'
-      3: 'S3'
-      4: 'S4'
-      5: 'S5'
-    titles:
-      1: 'Minor'
-      2: 'Moderate'
-      3: 'Strong'
-      4: 'Severe'
-      5: 'Extreme'
+      1: 'A'
+      2: 'B'
+      3: 'C'
+      4: 'D'
+      5: 'F'
 
   activerecord:
     error:

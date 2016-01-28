@@ -7,17 +7,29 @@ module ApplicationHelper
     5 => 'danger' # TODO: choose the color
   }.freeze
 
-  def rating_badge(rating)
+  def block_rating_badge(rating)
     return unless rating
+    rating = rating.round
 
-    level = t('rating.levels')[rating]
-    title = t('rating.titles')[rating]
     content_tag(
       :h4,
       content_tag(
         :span,
-        "#{level} [#{title}]",
+        t('rating.levels')[rating],
         class: "label label-#{RATING_CLASSES[rating]} label-form"
+      )
+    )
+  end
+
+  def build_rating_badge(rating)
+    return unless rating
+
+    content_tag(
+      :h4,
+      content_tag(
+        :span,
+        5 - rating,
+        class: "label label-#{RATING_CLASSES[rating.round]} label-form"
       )
     )
   end
