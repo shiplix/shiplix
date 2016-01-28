@@ -103,7 +103,7 @@
                      background:-webkit-gradient(linear,left top,right top,color-stop(0, @base-danger),color-stop(0.5, @base-warning),color-stop(1, @base-success));}
 /* EOF PREDEFINED CLASSES */
 html *{outline: none !important;}
-html,body{min-height: 100%; padding: 0px; margin: 0px; background: @body-background url('../img/bg.png') left top repeat; position: relative; font-family: 'Open Sans', sans-serif; font-size: 12px; color: @base-color; overflow-x: hidden;}
+html,body{min-height: 100%; padding: 0px; margin: 0px; background: @body-background image-url('atlant/bg.png') left top repeat; position: relative; font-family: 'Open Sans', sans-serif; font-size: 12px; color: @base-color; overflow-x: hidden;}
 .body-full-height{height: 100%;
     body{height: 100%;}
 }
@@ -128,8 +128,8 @@ html,body{min-height: 100%; padding: 0px; margin: 0px; background: @body-backgro
     }
     /* END SIDEBAR */
     /* CONTENT */
-    .page-content{min-height: 100%; margin-left: 220px; background: @body-background url('../img/bg.png') left top repeat; position: relative; .clearfix;
-        .content-frame{float: left; width:100%; position: relative; background: @body-background url('../img/bg.png') left top repeat;
+    .page-content{min-height: 100%; margin-left: 220px; background: @body-background image-url('atlant/bg.png') left top repeat; position: relative; .clearfix;
+        .content-frame{float: left; width:100%; position: relative; background: @body-background image-url('atlant/bg.png') left top repeat;
             .content-frame-top{float: left; width: 100%; line-height: 30px; padding: 13px 15px 15px; background: rgba(0,0,0,0.02); border-bottom: 1px solid #DDD; border-top: 1px solid #DDD;
                 .page-title{padding: 0px; width: auto;
                     h2{margin-bottom: 0px; font-size: 22px;}
@@ -193,22 +193,22 @@ html,body{min-height: 100%; padding: 0px; margin: 0px; background: @body-backgro
 }
 
 body{
-    &.page-container-boxed{background: url("../img/backgrounds/wall_1.jpg") left top no-repeat fixed; padding: 20px 0px;
+    &.page-container-boxed{background: image-url("atlant/backgrounds/wall_1.jpg") left top no-repeat fixed; padding: 20px 0px;
         .page-container{width: 1200px; float: none; margin: 0px auto; .shadow(1px 1px 2px 0px rgba(0,0,0,0.2)); .border-radius(5px);
             &.page-navigation-top{
                 .page-content{.border-radius(5px);}
             }
         }
-        &.wall_1{background-image: url("../img/backgrounds/wall_1.jpg");}
-        &.wall_2{background-image: url("../img/backgrounds/wall_2.jpg");}
-        &.wall_3{background-image: url("../img/backgrounds/wall_3.jpg");}
-        &.wall_4{background-image: url("../img/backgrounds/wall_4.jpg");}
-        &.wall_5{background-image: url("../img/backgrounds/wall_5.jpg");}
-        &.wall_6{background-image: url("../img/backgrounds/wall_6.jpg");}
-        &.wall_7{background-image: url("../img/backgrounds/wall_7.jpg");}
-        &.wall_8{background-image: url("../img/backgrounds/wall_8.jpg");}
-        &.wall_9{background-image: url("../img/backgrounds/wall_9.jpg");}
-        &.wall_10{background-image: url("../img/backgrounds/wall_10.jpg");}
+        &.wall_1{background-image: image-url("atlant/backgrounds/wall_1.jpg");}
+        &.wall_2{background-image: image-url("atlant/backgrounds/wall_2.jpg");}
+        &.wall_3{background-image: image-url("atlant/backgrounds/wall_3.jpg");}
+        &.wall_4{background-image: image-url("atlant/backgrounds/wall_4.jpg");}
+        &.wall_5{background-image: image-url("atlant/backgrounds/wall_5.jpg");}
+        &.wall_6{background-image: image-url("atlant/backgrounds/wall_6.jpg");}
+        &.wall_7{background-image: image-url("atlant/backgrounds/wall_7.jpg");}
+        &.wall_8{background-image: image-url("atlant/backgrounds/wall_8.jpg");}
+        &.wall_9{background-image: image-url("atlant/backgrounds/wall_9.jpg");}
+        &.wall_10{background-image: image-url("atlant/backgrounds/wall_10.jpg");}
     }
 }
 
@@ -438,7 +438,7 @@ body{
             &.active:before,&.xn-openable:before{display: none;}
 
             &.xn-logo{
-                > a:first-child{padding: 0px; width: 50px; background-image: url("../img/logo-small.png");}
+                > a:first-child{padding: 0px; width: 50px; background-image: image-url("atlant/logo-small.png");}
             }
         }
         .xn-search{
@@ -525,7 +525,7 @@ body{
         }
         &.xn-logo{
             > a{border-bottom: 0px;}
-            > a:first-child{font-size: 0px; text-indent: -9999px; background: url("../img/logo.png") top center no-repeat @xn-background-logo; padding: 0px; border-bottom: 0px; color: #FFF; height: 50px;
+            > a:first-child{font-size: 0px; text-indent: -9999px; background: image-url("atlant/logo.png") top center no-repeat @xn-background-logo; padding: 0px; border-bottom: 0px; color: #FFF; height: 50px;
                 &:hover{background-color: darken(@xn-background-logo,2%);}
             }
         }
@@ -636,8 +636,8 @@ body{
 /* END PROFILE */
 
 /* PAGE CONTENT HEADER */
-.page-content-header{float: left; width: 100%; background: url(../img/bg.png) left top repeat #FFF; padding: 10px 15px; height: 70px;
-    .logo{display: block; float: left; width: 140px; height: 50px; background: url(../img/logo-grey-big.png) left top no-repeat;}
+.page-content-header{float: left; width: 100%; background: image-url("atlant/bg.png") left top repeat #FFF; padding: 10px 15px; height: 70px;
+    .logo{display: block; float: left; width: 140px; height: 50px; background: image-url("atlant/logo-grey-big.png") left top no-repeat;}
 
     .contacts{float: left; height: 25px; clear:both;
         a{float: left; display: block; line-height: 20px; margin-top: 5px; font-size: 11px; text-decoration: none; margin-left: 10px; color: #999; .box-transition-color(200ms);
@@ -942,7 +942,7 @@ body{
             //.xn-panel-dragging .panel-heading:hover{cursor: move;}
             .ui-resizable-s{width: 98%;}
             .ui-resizable-e{height: 98%;}
-            .ui-resizable-se{width: 16px; height: 16px; right: 0px; bottom: 0px;text-indent: 0px; background: url(../img/jquery/resize-icon.png) left top no-repeat;}
+            .ui-resizable-se{width: 16px; height: 16px; right: 0px; bottom: 0px;text-indent: 0px; background: image-url("atlant/jquery/resize-icon.png") left top no-repeat;}
             /* EOF XNAV PANEL */
 
         /* EOF PANELS */
@@ -1571,7 +1571,7 @@ body{
         /* END CONTACTS */
 
         /* LOCK SCREEN */
-        .lockscreen-container{float: left; width: 100%; min-height: 100%; background: url("../img/bg.png") left top repeat @base-primary;
+        .lockscreen-container{float: left; width: 100%; min-height: 100%; background: image-url("atlant/bg.png") left top repeat @base-primary;
             .lockscreen-box{width: 200px; position: absolute; left: 50%; top: 50%; margin-left: -100px; margin-top: -120px;
                 .lsb-access{border: 5px solid darken(@base-primary,5%); background: darken(@base-primary,10%); width: 140px; height: 140px; float: left; margin-left: 30px; .border-radius(50%); .box-transition-all(200ms);
                     .lsb-box{background: @base-primary; border: 5px solid darken(@base-primary,12%); width: 120px; height: 120px; margin: 5px; .border-radius(50%); line-height: 110px; text-align: center; .box-transition-all(200ms);
@@ -1626,9 +1626,9 @@ body{
         /* END LOCK SCREEN */
 
         /* REGISTRATION */
-        .registration-container{float: left; width: 100%; min-height: 100%; background: url("../img/bg.png") left top repeat @base-primary;
+        .registration-container{float: left; width: 100%; min-height: 100%; background: image-url("atlant/bg.png") left top repeat @base-primary;
             .registration-box{width: 400px; margin: 0px auto; padding-top: 100px;
-                .registration-logo{background: url("../img/logo-lr.png") top center no-repeat; width: 100%; height: 100px; float: left;}
+                .registration-logo{background: image-url("atlant/logo-lr.png") top center no-repeat; width: 100%; height: 100px; float: left;}
                 .registration-body{width: 100%; float: left; background: rgba(255,255,255,0.1); padding: 20px; .border-radius(5px);
                     .registration-title{color: #FFF; font-size: 19px; font-weight: 300; margin-bottom: 20px;}
                     .form-control{border: 0px; background: rgba(0,0,0,0.2); padding: 10px 15px; color: #CCC; line-height: 20px; height: auto; .box-transition-all(200ms);
@@ -1651,9 +1651,9 @@ body{
         /* END REGISTRATION */
 
         /* LOGIN */
-        .login-container{float: left; width: 100%; min-height: 100%; background: url("../img/bg.png") left top repeat @base-primary;
+        .login-container{float: left; width: 100%; min-height: 100%; background: image-url("atlant/bg.png") left top repeat @base-primary;
             .login-box{width: 400px; margin: 0px auto; padding-top: 100px;
-                .login-logo{background: url("../img/logo-lr.png") top center no-repeat; width: 100%; height: 100px; float: left;}
+                .login-logo{background: image-url("atlant/logo-lr.png") top center no-repeat; width: 100%; height: 100px; float: left;}
                 .login-body{width: 100%; float: left; background: rgba(255,255,255,0.1); padding: 20px; .border-radius(5px);
                     .login-title{color: #FFF; font-size: 19px; font-weight: 300; margin-bottom: 20px;}
                     .form-control{border: 0px; background: rgba(0,0,0,0.2); padding: 10px 15px; color: #CCC; line-height: 20px; height: auto; .box-transition-all(200ms);
@@ -1676,7 +1676,7 @@ body{
                     a{color: #FFF;}
                 }
             }
-            &.lightmode{background: url("../img/backgrounds/wall_1.jpg") left top no-repeat;
+            &.lightmode{background: image-url("atlant/backgrounds/wall_1.jpg") left top no-repeat;
                 .login-box{
                     .login-body{background: rgba(255,255,255,0.2);
                         .form-control{background: rgba(255,255,255,0.4); color: #333;}
@@ -1684,9 +1684,9 @@ body{
                     .login-subtitle a{color: @base-primary;}
                 }
             }
-            &.login-v2{background: url("../img/bg.png") left top repeat #F5F5F5;
+            &.login-v2{background: image-url("atlant/bg.png") left top repeat #F5F5F5;
                 .login-box{
-                    .login-logo{background: url("../img/logo-grey.png") top center no-repeat;}
+                    .login-logo{background: image-url("atlant/logo-grey.png") top center no-repeat;}
                     .login-body{
                         .login-title{color: @base-primary;}
                         .form-control{background: #FFF; color: @base-primary; border: 1px solid #D5D5D5; border-left: 0px;}
@@ -2020,17 +2020,17 @@ body{
         /* FLAGS */
         .xn-icon-button > a > .flag{display: block; margin: 0px auto;}
         .flag{display: inline-block; width: 18px; height: 18px; background-size: 18px 18px; background-position: left top; vertical-align: inherit; margin-right: 5px;
-            &.flag-gb{background-image: url(../img/flags/gb.png);}
-            &.flag-de{background-image: url(../img/flags/de.png);}
-            &.flag-cn{background-image: url(../img/flags/cn.png);}
+            &.flag-gb{background-image: image-url("atlant/flags/gb.png");}
+            &.flag-de{background-image: image-url("atlant/flags/de.png");}
+            &.flag-cn{background-image: image-url("atlant/flags/cn.png");}
         }
         /* END FLAGS */
 
         /* PAGE LOADING FRAME */
 
-        .page-loading-frame{width: 100%; height: 100%; position: fixed; z-index: 9999; background: url(../img/bg.png) left top repeat @base-background; .box-transition-all(1000ms);
+        .page-loading-frame{width: 100%; height: 100%; position: fixed; z-index: 9999; background: image-url("atlant/bg.png") left top repeat @base-background; .box-transition-all(1000ms);
             .page-loading-loader{width: 64px; height: 64px; position: absolute; left: 50%; top: 50%; margin-left: -32px; margin-top: -32px; .box-transition-all(100ms);}
-            &.v2{background: #111; background: url(../img/bg.png) left top repeat rgba(0,0,0,0.8);
+            &.v2{background: #111; background: image-url("atlant/bg.png") left top repeat rgba(0,0,0,0.8);
                 .page-loading-loader{width: 64px;height: 64px; position: absolute; left: 50%; top: 50%; margin-left: -32px; margin-top: -32px;-webkit-animation: rotate 2.0s infinite linear; animation: rotate 2.0s infinite linear;
                     .dot1, .dot2{width: 60%;height: 60%;display: inline-block;position: absolute;top: 0;background-color: #F5F5F5;border-radius: 100%; -webkit-animation: bounce 2.0s infinite ease-in-out; animation: bounce 2.0s infinite ease-in-out;}
                     .dot2{top: auto;bottom: 0px;-webkit-animation-delay: -1.0s;animation-delay: -1.0s;}
@@ -2091,7 +2091,7 @@ body{
 
         /* SIDEBAR */
         .sidebar{position: absolute; z-index: 1; right: -@sidebar_width; top: 0px; width: @sidebar_width; height: 100%; .box-transition-all(200ms);
-            .sidebar-wrapper{width: 100%;height: 100%; background: url("../img/bg.png") left top repeat @sidebar_background; color: @sidebar_color;
+            .sidebar-wrapper{width: 100%;height: 100%; background: image-url("atlant/bg.png") left top repeat @sidebar_background; color: @sidebar_color;
                 .sidebar-tabs{float: left; width: 100%; margin-bottom: 15px;
                     > a{display: block; float: left; width: 50%; line-height: 30px; font-size: 13px; color: @sidebar_tabs_color; padding: 10px; background: @sidebar_title_background; text-align: center; text-decoration: none;
                         .fa,.glyphicon{line-height: 30px; margin-right: 5px; font-size: 14px;}
@@ -2271,7 +2271,7 @@ body{
             padding: 0;
             width: 18px;
             height: 18px;
-            background: url("../img/icheck/grey.png") no-repeat;
+            background: image-url("atlant/icheck/grey.png") no-repeat;
             border: none;
             cursor: pointer;
         }
@@ -2385,7 +2385,7 @@ body{
 
 
             /* BOOTSTRAP COLORPICKER */
-            .colorpicker-saturation {width: 100px;height: 100px;background-image: url(../img/colorpicker/saturation.png);cursor: crosshair;float: left;
+            .colorpicker-saturation {width: 100px;height: 100px;background-image: image-url("atlant/colorpicker/saturation.png");cursor: crosshair;float: left;
                 i {display: block;height: 5px;width: 5px;border: 1px solid #000;.border-radius(0px);position: absolute;top: 0;left: 0;margin: -4px 0 0 -4px;
                     b{display: block;height: 5px;width: 5px;border: 1px solid #fff;}
                 }
@@ -2393,8 +2393,8 @@ body{
             .colorpicker-hue,.colorpicker-alpha {width: 15px;height: 100px;float: left;cursor: row-resize;margin-left: 4px;margin-bottom: 4px;
                 i {display: block;height: 1px;background: #000;border-top: 1px solid #fff;position: absolute;top: 0;left: 0;width: 100%;margin-top: -1px;}
             }
-            .colorpicker-hue{background-image: url(../img/colorpicker/hue.png);}
-            .colorpicker-alpha{background-image: url(../img/colorpicker/alpha.png);display:none;}
+            .colorpicker-hue{background-image: image-url("atlant/colorpicker/hue.png");}
+            .colorpicker-alpha{background-image: image-url("atlant/colorpicker/alpha.png");display:none;}
             .colorpicker {top: 0;left: 0;padding: 4px;min-width: 120px;margin-top: 1px;.border-radius(3px);
                 &.dropdown-menu{margin-top: 8px;}
                 div{position: relative;}
@@ -2402,7 +2402,7 @@ body{
                     .colorpicker-alpha {display: block;}
                 }
             }
-            .colorpicker-color {height: 10px;margin-top: 5px;clear: both;background-image: url(../img/colorpicker/alpha.png);background-position: 0 100%;
+            .colorpicker-color {height: 10px;margin-top: 5px;clear: both;background-image: image-url("atlant/colorpicker/alpha.png");background-position: 0 100%;
                 div {height: 10px;}
             }
 
@@ -2630,7 +2630,7 @@ body{
                     .owl-carousel .owl-item > div{width: 100%; float: left;}
                 .owl-controls .owl-page,.owl-controls .owl-buttons div{cursor: pointer;}
             .owl-controls {-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
-            .grabbing{cursor:url(../img/owl/grabbing.png) 8 8, move;}
+            .grabbing{cursor:image-url("atlant/owl/grabbing.png") 8 8, move;}
             .owl-carousel  .owl-wrapper,.owl-carousel  .owl-item{-webkit-backface-visibility: hidden;-moz-backface-visibility: hidden;-ms-backface-visibility: hidden;-webkit-transform: translate3d(0,0,0);
                                                                  -moz-transform: translate3d(0,0,0);-ms-transform: translate3d(0,0,0);}
 
@@ -2647,7 +2647,7 @@ body{
             .owl-theme .owl-controls.clickable .owl-page:hover span{filter: Alpha(Opacity=500);opacity: 0.5;}
             .owl-theme .owl-controls .owl-page span.owl-numbers{height: auto;width: auto;color: #FFF;padding: 2px 10px;font-size: 12px;
                                                                 -webkit-border-radius: 30px;-moz-border-radius: 30px;border-radius: 30px;}
-            .owl-item.loading{min-height: 150px;background: url(../img/owl/AjaxLoader.gif) no-repeat center center}
+            .owl-item.loading{min-height: 150px;background: image-url("atlant/owl/AjaxLoader.gif") no-repeat center center}
             /* END Slider */
 
             /* jVectorMaps */
@@ -2753,7 +2753,7 @@ body{
 
             /* Bootstrap fileinput */
             .file-input{overflow-x:auto}
-            .file-loading{top:0;right:0;width:25px;height:25px;font-size:999px;text-align:right;color:#fff;background:transparent url(../img/fileinput/loading.gif) top left no-repeat;border:none}
+            .file-loading{top:0;right:0;width:25px;height:25px;font-size:999px;text-align:right;color:#fff;background:transparent image-url("atlant/fileinput/loading.gif") top left no-repeat;border:none}
             .btn-file{position:relative;overflow:hidden}
             .btn-file input[type=file]{position:absolute;top:0;right:0;min-width:100%;min-height:100%;text-align:right;filter:alpha(opacity=0);opacity:0;background:none repeat scroll 0 0 transparent;cursor:inherit;display:block}
             .file-caption .glyphicon{display:inline-block;min-width:18px;float:left;margin-top:2px}
@@ -2768,7 +2768,7 @@ body{
             .file-preview-text{display:table-cell;width:150px;height:150px;color:#428bca;font-size:11px;vertical-align:middle;text-align:center}
             .file-preview-other{display:table-cell;width:150px;height:150px;font-family:Monaco,Consolas,monospace;font-size:11px;vertical-align:middle;text-align:center}
             .file-input-new .close,.file-input-new .file-preview,.file-input-new .fileinput-remove-button,.file-input-new .fileinput-upload-button,.file-input-new .glyphicon-file{display:none}
-            .loading{background:transparent url(../img/loading.gif) no-repeat scroll center center content-box!important}
+            .loading{background:transparent image-url("atlant/loading.gif") no-repeat scroll center center content-box!important}
             .wrap-indicator{font-weight:700;color:#245269;cursor:pointer}
             /* END Bootstrap fileinput */
 
@@ -2855,70 +2855,70 @@ body{
                 }
             }
 
-            li.directory { background: url(../img/filetree/directory.png) left top no-repeat; }
-            li.expanded { background: url(../img/filetree/folder_open.png) left top no-repeat; }
-            li.file { background: url(../img/filetree/file.png) left top no-repeat; }
-            li.wait { background: url(../img/filetree/spinner.gif) left top no-repeat; }
+            li.directory { background: image-url("atlant/filetree/directory.png") left top no-repeat; }
+            li.expanded { background: image-url("atlant/filetree/folder_open.png") left top no-repeat; }
+            li.file { background: image-url("atlant/filetree/file.png") left top no-repeat; }
+            li.wait { background: image-url("atlant/filetree/spinner.gif") left top no-repeat; }
 
             /* File Extensions*/
-            li.ext_3gp { background: url(../img/filetree/film.png) left top no-repeat; }
-            li.ext_afp { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_afpa { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_asp { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_aspx { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_avi { background: url(../img/filetree/film.png) left top no-repeat; }
-            li.ext_bat { background: url(../img/filetree/application.png) left top no-repeat; }
-            li.ext_bmp { background: url(../img/filetree/picture.png) left top no-repeat; }
-            li.ext_c { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_cfm { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_cgi { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_com { background: url(../img/filetree/application.png) left top no-repeat; }
-            li.ext_cpp { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_css { background: url(../img/filetree/css.png) left top no-repeat; }
-            li.ext_doc { background: url(../img/filetree/doc.png) left top no-repeat; }
-            li.ext_exe { background: url(../img/filetree/application.png) left top no-repeat; }
-            li.ext_gif { background: url(../img/filetree/picture.png) left top no-repeat; }
-            li.ext_fla { background: url(../img/filetree/flash.png) left top no-repeat; }
-            li.ext_h { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_htm { background: url(../img/filetree/html.png) left top no-repeat; }
-            li.ext_html { background: url(../img/filetree/html.png) left top no-repeat; }
-            li.ext_jar { background: url(../img/filetree/java.png) left top no-repeat; }
-            li.ext_jpg { background: url(../img/filetree/picture.png) left top no-repeat; }
-            li.ext_jpeg { background: url(../img/filetree/picture.png) left top no-repeat; }
-            li.ext_js { background: url(../img/filetree/script.png) left top no-repeat; }
-            li.ext_lasso { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_log { background: url(../img/filetree/txt.png) left top no-repeat; }
-            li.ext_m4p { background: url(../img/filetree/music.png) left top no-repeat; }
-            li.ext_mov { background: url(../img/filetree/film.png) left top no-repeat; }
-            li.ext_mp3 { background: url(../img/filetree/music.png) left top no-repeat; }
-            li.ext_mp4 { background: url(../img/filetree/film.png) left top no-repeat; }
-            li.ext_mpg { background: url(../img/filetree/film.png) left top no-repeat; }
-            li.ext_mpeg { background: url(../img/filetree/film.png) left top no-repeat; }
-            li.ext_ogg { background: url(../img/filetree/music.png) left top no-repeat; }
-            li.ext_pcx { background: url(../img/filetree/picture.png) left top no-repeat; }
-            li.ext_pdf { background: url(../img/filetree/pdf.png) left top no-repeat; }
-            li.ext_php { background: url(../img/filetree/php.png) left top no-repeat; }
-            li.ext_png { background: url(../img/filetree/picture.png) left top no-repeat; }
-            li.ext_ppt { background: url(../img/filetree/ppt.png) left top no-repeat; }
-            li.ext_psd { background: url(../img/filetree/psd.png) left top no-repeat; }
-            li.ext_pl { background: url(../img/filetree/script.png) left top no-repeat; }
-            li.ext_py { background: url(../img/filetree/script.png) left top no-repeat; }
-            li.ext_rb { background: url(../img/filetree/ruby.png) left top no-repeat; }
-            li.ext_rbx { background: url(../img/filetree/ruby.png) left top no-repeat; }
-            li.ext_rhtml { background: url(../img/filetree/ruby.png) left top no-repeat; }
-            li.ext_rpm { background: url(../img/filetree/linux.png) left top no-repeat; }
-            li.ext_ruby { background: url(../img/filetree/ruby.png) left top no-repeat; }
-            li.ext_sql { background: url(../img/filetree/db.png) left top no-repeat; }
-            li.ext_swf { background: url(../img/filetree/flash.png) left top no-repeat; }
-            li.ext_tif { background: url(../img/filetree/picture.png) left top no-repeat; }
-            li.ext_tiff { background: url(../img/filetree/picture.png) left top no-repeat; }
-            li.ext_txt { background: url(../img/filetree/txt.png) left top no-repeat; }
-            li.ext_vb { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_wav { background: url(../img/filetree/music.png) left top no-repeat; }
-            li.ext_wmv { background: url(../img/filetree/film.png) left top no-repeat; }
-            li.ext_xls { background: url(../img/filetree/xls.png) left top no-repeat; }
-            li.ext_xml { background: url(../img/filetree/code.png) left top no-repeat; }
-            li.ext_zip { background: url(../img/filetree/zip.png) left top no-repeat; }
+            li.ext_3gp { background: image-url("atlant/filetree/film.png") left top no-repeat; }
+            li.ext_afp { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_afpa { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_asp { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_aspx { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_avi { background: image-url("atlant/filetree/film.png") left top no-repeat; }
+            li.ext_bat { background: image-url("atlant/filetree/application.png") left top no-repeat; }
+            li.ext_bmp { background: image-url("atlant/filetree/picture.png") left top no-repeat; }
+            li.ext_c { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_cfm { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_cgi { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_com { background: image-url("atlant/filetree/application.png") left top no-repeat; }
+            li.ext_cpp { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_css { background: image-url("atlant/filetree/css.png") left top no-repeat; }
+            li.ext_doc { background: image-url("atlant/filetree/doc.png") left top no-repeat; }
+            li.ext_exe { background: image-url("atlant/filetree/application.png") left top no-repeat; }
+            li.ext_gif { background: image-url("atlant/filetree/picture.png") left top no-repeat; }
+            li.ext_fla { background: image-url("atlant/filetree/flash.png") left top no-repeat; }
+            li.ext_h { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_htm { background: image-url("atlant/filetree/html.png") left top no-repeat; }
+            li.ext_html { background: image-url("atlant/filetree/html.png") left top no-repeat; }
+            li.ext_jar { background: image-url("atlant/filetree/java.png") left top no-repeat; }
+            li.ext_jpg { background: image-url("atlant/filetree/picture.png") left top no-repeat; }
+            li.ext_jpeg { background: image-url("atlant/filetree/picture.png") left top no-repeat; }
+            li.ext_js { background: image-url("atlant/filetree/script.png") left top no-repeat; }
+            li.ext_lasso { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_log { background: image-url("atlant/filetree/txt.png") left top no-repeat; }
+            li.ext_m4p { background: image-url("atlant/filetree/music.png") left top no-repeat; }
+            li.ext_mov { background: image-url("atlant/filetree/film.png") left top no-repeat; }
+            li.ext_mp3 { background: image-url("atlant/filetree/music.png") left top no-repeat; }
+            li.ext_mp4 { background: image-url("atlant/filetree/film.png") left top no-repeat; }
+            li.ext_mpg { background: image-url("atlant/filetree/film.png") left top no-repeat; }
+            li.ext_mpeg { background: image-url("atlant/filetree/film.png") left top no-repeat; }
+            li.ext_ogg { background: image-url("atlant/filetree/music.png") left top no-repeat; }
+            li.ext_pcx { background: image-url("atlant/filetree/picture.png") left top no-repeat; }
+            li.ext_pdf { background: image-url("atlant/filetree/pdf.png") left top no-repeat; }
+            li.ext_php { background: image-url("atlant/filetree/php.png") left top no-repeat; }
+            li.ext_png { background: image-url("atlant/filetree/picture.png") left top no-repeat; }
+            li.ext_ppt { background: image-url("atlant/filetree/ppt.png") left top no-repeat; }
+            li.ext_psd { background: image-url("atlant/filetree/psd.png") left top no-repeat; }
+            li.ext_pl { background: image-url("atlant/filetree/script.png") left top no-repeat; }
+            li.ext_py { background: image-url("atlant/filetree/script.png") left top no-repeat; }
+            li.ext_rb { background: image-url("atlant/filetree/ruby.png") left top no-repeat; }
+            li.ext_rbx { background: image-url("atlant/filetree/ruby.png") left top no-repeat; }
+            li.ext_rhtml { background: image-url("atlant/filetree/ruby.png") left top no-repeat; }
+            li.ext_rpm { background: image-url("atlant/filetree/linux.png") left top no-repeat; }
+            li.ext_ruby { background: image-url("atlant/filetree/ruby.png") left top no-repeat; }
+            li.ext_sql { background: image-url("atlant/filetree/db.png") left top no-repeat; }
+            li.ext_swf { background: image-url("atlant/filetree/flash.png") left top no-repeat; }
+            li.ext_tif { background: image-url("atlant/filetree/picture.png") left top no-repeat; }
+            li.ext_tiff { background: image-url("atlant/filetree/picture.png") left top no-repeat; }
+            li.ext_txt { background: image-url("atlant/filetree/txt.png") left top no-repeat; }
+            li.ext_vb { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_wav { background: image-url("atlant/filetree/music.png") left top no-repeat; }
+            li.ext_wmv { background: image-url("atlant/filetree/film.png") left top no-repeat; }
+            li.ext_xls { background: image-url("atlant/filetree/xls.png") left top no-repeat; }
+            li.ext_xml { background: image-url("atlant/filetree/code.png") left top no-repeat; }
+            li.ext_zip { background: image-url("atlant/filetree/zip.png") left top no-repeat; }
 
             /* END Filetree */
 
@@ -3129,25 +3129,25 @@ body{
 @media (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
     .icheckbox_minimal,
     .iradio_minimal {
-        background-image: url("../img/icheck/grey@2x.png");
+        background-image: image-url("atlant/icheck/grey@2x.png");
         -webkit-background-size: 200px 20px;
         background-size: 200px 20px;
     }
-    .ui-resizable-se{background-image: url("../img/jqyery/resize-icon@2x.png");}
+    .ui-resizable-se{background-image: image-url("atlant/jqyery/resize-icon@2x.png");}
 
     .x-navigation{
-        > li.xn-logo > a:first-child{background-image: url("../img/logo@2x.png"); background-size: 220px 50px;}
+        > li.xn-logo > a:first-child{background-image: image-url("atlant/logo@2x.png"); background-size: 220px 50px;}
         &.x-navigation-minimized{
-            > li.xn-logo > a:first-child{background-image: url("../img/logo-small@2x.png"); background-size: 50px 50px;}
+            > li.xn-logo > a:first-child{background-image: image-url("atlant/logo-small@2x.png"); background-size: 50px 50px;}
         }
     }
     .login-container{
         .login-box{
-            .login-logo{background-image: url("../img/logo@2x.png"); background-size: 220px 50px;}
+            .login-logo{background-image: image-url("atlant/logo@2x.png"); background-size: 220px 50px;}
         }
     }
     .page-content-header{
-        .logo{background-image: url("../img/logo-grey-big@2x.png"); background-size: 140px 50px;}
+        .logo{background-image: image-url("atlant/logo-grey-big@2x.png"); background-size: 140px 50px;}
     }
 }
 
