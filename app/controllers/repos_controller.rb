@@ -1,16 +1,12 @@
 class ReposController < ApplicationController
   def index
-    @repos = current_user.
+    scope = current_user.
       repos.
-      active.
       order(full_github_name: :asc).
-      includes(default_branch: [:recent_push_build])
+      preload(:default_branch)
 
-    @repos |= current_user.
-      repos.
-      active(false).
-      where(memberships: {admin: true}).
-      order(full_github_name: :asc)
+    @repos = scope.active.to_a +
+             scope.active(false).where(memberships: {admin: true}).to_a
 
     # preload memberships for pundit policy
     current_user.memberships.to_a

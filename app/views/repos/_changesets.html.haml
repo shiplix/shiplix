@@ -26,12 +26,12 @@
                             .progress-timeline-arrow
                               %i.fa.fa-arrow-up
                             %div
-                              = rating_badge(changeset.block.rating)
+                              = block_rating_badge(changeset.block.rating)
                             %div
-                              = rating_badge(changeset.prev_block.rating)
+                              = block_rating_badge(changeset.prev_block.rating)
                         - else
                           .timeline-marks.new-mark
-                            = rating_badge(changeset.block.rating)
+                            = block_rating_badge(changeset.block.rating)
 
                         .timeline-class-name
                           %h3
