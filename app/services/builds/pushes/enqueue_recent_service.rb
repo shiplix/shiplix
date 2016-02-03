@@ -24,11 +24,11 @@ module Builds
       private
 
       def revision
-        @revision ||= api.recent_revision(repo.full_github_name, branch_name)
+        @revision ||= api.recent_revision(repo.full_name, branch_name)
       end
 
       def branch_name
-        @branch_name ||= api.default_branch(repo.full_github_name)
+        @branch_name ||= api.default_branch(repo.full_name)
       end
     end
   end

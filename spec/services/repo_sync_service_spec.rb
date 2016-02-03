@@ -19,11 +19,23 @@ describe RepoSyncService do
 
   context 'when current repos present' do
     let(:repo1_attrs) do
-      {id: 1, private: true, full_name: 'name1', owner: {type: 'Organization'}, permissions: {admin: true}}
+      {
+        id: 1,
+        private: true,
+        name: 'repo1',
+        owner: {type: 'Organization', login: "owner1"},
+        permissions: {admin: true}
+      }
     end
 
     let(:repo2_attrs) do
-      {id: 2, private: true, full_name: 'name2', owner: {type: 'Organization'}, permissions: {admin: false}}
+      {
+        id: 2,
+        private: true,
+        name: 'repo2',
+        owner: {type: 'Organization', login: "owner2"},
+        permissions: {admin: false}
+      }
     end
 
     before do
@@ -35,8 +47,10 @@ describe RepoSyncService do
       service.call
     end
 
-    Then { expect(user.repos.count).to eq 2 }
-    And { expect(user.memberships.detect { |m| m.repo.github_id == 1 }.admin?).to be true }
-    And { expect(user.memberships.detect { |m| m.repo.github_id == 2 }.admin?).to be false }
+    it do
+      expect(user.repos.count).to eq 2
+      expect(user.memberships.detect { |m| m.repo.github_id == 1 }.admin?).to be true
+      expect(user.memberships.detect { |m| m.repo.github_id == 2 }.admin?).to be false
+    end
   end
 end

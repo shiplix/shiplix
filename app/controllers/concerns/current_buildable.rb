@@ -1,6 +1,10 @@
 module CurrentBuildable
+  def current_owner
+    @owner ||= Owner.find_by!(name: params.require(:owner_id))
+  end
+
   def current_repo
-    @repo ||= Repo.active.find_by!(full_github_name: params.require(:repo_id))
+    @repo ||= current_owner.repos.active.find_by!(name: params.require(:repo_id))
   end
 
   def current_branch
@@ -15,7 +19,7 @@ module CurrentBuildable
             else
               build = Build.find_by!(uid: params.require(:build_id))
             end
-    
+
     build = nil if build && build.repo != current_repo
     @build = build
   end

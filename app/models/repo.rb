@@ -1,16 +1,15 @@
 class Repo < ActiveRecord::Base
   BASE_PATH = Pathname.new(ENV.fetch('SHIPLIX_BUILDS_PATH'))
 
+  belongs_to :owner
+  belongs_to :activator, class_name: "User", foreign_key: :activated_by
   has_many :memberships
   has_many :users, through: :memberships
   has_many :branches
-  has_many :klasses
-  has_many :source_files
   has_one :default_branch, -> { where(default: true) }, class_name: 'Branch'
 
-  alias_attribute :name, :full_github_name
-
-  validates :full_github_name, presence: true
+  validates :name, presence: true
+  validates :owner_id, presence: true
   validates :github_id, uniqueness: true, presence: true
 
   scope :low_activity, -> do
@@ -29,54 +28,27 @@ class Repo < ActiveRecord::Base
     repo
   end
 
-  def self.find_and_update(github_id, repo_name)
-    repo = find_by(github_id: github_id)
-
-    if repo && repo.full_github_name != repo_name
-      repo.update(full_github_name: repo_name)
-    end
-
-    repo
-  end
-
-  def owner
-    @owner ||= memberships.where(owner: true).first.user
+  def full_name
+    @full_name ||= "#{owner.name}/#{name}"
   end
 
   def activate(user)
-    return if active?
-
-    transaction do
-      update(active: true)
-      memberships.where(user_id: user.id).first.update(owner: true)
-    end
+    update(active: true, activator: user) unless active?
   end
 
   def deactivate
-    return unless active?
-
-    transaction do
-      update(active: false)
-      owner.memberships.where(repo_id: id).first.update(owner: false)
-      @owner = nil
-    end
+    update(active: false, activator: nil) if active?
   end
 
   def scm_url
-    "https://#{owner.access_token}:@github.com/#{full_github_name}.git"
+    "https://#{activator.access_token}:@github.com/#{full_name}.git"
   end
 
   def path
-    @path ||= BASE_PATH.join(full_github_name)
+    @path ||= BASE_PATH.join(full_name)
   end
 
   def to_param
-    full_github_name
-  end
-
-  private
-
-  def organization
-    full_github_name.split("/").first if full_github_name
+    name
   end
 end

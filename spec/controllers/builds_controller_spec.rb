@@ -16,7 +16,7 @@ describe BuildsController, type: :controller do
 
     context 'when user can manage repository' do
       before do
-        create :membership, user: user, repo: repo, owner: true
+        create :membership, user: user, repo: repo, admin: true
       end
 
       context 'when github response with revision' do

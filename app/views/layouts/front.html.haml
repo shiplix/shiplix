@@ -15,7 +15,7 @@
     .page-container
       .page-header
         .page-header-holder
-          .logo= link_to 'Shiplix', root_path
+          .logo= link_to 'Shiplix', root_url
           %nav.nav
             = render partial: 'shared/front/menu_links'
             %a.pull-right.last{href: '/auth/github'}
@@ -23,7 +23,7 @@
               Sign in
 
       .page-content
-        - if current_page?(root_path)
+        - if current_page?(root_url)
           = yield
         - else
           .page-content-wrap.bg-light

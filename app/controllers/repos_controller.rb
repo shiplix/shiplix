@@ -1,9 +1,12 @@
 class ReposController < ApplicationController
+  include CurrentBuildable
+
   def index
     scope = current_user.
       repos.
-      order(full_github_name: :asc).
-      preload(:default_branch)
+      joins(:owner).
+      order("owners.name asc, repos.name asc").
+      preload(:owner, :default_branch)
 
     @repos = scope.active.to_a +
              scope.active(false).where(memberships: {admin: true}).to_a
@@ -13,11 +16,9 @@ class ReposController < ApplicationController
   end
 
   def show
-    @repo = Repo.active.find_by!(full_github_name: params.require(:id))
+    authorize current_repo, :show?
 
-    authorize @repo, :show?
-
-    title_variables[:repo] = @repo.full_github_name
+    title_variables[:repo] = @repo.full_name
 
     @branch = @repo.default_branch
 

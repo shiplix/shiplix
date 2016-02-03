@@ -10,9 +10,9 @@
   %td
     %h3
       - if repo.active?
-        = link_to repo.full_github_name, repo_url(repo)
+        = link_to repo.full_name, repo_url(repo.owner, repo)
       - else
-        = repo.full_github_name
+        = repo.full_name
 
   %td
     - if repo.active?

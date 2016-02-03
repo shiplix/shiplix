@@ -1,17 +1,17 @@
 .page-sidebar
   %ul.x-navigation{class: navbar_collapsed? && 'x-navigation-minimized'}
     %li.xn-logo
-      %a{href: root_path} Shiplix
+      %a{href: root_url} Shiplix
       %a.x-navigation-control{href: '#'}
     %li.xn-title
       Navigation
 
     = render_navigation(renderer: Shiplix::NavbarRenderer) do |primary|
-      - primary.item(:repos, 'Repositories', repos_path, html: {icon: 'fa-desktop'})
+      - primary.item(:repos, 'Repositories', repos_url, html: {icon: 'fa-desktop'})
 
       - if @repo && branch = @repo.default_branch
-        - primary.item(:current_repo, @repo.name, repo_path(@repo), highlights_on: :subpath, html: {icon: 'fa-pencil'}) do |sub_nav|
-          - sub_nav.item(:classes, 'Code', repo_branch_blocks_path(@repo, branch), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
+        - primary.item(:current_repo, @repo.name, repo_path(@repo.owner, @repo), highlights_on: :subpath, html: {icon: 'fa-pencil'}) do |sub_nav|
+          - sub_nav.item(:classes, 'Code', repo_branch_blocks_path(@repo.owner, @repo, branch), highlights_on: :subpath, html: {icon: 'fa-file-text-o'})
 
     %li.xn-icon-button
       %a.x-navigation-minimize{href: '#'}

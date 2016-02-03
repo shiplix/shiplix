@@ -18,7 +18,7 @@
           - if policy(@repo).manage?
             - branch_name = @build.present? ? @build.branch.name : @repo.default_branch.name
             %li
-              = link_to builds_path(repo_id: @repo.id, branch: branch_name),
+              = link_to builds_url(repo_id: @repo.id, branch: branch_name),
                         remote: true, method: :post, class: 'js-build-repo' do
                 %i.fa.fa-refresh
 
