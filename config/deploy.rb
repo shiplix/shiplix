@@ -13,6 +13,8 @@ set :keep_releases, 7
 set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
 set :rails_env, 'production'
 set :ssh_options, {forward_agent: true, user: 'ubuntu'}
+set :tg_token, '153189057:AAHXw4ZBqd7Q-CFoGrl3DSD9bOGJIWFtyjc'
+set :tg_chat_id, -18419020
 
 # https://github.com/capistrano/bundler/issues/45
 set :bundle_binstubs, nil
@@ -51,20 +53,16 @@ namespace :deploy do
 
   after :publishing, :restart_resque
 
-  desc 'Slack notice'
-  task :slack_notice do
-    run_locally do
-      deployer = ENV.fetch('DEPLOYER_NAME', 'Anonymous')
-      payload = {
-        channel: "##{fetch(:slack_channel)}",
-        username: 'Samson',
-        text: "Deployed Shiplix::#{fetch(:deploy_name)} from #{fetch(:branch)} by #{deployer}",
-        icon_emoji: ':rocket:'
-      }
-
-      execute :curl, "-X POST --data-urlencode 'payload=#{payload.to_json}' #{fetch(:slack_url)}"
+  desc 'TG notice'
+  task :tg_notice do
+    # get chat id https://api.telegram.org/bot{TOKEN}/getUpdates?offset=0
+    Telegram::Bot::Client.run(fetch(:tg_token)) do |bot|
+      bot.api.send_message(
+        chat_id: fetch(:tg_chat_id),
+        text: "Deployed Shiplix::#{fetch(:deploy_name)} from #{fetch(:branch)}"
+      )
     end
   end
 
-  after :finished, :slack_notice
+  after :finished, :tg_notice
 end

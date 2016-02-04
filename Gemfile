@@ -82,6 +82,7 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano3-unicorn'
+  gem "telegram-bot-ruby"
   gem 'quiet_assets'
   gem 'wirble'
   gem 'awesome_print'
