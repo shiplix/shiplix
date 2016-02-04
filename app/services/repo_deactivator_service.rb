@@ -13,7 +13,7 @@ class RepoDeactivatorService < ApplicationService
 
   def remove_hooks
     return unless repo.hook_id?
-    api.remove_hooks(repo.full_github_name, repo.hook_id)
+    api.remove_hooks(repo.full_name, repo.hook_id)
     repo.update(hook_id: nil)
   end
 end

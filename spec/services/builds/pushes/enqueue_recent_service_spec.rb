@@ -16,11 +16,11 @@ describe Builds::Pushes::EnqueueRecentService do
 
     before do
       allow(api).to receive(:default_branch).
-                      with(repo.full_github_name).
+                      with(repo.full_name).
                       and_return('master')
 
       allow(api).to receive(:recent_revision).
-                      with(repo.full_github_name, 'master').
+                      with(repo.full_name, 'master').
                       and_return(nil)
     end
 
@@ -34,7 +34,7 @@ describe Builds::Pushes::EnqueueRecentService do
 
     before do
       allow(api).to receive(:recent_revision).
-                      with(repo.full_github_name, branch.name).
+                      with(repo.full_name, branch.name).
                       and_return(prev_build.revision)
     end
 
@@ -53,7 +53,7 @@ describe Builds::Pushes::EnqueueRecentService do
 
     before do
       allow(api).to receive(:recent_revision).
-                      with(repo.full_github_name, branch.name).
+                      with(repo.full_name, branch.name).
                       and_return('recent-revision')
     end
 

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe BlocksController, type: :controller do
   let!(:user) { create :user }
-  let!(:repo) { create :repo, active: true }
+  let!(:repo) { create :repo }
   let!(:branch) { create :branch, repo: repo, default: true }
   let!(:branch2) { create :branch, repo: repo, name: 'develop' }
 
@@ -56,13 +56,13 @@ describe BlocksController, type: :controller do
     end
 
     context "when find by build" do
-      before { get :index, repo_id: repo.to_param, build_id: build.to_param }
+      before { get :index, owner_id: repo.owner.to_param, repo_id: repo.to_param, build_id: build.to_param }
 
       include_context "#index"
     end
 
     context "when find by branch" do
-      before { get :index, repo_id: repo.to_param, branch_id: branch.to_param }
+      before { get :index, owner_id: repo.owner.to_param, repo_id: repo.to_param, branch_id: branch.to_param }
 
       include_context "#index"
     end

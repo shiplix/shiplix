@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Blocks::NamespacesController, type: :controller do
   let(:user) { create :user }
-  let(:repo) { create :repo, active: true }
+  let(:repo) { create :repo }
   let(:branch) { create :branch, repo: repo, default: true }
 
   let!(:build) { create :push, branch: branch, state: 'finished' }
@@ -16,7 +16,8 @@ describe Blocks::NamespacesController, type: :controller do
   describe '#show' do
     context 'when repo has build' do
       it 'renders namespace page' do
-        get :show, id: namespace.to_param, repo_id: repo.to_param, build_id: build.to_param
+        get :show, id: namespace.to_param,
+            owner_id: repo.owner.to_param, repo_id: repo.to_param, build_id: build.to_param
 
         expect(response.status).to eq 200
       end

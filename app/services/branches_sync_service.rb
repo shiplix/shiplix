@@ -10,11 +10,11 @@ class BranchesSyncService < ApplicationService
   private
 
   def api_branches
-    @api_branches ||= api.branches(repo.full_github_name)
+    @api_branches ||= api.branches(repo.full_name)
   end
 
   def api_default_branch
-    @default_branch ||= api.default_branch(repo.full_github_name)
+    @default_branch ||= api.default_branch(repo.full_name)
   end
 
   def cleanup_branches
@@ -45,6 +45,6 @@ class BranchesSyncService < ApplicationService
   end
 
   def user
-    repo.owner
+    repo.activator
   end
 end

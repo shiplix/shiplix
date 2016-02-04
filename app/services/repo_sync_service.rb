@@ -1,5 +1,5 @@
 class RepoSyncService < ApplicationService
-  ORGANIZATION_TYPE = 'Organization'.freeze
+  OWNER_TYPE = {"Organization" => "Owners::Org", "User" => "Owners::User"}.freeze
 
   pattr_initialize :user
 
@@ -15,10 +15,19 @@ class RepoSyncService < ApplicationService
 
   def find_or_create_repos
     @current_repos = api.repos.each_with_object({}) do |repo_params, hsh|
-      attributes = repo_attributes(repo_params)
-      repo = Repo.find_by(github_id: attributes[:github_id]) || Repo.create!(attributes)
+      owner = find_or_create_owner(repo_params[:owner])
+
+      repo = Repo.find_by(github_id: repo_params[:id])
+      repo.update(owner: owner) if repo && repo.owner != owner
+      repo ||= Repo.create!(repo_attributes(repo_params).merge!(owner: owner))
+
       hsh[repo.id] = {record: repo, params: repo_params}
     end
+  end
+
+  def find_or_create_owner(owner_params)
+    name = owner_params[:login]
+    Owner.find_by(name: name) || Owner.create!(name: name, type: OWNER_TYPE[owner_params[:type]])
   end
 
   def destroy_memberships
@@ -33,19 +42,19 @@ class RepoSyncService < ApplicationService
     current_repos.each do |repo_id, repo|
       membership = memberships[repo_id]
 
-      if membership && membership.admin? != repo[:params][:permissions][:admin]
-        membership.update!(admin: repo[:params][:permissions][:admin])
+      is_admin = repo[:params][:permissions][:admin]
+      if membership && membership.admin? != is_admin
+        membership.update!(admin: is_admin)
       elsif !membership
-        user.memberships.create!(repo: repo[:record], admin: repo[:params][:permissions][:admin])
+        user.memberships.create!(repo: repo[:record], admin: is_admin)
       end
     end
   end
 
-  def repo_attributes(attributes)
-    attributes.slice(:private).merge(
-      github_id: attributes[:id],
-      full_github_name: attributes[:full_name],
-      in_organization: attributes[:owner][:type] == ORGANIZATION_TYPE
+  def repo_attributes(repo_params)
+    repo_params.slice(:private).merge!(
+      github_id: repo_params[:id],
+      name: repo_params[:name]
     )
   end
 end

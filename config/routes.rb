@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # rails escape slash in url helpers, eg repo_path(repo) renders as user_name%2Frepo_name
   # instead user_name/repo_name
   scope :repos do
-    scope "*repo_id", as: :repo do
+    scope ":owner_id/:repo_id", as: :repo do
       resources :branches, only: [] do
         resources :blocks, only: :index
       end
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       end
     end
 
-    get "*id", to: "repos#show", as: :repo
+    get ":owner_id/:repo_id", to: "repos#show", as: :repo
     get "/", to: "repos#index", as: :repos
   end
 

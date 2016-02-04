@@ -15,7 +15,7 @@ class RepoActivatorService < ApplicationService
   private
 
   def add_hooks
-    api.add_hooks(repo.full_github_name, GithubApi::CALLBACK_ENDPOINT) do |hook_id|
+    api.add_hooks(repo.full_name, GithubApi::CALLBACK_ENDPOINT) do |hook_id|
       repo.update(hook_id: hook_id)
     end
   end
