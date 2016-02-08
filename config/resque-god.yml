@@ -1,5 +1,5 @@
 env:
-  INTERVAL: 2
+  INTERVAL: 1
 
 workers:
   '*':
