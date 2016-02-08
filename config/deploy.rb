@@ -25,33 +25,10 @@ SSHKit.config.command_map[:rails] = 'bundle exec rails'
 namespace :deploy do
   task :restart do
     invoke 'unicorn:restart'
+    invoke 'resque:restart'
   end
 
   after :publishing, :restart
-
-  desc 'Configure environment'
-  task :config_env do
-    on roles(:app) do
-      within release_path do
-        with :project => :deploy, :deploy => fetch(:stage) do
-          execute release_path.join('bin', 'config_env')
-        end
-      end
-    end
-  end
-
-  before :updated, :config_env
-
-  desc 'Restart resque'
-  task :restart_resque do
-    on roles(:job) do
-      within release_path do
-        execute :rake, 'resque:restart'
-      end
-    end
-  end
-
-  after :publishing, :restart_resque
 
   desc 'TG notice'
   task :tg_notice do
@@ -65,4 +42,14 @@ namespace :deploy do
   end
 
   after :finished, :tg_notice
+end
+
+namespace :resque do
+  task :restart do
+    on roles(:job) do
+      within release_path do
+        execute :rake, 'resque:restart'
+      end
+    end
+  end
 end
