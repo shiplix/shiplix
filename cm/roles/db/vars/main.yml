@@ -1,0 +1,3 @@
+---
+postgresql_version: 9.4
+postgresql_ext_install_dev_headers: yes
