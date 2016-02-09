@@ -1,0 +1,6 @@
+---
+rvm1_rubies: 'ruby-2.3.0'
+rvm1_user: '{{ app_user }}'
+rvm1_install_path: '/home/{{ app_user }}/.rvm'
+rvm1_gpg_key_server: 'hkp://pgp.mit.edu'
+rvm1_install_flags: '--auto-dotfiles --user-install'

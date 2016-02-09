@@ -1,0 +1,14 @@
+---
+
+- name: Common | Update apt
+  apt: update_cache=yes
+  sudo: yes
+
+- name: Common | Install common packages
+  sudo: yes
+  apt: name={{item}} state=present
+  with_items:
+    - build-essential
+    - git-core
+    - cmake
+    - libgmp3-dev
