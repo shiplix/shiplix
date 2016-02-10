@@ -1,4 +1,4 @@
-root = "/home/ubuntu/sites/shiplix/current"
+root = ENV.fetch("UNICORN_ROOT", "/home/ubuntu/sites/shiplix/current")
 
 working_directory root
 pid "#{root}/tmp/pids/unicorn.pid"
