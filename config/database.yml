@@ -1,8 +1,8 @@
 defaults: &DEFAULTS
   adapter: postgresql
-  username: <%= ENV["SHIPLIX_DB_USER"] %>
-  host: <%= ENV["SHIPLIX_DB_HOST"] %>
-  port: <%= ENV["SHIPLIX_DB_PORT"] %>
+  username: <%= ENV.fetch("SHIPLIX_DB_USER", "shiplix") %>
+  host: <%= ENV.fetch("SHIPLIX_DB_HOST", "localhost") %>
+  port: <%= ENV.fetch("SHIPLIX_DB_PORT", 5432) %>
   password: <%= ENV["SHIPLIX_DB_PASSWORD"] %>
 
 development:

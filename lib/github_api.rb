@@ -2,7 +2,7 @@ require 'octokit'
 
 class GithubApi
   CACHE_TTL = 1.day
-  CALLBACK_ENDPOINT = "#{ENV.fetch('SHIPLIX_PROTOCOL', 'http')}://#{HOST}/github_events"
+  CALLBACK_ENDPOINT = "#{ENV.fetch('SHIPLIX_PROTOCOL', 'http')}://#{ENV.fetch('SHIPLIX_HOST')}/github_events"
 
   attr_reader :api
 
