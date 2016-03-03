@@ -35,14 +35,14 @@ module Shiplix
     config.active_record.default_timezone = :utc
 
     # Set a default host that will be used in all mailers
-    config.action_mailer.default_url_options = {host: ENV.fetch('SHIPLIX_HOST')}
+    config.action_mailer.default_url_options = {host: ENV.fetch('SHIPLIX_HOST', "shiplix.local")}
 
     # JSON
     require 'multi_json'
     MultiJson.use :oj
 
     # cache
-    cache_namespace = ENV.fetch('SHIPLIX_REDIS_CACHE_NAMESPACE').dup
+    cache_namespace = ENV.fetch('SHIPLIX_REDIS_CACHE_NAMESPACE', "shiplix").dup
     if File.exists?(Rails.root.join('REVISION'))
       rev = File.read(Rails.root.join('REVISION')).strip[0..3]
       cache_namespace << "_#{rev}" if rev.present?
@@ -52,9 +52,9 @@ module Shiplix
       expires_in: 1.day.to_i,
       namespace: cache_namespace,
       redis: {
-        host: ENV.fetch('SHIPLIX_REDIS_HOST'),
-        post: ENV.fetch('SHIPLIX_REDIS_PORT'),
-        db: ENV.fetch('SHIPLIX_REDIS_CACHE_DB'),
+        host: ENV.fetch('SHIPLIX_REDIS_HOST', "localhost"),
+        post: ENV.fetch('SHIPLIX_REDIS_PORT', 6379),
+        db: ENV.fetch('SHIPLIX_REDIS_CACHE_DB', 0),
         driver: :hiredis
       }
     }

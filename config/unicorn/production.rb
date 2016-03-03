@@ -1,4 +1,4 @@
-root = ENV.fetch("UNICORN_ROOT", "/home/ubuntu/sites/shiplix/current")
+root = ENV.fetch("RAILS_ROOT", File.expand_path('../../..', __FILE__))
 
 working_directory root
 pid "#{root}/tmp/pids/unicorn.pid"

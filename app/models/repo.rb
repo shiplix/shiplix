@@ -1,6 +1,4 @@
 class Repo < ActiveRecord::Base
-  BASE_PATH = Pathname.new(ENV.fetch('SHIPLIX_BUILDS_PATH'))
-
   belongs_to :owner
   belongs_to :activator, class_name: "User", foreign_key: :activated_by
   has_many :memberships
@@ -45,7 +43,7 @@ class Repo < ActiveRecord::Base
   end
 
   def path
-    @path ||= BASE_PATH.join(full_name)
+    @path ||= Pathname.new(ENV.fetch('SHIPLIX_BUILDS_PATH')).join(full_name)
   end
 
   def to_param
