@@ -10,35 +10,27 @@ RUN apt-get update -qq && \
   pkg-config \
   libcurl3-dev \
   libpq-dev \
-  libgmp3-dev && \
+  libgmp3-dev \
+  postgresql-client \
+  git-core && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   truncate -s 0 /var/log/*log
 
-# Add Tini
-ADD https://github.com/krallin/tini/releases/download/v0.9.0/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
-
-ENV RAILS_ENV production
+# Env
+ENV RAILS_ENV development
 
 EXPOSE 3000
-
-VOLUME /app/public
 
 # Install gems
 COPY Gemfile Gemfile.lock /app/
 WORKDIR /app
 RUN echo 'gem: --no-rdoc --no-ri' >> /etc/gemrc && \
   bundle config build.nokogiri --use-system-libraries && \
-  bundle install --deployment --without development test --jobs 4
-
-# Copy project files
-COPY . /app
+  bundle install --jobs 4
 
 # Setup application
 RUN mkdir -p tmp/pids tmp/builds && \
-  rm -rf tmp/cache && \
-  ln -sf /dev/stdout /app/log/unicorn.log && \
-  ln -sf /dev/stdout /app/log/production.log && \
+  mkdir -p log && \
+  ln -sf /dev/stdout /app/log/development.log && \
   ln -sf /dev/stdout /app/log/resque.log

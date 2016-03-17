@@ -43,7 +43,7 @@ class Repo < ActiveRecord::Base
   end
 
   def path
-    @path ||= Pathname.new(ENV.fetch('SHIPLIX_BUILDS_PATH')).join(full_name)
+    @path ||= Pathname.new(ENV.fetch('SHIPLIX_BUILDS_PATH', Rails.root.join("tmp/builds"))).join(full_name)
   end
 
   def to_param

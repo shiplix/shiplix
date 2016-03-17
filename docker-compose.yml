@@ -1,0 +1,44 @@
+pgdata:
+  image: 'busybox'
+  volumes:
+    - /data
+
+pg:
+  image: 'postgres:9.4'
+  volumes_from:
+    - pgdata
+
+redisdata:
+  image: 'busybox'
+  volumes:
+    - /data
+
+redis:
+  image: 'redis:3-alpine'
+  command: 'redis-server --appendonly yes'
+  volumes_from:
+    - redisdata
+
+rails:
+  build: '.'
+  command: 'bundle exec rails s -b 0.0.0.0'
+  env_file: .env
+  ports:
+    - '3000:3000'
+  volumes:
+    - '.:/app'
+  links:
+    - redis
+    - pg
+
+resque:
+  build: '.'
+  command: 'bundle exec rake resque:work --trace'
+  env_file: .env
+  volumes:
+    - '.:/app'
+  links:
+    - redis
+    - pg
+  environment:
+    - 'QUEUE=*'

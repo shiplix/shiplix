@@ -14,7 +14,7 @@ set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
 set :rails_env, 'production'
 set :ssh_options, {forward_agent: true, user: 'ubuntu'}
 set :tg_token, '153189057:AAHXw4ZBqd7Q-CFoGrl3DSD9bOGJIWFtyjc'
-set :tg_chat_id, -18419020
+set :tg_chat_id, -1001032817527
 
 # https://github.com/capistrano/bundler/issues/45
 set :bundle_binstubs, nil
