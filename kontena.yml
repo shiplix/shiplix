@@ -1,0 +1,106 @@
+lb:
+  image: kontena/lb:latest
+  environment:
+    - LOG_CONFIG=1
+  deploy:
+    strategy: daemon
+  ports:
+    - 80:80
+
+front:
+  image: registry.kontena.local/shiplix_nginx:latest
+  build: 'config/docker/production/nginx'
+  volumes_from:
+    - 'shiplix-app-%%s'
+  environment:
+    - KONTENA_LB_INTERNAL_PORT=80
+  secrets:
+    - secret: FRONT_LB_HOSTS
+      name: KONTENA_LB_VIRTUAL_HOSTS
+      type: env
+  links:
+    - lb
+
+app:
+  image: registry.kontena.local/shiplix_rails:latest
+  build: '.'
+  dockerfile: config/docker/production/rails/Dockerfile
+  command: ./config/docker/production/rails/unicorn.sh
+  environment:
+    - KONTENA_LB_INTERNAL_PORT=3000
+  secrets:
+    - secret: APP_LB_HOSTS
+      name: KONTENA_LB_VIRTUAL_HOSTS
+      type: env
+    - secret: SHIPLIX_HOST
+      name: SHIPLIX_HOST
+      type: env
+    - secret: SHIPLIX_ASSETS_HOST
+      name: SHIPLIX_ASSETS_HOST
+      type: env
+    - secret: GITHUB_SECRET_TOKEN
+      name: GITHUB_SECRET_TOKEN
+      type: env
+    - secret: SHIPLIX_DB_HOST
+      name: SHIPLIX_DB_HOST
+      type: env
+    - secret: SHIPLIX_DB_USER
+      name: SHIPLIX_DB_USER
+      type: env
+    - secret: SHIPLIX_DB_PASSWORD
+      name: SHIPLIX_DB_PASSWORD
+      type: env
+    - secret: SHIPLIX_GITHUB_CLIENT_ID
+      name: SHIPLIX_GITHUB_CLIENT_ID
+      type: env
+    - secret: SHIPLIX_GITHUB_CLIENT_SECRET
+      name: SHIPLIX_GITHUB_CLIENT_SECRET
+      type: env
+    - secret: SHIPLIX_REDIS_HOST
+      name: SHIPLIX_REDIS_HOST
+      type: env
+    - secret: SHIPLIX_SECRET_KEY_BASE
+      name: SHIPLIX_SECRET_KEY_BASE
+      type: env
+    - secret: SKYLIGHT_AUTHENTICATION
+      name: SKYLIGHT_AUTHENTICATION
+      type: env
+  links:
+    - lb
+
+worker:
+  image: registry.kontena.local/shiplix_rails:latest
+  command: 'bundle exec rake resque:work --trace'
+  secrets:
+    - secret: SHIPLIX_HOST
+      name: SHIPLIX_HOST
+      type: env
+    - secret: GITHUB_SECRET_TOKEN
+      name: GITHUB_SECRET_TOKEN
+      type: env
+    - secret: SHIPLIX_DB_HOST
+      name: SHIPLIX_DB_HOST
+      type: env
+    - secret: SHIPLIX_DB_USER
+      name: SHIPLIX_DB_USER
+      type: env
+    - secret: SHIPLIX_DB_PASSWORD
+      name: SHIPLIX_DB_PASSWORD
+      type: env
+    - secret: SHIPLIX_GITHUB_CLIENT_ID
+      name: SHIPLIX_GITHUB_CLIENT_ID
+      type: env
+    - secret: SHIPLIX_GITHUB_CLIENT_SECRET
+      name: SHIPLIX_GITHUB_CLIENT_SECRET
+      type: env
+    - secret: SHIPLIX_REDIS_HOST
+      name: SHIPLIX_REDIS_HOST
+      type: env
+    - secret: SHIPLIX_SECRET_KEY_BASE
+      name: SHIPLIX_SECRET_KEY_BASE
+      type: env
+    - secret: SKYLIGHT_AUTHENTICATION
+      name: SKYLIGHT_AUTHENTICATION
+      type: env
+  environment:
+    - 'QUEUE=*'

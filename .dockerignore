@@ -1,8 +1,12 @@
 .git/
 .bundle/
+.capistrano/
 coverage/
 log/*
 tmp/*
-.env
+public/assets/
 .ruby-version
 config/resque.god
+.env
+*.env
+kontena.ovpn

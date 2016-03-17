@@ -1,6 +1,6 @@
 defaults: &DEFAULTS
-  host: '<%= ENV["SHIPLIX_REDIS_HOST"] %>'
-  port: <%= ENV["SHIPLIX_REDIS_PORT"] %>
+  host: '<%= ENV.fetch("SHIPLIX_REDIS_HOST", "redis") %>'
+  port: <%= ENV.fetch("SHIPLIX_REDIS_PORT", 6379) %>
   namespace: 'shiplix'
   driver: hiredis
 
