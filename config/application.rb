@@ -66,5 +66,7 @@ module Shiplix
       g.stylesheets false
       g.javascripts false
     end
+
+    config.active_record.observers = :repo_observer
   end
 end

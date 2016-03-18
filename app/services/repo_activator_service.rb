@@ -2,7 +2,7 @@ class RepoActivatorService < ApplicationService
   pattr_initialize :user, :repo
 
   def call
-    return false unless Pundit.policy(user, repo).manage?
+    return false unless Pundit.policy(user, repo).activate?
 
     repo.transaction do
       repo.activate(user)

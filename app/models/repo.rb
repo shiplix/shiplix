@@ -9,7 +9,7 @@ class Repo < ActiveRecord::Base
   has_one :default_branch, -> { where(default: true) }, class_name: 'Branch'
 
   validates :name, presence: true
-  validates :owner_id, presence: true
+  validates :owner, presence: true
   validates :github_id, uniqueness: true, presence: true
 
   scope :low_activity, -> do
@@ -50,5 +50,9 @@ class Repo < ActiveRecord::Base
 
   def to_param
     name
+  end
+
+  def public?
+    !private?
   end
 end
