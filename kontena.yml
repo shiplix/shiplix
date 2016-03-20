@@ -1,20 +1,27 @@
 lb:
   image: kontena/lb:latest
-  environment:
-    - LOG_CONFIG=1
   deploy:
     strategy: daemon
   ports:
     - 80:80
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
 
 pg:
   image: 'postgres:9.4'
   stateful: true
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
 
 redis:
   image: 'redis:3-alpine'
   command: 'redis-server --appendonly yes'
   stateful: true
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
 
 front:
   image: shiplix/nginx
@@ -29,6 +36,9 @@ front:
       type: env
   links:
     - lb
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
 
 app:
   image: shiplix/rails
@@ -76,6 +86,9 @@ app:
       type: env
   links:
     - lb
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
 
 worker:
   image: shiplix/rails
@@ -115,3 +128,6 @@ worker:
     - 'QUEUE=*'
   volumes:
     - '/tmp/builds:/app/tmp/builds'
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
