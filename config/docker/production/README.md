@@ -1,16 +1,16 @@
 ## Usage
 
-### Setup kontena.io
+### Install
 
 ```
 $ gem install kontena-cli
-$ kontena login 52.50.82.108
-$ kontena grid use staging
-$ kontena vpn config > kontena.ovpn
-$ sudo openvpn --config kontena.ovpn --script-security 2 --daemon
+$ kontena login http://kontena.shiplix.com:8080
+$ kontena grid create staging
 ```
 
 ### Build
+
+Build images and push to https://hub.docker.com/r/shiplix
 
 ```
 $ kontena app build

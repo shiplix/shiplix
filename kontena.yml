@@ -7,8 +7,17 @@ lb:
   ports:
     - 80:80
 
+pg:
+  image: 'postgres:9.4'
+  stateful: true
+
+redis:
+  image: 'redis:3-alpine'
+  command: 'redis-server --appendonly yes'
+  stateful: true
+
 front:
-  image: registry.kontena.local/shiplix_nginx:latest
+  image: shiplix/nginx
   build: 'config/docker/production/nginx'
   volumes_from:
     - 'shiplix-app-%%s'
@@ -22,7 +31,7 @@ front:
     - lb
 
 app:
-  image: registry.kontena.local/shiplix_rails:latest
+  image: shiplix/rails
   build: '.'
   dockerfile: config/docker/production/rails/Dockerfile
   command: ./config/docker/production/rails/unicorn.sh
@@ -69,7 +78,7 @@ app:
     - lb
 
 worker:
-  image: registry.kontena.local/shiplix_rails:latest
+  image: shiplix/rails
   command: 'bundle exec rake resque:work --trace'
   secrets:
     - secret: SHIPLIX_HOST
@@ -104,3 +113,5 @@ worker:
       type: env
   environment:
     - 'QUEUE=*'
+  volumes:
+    - '/tmp/builds:/app/tmp/builds'
