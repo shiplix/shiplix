@@ -19,7 +19,7 @@ redis:
   volumes_from:
     - redisdata
 
-rails:
+app:
   build: '.'
   command: 'bundle exec rails s -b 0.0.0.0'
   env_file: .env
@@ -31,7 +31,7 @@ rails:
     - redis
     - pg
 
-resque:
+worker:
   build: '.'
   command: 'bundle exec rake resque:work --trace'
   env_file: .env

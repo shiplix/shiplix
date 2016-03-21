@@ -21,4 +21,5 @@
 .capistrano/
 /coverage
 /.vagrant
-kontena.ovpn
+/config/resque.god
+/public/assets/
