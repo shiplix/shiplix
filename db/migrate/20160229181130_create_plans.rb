@@ -18,14 +18,14 @@ class CreatePlans < ActiveRecord::Migration
     create_table :accounts do |t|
       t.integer :owner_id, null: false
       t.integer :plan_id, null: false
-      t.string :uid, null: false, limit: 32
+      t.string :uuid, null: false, limit: 36
       t.decimal :price, null: false, precision: 8, scale: 2
       t.boolean :paid, null: false, default: false
       t.date :paid_till
       t.timestamps null: false
     end
 
-    add_index :accounts, :uid, unique: true
+    add_index :accounts, :uuid, unique: true
     add_index :accounts, :plan_id
     add_index :accounts, [:owner_id, :paid, :paid_till]
     add_foreign_key :accounts, :owners, on_delete: :cascade

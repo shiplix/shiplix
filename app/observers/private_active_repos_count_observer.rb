@@ -1,19 +1,18 @@
-class RepoObserver < ActiveRecord::Observer
-  def after_save(repo)
-    change_private_active_repos_count(repo)
-  end
+# Observer for calculate private active repos for owner.
+class PrivateActiveReposCountObserver < ActiveRecord::Observer
+  observe Repo
 
-  private
-
-  # Internal: change owner.active_private_repos_count counter
+  # change owner.active_private_repos_count counter
   # when private repo became active or became public
-  def change_private_active_repos_count(repo)
+  def after_save(repo)
     if private_became_active?(repo) || active_became_private?(repo)
       repo.owner.increment!(:active_private_repos_count)
     elsif private_became_not_active?(repo) || private_became_pubic?(repo)
       repo.owner.decrement!(:active_private_repos_count)
     end
   end
+
+  private
 
   def private_became_active?(repo)
     repo.private? && repo.active? && repo.active_was == false

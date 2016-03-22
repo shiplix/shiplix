@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe RepoObserver do
+RSpec.describe PrivateActiveReposCountObserver do
   context 'when create repo' do
     it do
       repo = create :repo, private: true, active: true

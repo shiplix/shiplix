@@ -16,7 +16,7 @@ class Owner < ActiveRecord::Base
     name
   end
 
-  def plan
-    super || Plans::Free.new
+  def plan_or_free
+    @plan ||= plan || Plans::Free.new
   end
 end

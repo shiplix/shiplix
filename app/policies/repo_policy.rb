@@ -20,7 +20,7 @@ class RepoPolicy
 
     owner = repo.owner
 
-    limit = repo.owner.plan.repo_limit
+    limit = repo.owner.plan_or_free.repo_limit
     repo.owner.active_private_repos_count < limit
   end
 end
