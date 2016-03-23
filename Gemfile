@@ -57,6 +57,7 @@ gem 'vicar'
 gem 'aasm'
 gem 'attr_extras'
 gem 'whenever', require: false
+gem 'rails-observers'
 
 # Back
 gem 'resque', '~> 1.25'

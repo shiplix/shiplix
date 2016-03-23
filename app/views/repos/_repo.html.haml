@@ -20,7 +20,7 @@
         = build.smells_count
 
   %td
-    - if policy(repo).manage?
+    - if policy(repo).activate?
       %label.switch
         - if repo.active?
           = check_box_tag "#{repo.id}_switch",
