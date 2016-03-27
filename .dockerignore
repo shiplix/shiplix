@@ -9,4 +9,4 @@ public/assets/
 config/resque.god
 .env
 *.env
-kontena.ovpn
+vendor/bundle/
