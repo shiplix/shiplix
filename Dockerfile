@@ -17,20 +17,14 @@ RUN apt-get update -qq && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   truncate -s 0 /var/log/*log
 
-# Env
-ENV RAILS_ENV development
-
 EXPOSE 3000
 
-# Install gems
-COPY Gemfile Gemfile.lock /app/
-WORKDIR /app
-RUN echo 'gem: --no-rdoc --no-ri' >> /etc/gemrc && \
-  bundle config build.nokogiri --use-system-libraries && \
-  bundle install --jobs 4
+ENV BUNDLE_PATH /app/vendor/bundle
 
-# Setup application
-RUN mkdir -p tmp/pids tmp/builds && \
-  mkdir -p log && \
-  ln -sf /dev/stdout /app/log/development.log && \
-  ln -sf /dev/stdout /app/log/resque.log
+RUN echo 'gem: --no-rdoc --no-ri' >> /etc/gemrc && \
+  gem install bundler && \
+  bundle config --global jobs 4 && \
+  bundle config --global without production && \
+  bundle config --global build.nokogiri --use-system-libraries
+
+WORKDIR /app

@@ -22,7 +22,13 @@ redis:
 app:
   build: '.'
   command: 'bundle exec rails s -b 0.0.0.0'
-  env_file: .env
+  environment:
+    - SHIPLIX_DB_USER=postgres
+    - SHIPLIX_DB_HOST=pg
+    - SHIPLIX_DB_PORT=5432
+    - SHIPLIX_REDIS_HOST=redis
+    - SHIPLIX_REDIS_PORT=6379
+    - SHIPLIX_REDIS_CACHE_DB=1
   ports:
     - '3000:3000'
   volumes:
@@ -34,11 +40,16 @@ app:
 worker:
   build: '.'
   command: 'bundle exec rake resque:work --trace'
-  env_file: .env
+  environment:
+    - 'QUEUE=*'
+    - SHIPLIX_DB_USER=postgres
+    - SHIPLIX_DB_HOST=pg
+    - SHIPLIX_DB_PORT=5432
+    - SHIPLIX_REDIS_HOST=redis
+    - SHIPLIX_REDIS_PORT=6379
+    - SHIPLIX_REDIS_CACHE_DB=1
   volumes:
     - '.:/app'
   links:
     - redis
     - pg
-  environment:
-    - 'QUEUE=*'
