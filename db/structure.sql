@@ -96,42 +96,6 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE accounts (
-    id integer NOT NULL,
-    owner_id integer NOT NULL,
-    plan_id integer NOT NULL,
-    uuid character varying(36) NOT NULL,
-    price numeric(8,2) NOT NULL,
-    paid boolean DEFAULT false NOT NULL,
-    paid_till date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE accounts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
-
-
---
 -- Name: branches; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -315,8 +279,8 @@ CREATE TABLE owners (
     name character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    plan_id integer,
-    active_private_repos_count integer DEFAULT 0
+    active_private_repos_count integer DEFAULT 0,
+    stripe_customer_id character varying
 );
 
 
@@ -457,6 +421,42 @@ ALTER SEQUENCE smells_id_seq OWNED BY smells.id;
 
 
 --
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE subscriptions (
+    id integer NOT NULL,
+    owner_id integer NOT NULL,
+    plan_id integer NOT NULL,
+    uuid character varying(36) NOT NULL,
+    price numeric(8,2) NOT NULL,
+    active_till timestamp without time zone NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    stripe_subscription_id character varying NOT NULL
+);
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -489,13 +489,6 @@ CREATE SEQUENCE users_id_seq
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
 
 
 --
@@ -565,15 +558,14 @@ ALTER TABLE ONLY smells ALTER COLUMN id SET DEFAULT nextval('smells_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY subscriptions ALTER COLUMN id SET DEFAULT nextval('subscriptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
-
-
---
--- Name: accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY accounts
-    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -649,32 +641,19 @@ ALTER TABLE ONLY smells
 
 
 --
+-- Name: subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: index_accounts_on_owner_id_and_paid_and_paid_till; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_accounts_on_owner_id_and_paid_and_paid_till ON accounts USING btree (owner_id, paid, paid_till);
-
-
---
--- Name: index_accounts_on_plan_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_accounts_on_plan_id ON accounts USING btree (plan_id);
-
-
---
--- Name: index_accounts_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_accounts_on_uuid ON accounts USING btree (uuid);
 
 
 --
@@ -748,13 +727,6 @@ CREATE UNIQUE INDEX index_owners_on_name ON owners USING btree (name);
 
 
 --
--- Name: index_owners_on_plan_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_owners_on_plan_id ON owners USING btree (plan_id);
-
-
---
 -- Name: index_plans_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -797,6 +769,20 @@ CREATE INDEX index_smells_on_file_id_and_fingerprint ON smells USING btree (file
 
 
 --
+-- Name: index_subscriptions_on_plan_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_subscriptions_on_plan_id ON subscriptions USING btree (plan_id);
+
+
+--
+-- Name: index_subscriptions_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_uuid ON subscriptions USING btree (uuid);
+
+
+--
 -- Name: index_users_on_remember_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -830,7 +816,7 @@ ALTER TABLE ONLY repos
 -- Name: fk_rails_37ced7af95; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts
+ALTER TABLE ONLY subscriptions
     ADD CONSTRAINT fk_rails_37ced7af95 FOREIGN KEY (owner_id) REFERENCES owners(id) ON DELETE CASCADE;
 
 
@@ -894,16 +880,8 @@ ALTER TABLE ONLY files
 -- Name: fk_rails_ded37ae59a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts
+ALTER TABLE ONLY subscriptions
     ADD CONSTRAINT fk_rails_ded37ae59a FOREIGN KEY (plan_id) REFERENCES plans(id) ON DELETE RESTRICT;
-
-
---
--- Name: fk_rails_ec60b66122; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY owners
-    ADD CONSTRAINT fk_rails_ec60b66122 FOREIGN KEY (plan_id) REFERENCES plans(id) ON DELETE RESTRICT;
 
 
 --
@@ -995,4 +973,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160229181130');
 INSERT INTO schema_migrations (version) VALUES ('20160314175210');
 
 INSERT INTO schema_migrations (version) VALUES ('20160403092807');
+
+INSERT INTO schema_migrations (version) VALUES ('20160414065207');
 

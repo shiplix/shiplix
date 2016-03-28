@@ -1,0 +1,21 @@
+- breadcrumb :billing
+
+- content_for(:header_icon, 'fa-arrow-circle-o-left')
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-body
+        %table.table
+          %thead
+            %tr
+              %td Account
+              %td Plan
+              %td
+            %tbody
+              - @owners.each do |owner|
+                %tr
+                  %td= owner.name
+                  %td= owner.plan_or_free.name
+                  %td
+                    = link_to 'Change plan', new_profile_billing_subscription_path(owner), class: 'btn btn-default btn-block'

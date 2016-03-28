@@ -20,6 +20,8 @@ class RepoPolicy
 
     owner = repo.owner
 
+    return false if owner.subscription.nil? || Time.current > owner.subscription.active_till
+
     limit = repo.owner.plan_or_free.repo_limit
     repo.owner.active_private_repos_count < limit
   end

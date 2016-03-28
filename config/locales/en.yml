@@ -3,3 +3,7 @@ en:
     error:
       messages:
         invalid_transition: "Couldn't change state from %{state} to %{new_state}"
+  plans:
+    per_months:
+      one: "month"
+      other: "%{count} months"

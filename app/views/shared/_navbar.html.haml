@@ -5,9 +5,12 @@
       %a.x-navigation-control{href: '#'}
     %li.xn-title
       Navigation
+  
+    - if controller.controller_path.include?('profile')
+      = render_navigation(context: :profile, renderer: Shiplix::NavbarRenderer)
+    - else
+      = render_navigation(renderer: Shiplix::NavbarRenderer)
 
-    = render_navigation(renderer: Shiplix::NavbarRenderer)
-    
     %li.xn-icon-button
       %a.x-navigation-minimize{href: '#'}
         %i.fa.fa-dedent

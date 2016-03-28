@@ -5,4 +5,6 @@ class Plan < ActiveRecord::Base
   validates :price, presence: true
   validates :months, presence: true, numericality: true
   validates :repo_limit, presence: true, numericality: true
+
+  scope :active, ->{ where(active: true) }
 end

@@ -21,6 +21,14 @@ Rails.application.routes.draw do
     get "/", to: "repos#index", as: :repos
   end
 
+  namespace :profile do
+    root to: 'home#index'
+
+    resources :billing, only: [:index] do
+      resource :subscription, only: [:new, :create]
+    end
+  end
+
   resources :jobs, only: [:show]
   resources :builds, only: :create
   resources :repo_syncs, only: [:create]

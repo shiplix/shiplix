@@ -66,9 +66,9 @@ describe RepoPolicy do
         end
       end
 
-      context 'when user have paid plan' do
-        let!(:plan) do
-          repo.owner.create_plan!(name: 'Test', price: 10, repo_limit: 1)
+      context 'when owner have a subscription' do
+        before do
+          create(:subscription, owner: repo.owner)
         end
 
         it 'can activate public repo' do
@@ -97,6 +97,17 @@ describe RepoPolicy do
             repo.private = true
             expect(policy.activate?).to eq false
           end
+        end
+      end
+
+      context 'when owner have outdated subscription' do
+        before do
+          create(:subscription, owner: repo.owner, active_till: 1.day.ago)
+        end
+
+        it 'can`t activate private repo' do
+          repo.private = true
+          expect(policy.activate?).to eq false
         end
       end
     end

@@ -1,0 +1,20 @@
+- content_for(:header_icon, 'fa-arrow-circle-o-left')
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-body
+        %table.table
+          %thead
+            %tr
+              %td Plan
+              %td Price
+              %td Private repositories
+              %td
+          %tbody
+            - @plans.each do |plan|
+              %td= plan.name
+              %td= "$ #{plan.price} /  #{plan.months.zero? ? 'month' : I18n.t('plans.per_months', count: plan.months)}"
+              %td= plan.repo_limit
+              %td
+                %a.btn.btn-default.btn-block{href: '#'} Upgrade

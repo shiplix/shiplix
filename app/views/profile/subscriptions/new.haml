@@ -1,0 +1,39 @@
+- breadcrumb :payment, @owner
+
+- content_for(:header_icon, 'fa-arrow-circle-o-left')
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-body
+        = form_for @subscription_type, url: profile_billing_subscription_path, html: {class: 'js-payment-form'} do |f|
+          = f.hidden_field :token, class: 'js-token'
+
+          %table.table
+            %thead
+              %tr
+                %td Plan
+                %td Price
+                %td Private repositories
+            %tbody
+              - @plans.each do |plan|
+                %tr
+                  %td
+                    = f.radio_button :plan_id, plan.id
+                    = plan.name
+                  %td= "$ #{plan.price} / #{I18n.t('plans.per_months', count: plan.months)}"
+                  %td= plan.repo_limit
+
+          .js-payment-errors
+
+          %div= f.text_field :card_number, data: {stripe: 'number'}, required: true, placeholder: '0000 0000 0000 0000', value: 4242424242424242, minlength: 11, maxlength: 20
+          %div= f.text_field :cvc, data: {stripe: 'cvc'}, required: true, placeholder: '000', maxlength: 4
+          %div
+            = f.select :exp_month, 1..12, {}, data: {stripe: 'exp-month'}
+            = f.select :exp_year, Date.today.year..8.years.from_now.year, {}, data: {stripe: 'exp-year'}
+          %div= f.button 'submit', class: 'btn'
+
+        = javascript_include_tag 'https://js.stripe.com/v2/'
+        :javascript
+          Stripe.setPublishableKey(#{Rails.configuration.x.stripe[:publishable_key].to_json});
+

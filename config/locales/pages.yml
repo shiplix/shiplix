@@ -36,3 +36,21 @@ en:
         show:
           title: '%{name}'
           header: '%{name}'
+
+    profile:
+      plans:
+        index:
+          title: 'Plans'
+          header: 'Plans'
+
+      billing:
+        index:
+          title: 'Billing'
+          header: 'Billing'
+
+      subscriptions:
+        new: &subscriptions_new
+          title: 'Subscription'
+          header: 'Subscription'
+        create:
+          <<: *subscriptions_new

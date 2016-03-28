@@ -100,6 +100,11 @@ class GithubApi
     end
   end
 
+  # Returns organizations where user is admin
+  def own_organizations
+    api.org_memberships.select { |org| org[:role] == "admin"}
+  end
+
   private
 
   def with_cache(namespace, *args)
