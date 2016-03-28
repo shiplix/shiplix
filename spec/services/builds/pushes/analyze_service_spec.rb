@@ -5,7 +5,7 @@ describe Builds::Pushes::AnalyzeService do
   let(:service) { Builds::Pushes::AnalyzeService.new(build) }
 
   before do
-    stub_build(build, path_to_repo_files('push_build'))
+    stub_build(build, 'push_build')
   end
 
   context 'when save build collections' do

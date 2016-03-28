@@ -9,6 +9,8 @@ require 'rspec/rails'
 
 ActiveRecord::Migration.maintain_test_schema!
 
+ENV['SHIPLIX_BUILDS_PATH'] = Rails.root.join("spec/fixtures").to_s
+
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 

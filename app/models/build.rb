@@ -50,15 +50,16 @@ class Build < ActiveRecord::Base
     @prev_build ||= self.class.where(branch_id: branch.id, revision: prev_revision).first
   end
 
+  def repo_config
+    @repo_config ||= RepoConfig.new(locator.revision_path.join("shiplix.yml").to_s)
+  end
+
   def locator
     @locator ||= BuildLocator.new(self)
   end
 
   def source_locator
-    return @source_locator if @source_locator
-
-    paths = %w(app lib config spec).map { |dir| locator.revision_path.join(dir).to_s }
-    @source_locator = SourceLocator.new(paths)
+    @source_locator ||= SourceLocator.new(locator.revision_path, repo_config[:paths])
   end
 
   def collections

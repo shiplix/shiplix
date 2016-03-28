@@ -11,27 +11,28 @@ describe SourceLocator, fakefs: true do
   end
 
   describe '#paths' do
-    context 'when SourceLocator creates to folder path' do
-      subject(:source_locator) { described_class.new('/tmp/repo') }
+    subject(:source_locator) { described_class.new('/tmp/repo', paths) }
 
-      it 'returns array of paths to ruby files' do
-        expect(source_locator.paths).to match_array(
-          %w(/tmp/repo/first_ruby_file.rb  /tmp/repo/app/second_ruby_file.rb)
-        )
+    context "when provided an empty array" do
+      let(:paths) { [] }
+
+      it { expect(source_locator.paths).to be_empty }
+    end
+
+    context "when provided mask by app folder" do
+      let(:paths) { ['app/**/*.rb'] }
+
+      it do
+        expect(source_locator.paths).to match_array(['/tmp/repo/app/second_ruby_file.rb'])
       end
     end
 
-    context 'when SourceLocator creates to file' do
-      context 'when path to ruby file' do
-        subject(:source_locator) { described_class.new('/tmp/repo/first_ruby_file.rb') }
+    context "when provided mask by app and root folders" do
+      let(:paths) { ['app/**/*.rb', '*.rb'] }
 
-        it { expect(source_locator.paths).to eq ['/tmp/repo/first_ruby_file.rb'] }
-      end
-
-      context 'when path to not ruby file' do
-        subject(:source_locator) { described_class.new('/tmp/repo/not_ruby_file.txt') }
-
-        it { expect(source_locator.paths).to eq [] }
+      it do
+        expect(source_locator.paths).
+          to match_array(['/tmp/repo/app/second_ruby_file.rb', '/tmp/repo/first_ruby_file.rb'])
       end
     end
   end

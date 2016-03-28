@@ -9,7 +9,7 @@ describe Analyzers::FlogService do
 
   subject(:namespaces) { push_build.namespaces.index_by(&:name) }
 
-  before { stub_build(push_build, path_to_repo_files('flog')) }
+  before { stub_build(push_build, 'flog') }
 
   it 'creates klass with smell' do
     service.call
