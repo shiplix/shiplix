@@ -3,31 +3,3 @@ en:
     error:
       messages:
         invalid_transition: "Couldn't change state from %{state} to %{new_state}"
-
-  pages:
-    default_postfix: ' - Shiplix'
-
-    home:
-      index:
-        title: 'Awesome Code Analyze'
-        header: 'Awesome Code Analyze'
-
-    repos:
-      index:
-        title: 'Repositories'
-        header: 'Repositories'
-
-      show:
-        title: '%{repo}'
-        header: '%{repo}'
-
-    files:
-      postfix: ' - %{repo}'
-
-      index:
-        title: 'Files'
-        header: 'Files'
-
-      show:
-        title: '%{name}'
-        header: '%{name}'
