@@ -13,13 +13,13 @@ describe Analyzers::ReekService do
   subject(:service) { described_class.new(push_build) }
 
   before do
-    stub_build(push_build, test_file_path)
+    stub_build(push_build, repo_path)
     stub_const('Analyzers::ReekService::SMELL_SCORES', smell_scores)
   end
 
   context 'when tested file has smells' do
     context 'when inspected file has method in klass' do
-      let(:test_file_path) { path_to_repo_files('reek/dirty.rb').to_s }
+      let(:repo_path) { "reek/smells" }
 
       it 'cretes smell for method in klass' do
         service.call
@@ -27,7 +27,7 @@ describe Analyzers::ReekService do
         klass = push_build.namespaces.find_by(name: 'DirtyModule::Dirty')
 
         expect(klass).to be_present
-        expect(push_build.files.where(name: test_file_path)).to be_exists
+        expect(push_build.files.where(name: 'dirty.rb')).to be_exists
 
         klass_smell = klass
                         .smells
@@ -48,14 +48,14 @@ describe Analyzers::ReekService do
     end
 
     context 'when inspected files has not klasses' do
-      let(:test_file_path) { path_to_repo_files('reek/without_klasses.rb').to_s }
+      let(:repo_path) { "reek/no_classes" }
 
       it 'creates smell on source file' do
         service.call
 
         expect(push_build.namespaces).to be_empty
         expect(
-          push_build.files.find_by(name: test_file_path)
+          push_build.files.find_by(name: 'without_klasses.rb')
             .smells.where('data @> ?', {method_name: 'settings_list'}.to_json)
         ).to be_exists
       end
@@ -63,11 +63,14 @@ describe Analyzers::ReekService do
   end
 
   context 'when tested file has not smells' do
-    let(:test_file_path) { path_to_repo_files('reek/clean.rb').to_s }
+    let(:repo_path) { "reek/clean" }
 
-    When { service.call }
-    Then { expect(push_build.namespaces).to be_empty }
-    And { expect(push_build.files).to be_empty }
-    And { expect(push_build.smells).to be_empty }
+    it "do not create smells" do
+      service.call
+
+      expect(push_build.namespaces).to be_empty
+      expect(push_build.files).to be_empty
+      expect(push_build.smells).to be_empty
+    end
   end
 end

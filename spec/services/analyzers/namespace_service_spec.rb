@@ -3,10 +3,9 @@ require 'rails_helper'
 describe Analyzers::NamespacesService do
   let(:build) { create :push }
   let(:repo) { build.branch.repo }
-  let(:build_dir) { path_to_repo_files('namespace') }
 
   before do
-    stub_build(build, build_dir.to_s)
+    stub_build(build, 'namespace')
     described_class.new(build).call
   end
 

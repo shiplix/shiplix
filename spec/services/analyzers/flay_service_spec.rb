@@ -4,7 +4,7 @@ describe Analyzers::FlayService do
   let(:build) { create :push }
 
   before do
-    stub_build(build, path_to_repo_files('flay').to_s)
+    stub_build(build, 'flay')
   end
 
   context 'when we have knowledge about klass in database' do

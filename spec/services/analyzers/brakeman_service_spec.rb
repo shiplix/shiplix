@@ -6,7 +6,7 @@ describe Analyzers::BrakemanService do
 
   context "when repo looks like rails app" do
     before do
-      stub_build(build, path_to_repo_files('brakeman').to_s)
+      stub_build(build, 'brakeman')
       described_class.new(build).call
     end
 
@@ -50,7 +50,7 @@ describe Analyzers::BrakemanService do
 
   context 'when repo not rails app' do
     before do
-      stub_build(build, path_to_repo_files('not_existing_rails_app'))
+      stub_build(build, 'not_existing_rails_app')
     end
 
     it { expect { described_class.new(build).call }.not_to raise_error }

@@ -7,6 +7,7 @@ module Analyzers
     private
 
     delegate :block_by_name, :block_by_path, :block_by_line, to: 'build.collections'
+    delegate :repo_config, to: :build
 
     def increment_smells(block)
       block.increment(:smells_count)
