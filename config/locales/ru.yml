@@ -1,9 +1,0 @@
-ru:
-  activerecord:
-    error:
-      messages:
-        invalid_transition: "Нельзя сменить статус с %{state} на %{new_state}"
-
-  will_paginate:
-    prуvious_label: Предыдущая
-    next_label: Слудующая
