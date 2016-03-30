@@ -81,9 +81,6 @@ app:
     - secret: SHIPLIX_SECRET_KEY_BASE
       name: SHIPLIX_SECRET_KEY_BASE
       type: env
-    - secret: SKYLIGHT_AUTHENTICATION
-      name: SKYLIGHT_AUTHENTICATION
-      type: env
     - secret: SHIPLIX_NEWRELIC_KEY
       name: SHIPLIX_NEWRELIC_KEY
       type: env
@@ -126,9 +123,6 @@ worker:
       type: env
     - secret: SHIPLIX_SECRET_KEY_BASE
       name: SHIPLIX_SECRET_KEY_BASE
-      type: env
-    - secret: SKYLIGHT_AUTHENTICATION
-      name: SKYLIGHT_AUTHENTICATION
       type: env
     - secret: SHIPLIX_NEWRELIC_KEY
       name: SHIPLIX_NEWRELIC_KEY
