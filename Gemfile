@@ -18,6 +18,7 @@ gem 'redis-mutex'
 gem 'octokit'
 gem 'readthis'
 gem 'jbuilder'
+gem 'newrelic_rpm'
 
 # Front
 gem 'sass-rails'
