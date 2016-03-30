@@ -1,16 +1,16 @@
 module Builds
   module Pushes
     class ComparisonService < ApplicationService
-      pattr_initialize :target, :source
+      attr_initialize :target, :source
 
       def call
-        if target.branch.repo_id != source.branch.repo_id
+        if @target.branch.repo_id != @source.branch.repo_id
           raise 'Builds should be in same repo'
         end
 
-        target.transaction do
-          ActiveRecord::Base.each_row_by_sql(changes_query.to_sql) do |row|
-            Changeset.create!(build_id: target.id,
+        @target.transaction do
+          ActiveRecord::Base.each_row_by_sql(changes_query) do |row|
+            Changeset.create!(build_id: @target.id,
                               block_id: row['block_id'],
                               prev_block_id: row['prev_block_id'])
           end
@@ -20,24 +20,20 @@ module Builds
       private
 
       def changes_query
-        t = Block.arel_table
-        s = t.alias(:source)
+        sql = <<-SQL.strip_heredoc
+          select target.id as block_id, source.id as prev_block_id
+          from blocks as target
+          left join blocks as source on source.build_id = %{source_id}
+            and source.type = target.type
+            and source.name = target.name
+          where target.build_id = %{target_id}
+            and (
+              source.id is null
+              or round(target.rating) != round(source.rating)
+            )
+        SQL
 
-        t.
-          join(s, Arel::Nodes::OuterJoin).
-          on(
-            s[:build_id].eq(source.id)
-            .and(s['type'].eq(t['type'])
-            .and(s['name'].eq(t['name'])))
-          ).
-          where(t[:build_id].eq target.id).
-          where(
-            s[:id].eq(nil).
-              or(t[:rating].not_eq s[:rating])
-          ).
-          project(t[:id].as('block_id'),
-                  s[:id].as('prev_block_id'))
-
+        sql % {source_id: @source.id, target_id: @target.id}
       end
     end
   end

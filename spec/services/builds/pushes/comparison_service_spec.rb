@@ -60,6 +60,20 @@ describe Builds::Pushes::ComparisonService do
     it { expect(target_build.changesets).to be_empty }
   end
 
+  context 'when rating in klass and file was a little bit changed' do
+    before do
+      create "namespace_block", name: 'TestKlass', build: target_build, rating: 1.1
+      create "file_block", name: 'test_klass.rb', build: target_build, rating: 1.1
+
+      create "namespace_block", name: 'TestKlass', build: source_build, rating: 1
+      create "file_block", name: 'test_klass.rb', build: source_build, rating: 1
+
+      service.call
+    end
+
+    it { expect(target_build.changesets).to be_empty }
+  end
+
   context 'when rating in klass was change' do
     let!(:target_klass) { create "namespace_block", name: 'TestKlass', build: target_build, rating: 1 }
     let!(:source_klass) { create "namespace_block", name: 'TestKlass', build: source_build, rating: 2 }
