@@ -84,6 +84,12 @@ app:
     - secret: SKYLIGHT_AUTHENTICATION
       name: SKYLIGHT_AUTHENTICATION
       type: env
+    - secret: SHIPLIX_NEWRELIC_KEY
+      name: SHIPLIX_NEWRELIC_KEY
+      type: env
+    - secret: SHIPLIX_NEWRELIC_APP_NAME
+      name: SHIPLIX_NEWRELIC_APP_NAME
+      type: env
   links:
     - lb
   log_driver: syslog
@@ -123,6 +129,12 @@ worker:
       type: env
     - secret: SKYLIGHT_AUTHENTICATION
       name: SKYLIGHT_AUTHENTICATION
+      type: env
+    - secret: SHIPLIX_NEWRELIC_KEY
+      name: SHIPLIX_NEWRELIC_KEY
+      type: env
+    - secret: SHIPLIX_NEWRELIC_APP_NAME
+      name: SHIPLIX_NEWRELIC_APP_NAME
       type: env
   environment:
     - 'QUEUE=*'
