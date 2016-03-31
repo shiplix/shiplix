@@ -25,8 +25,6 @@ ENV RAILS_ENV production
 
 EXPOSE 3000
 
-VOLUME /app/public
-
 # Install gems
 COPY Gemfile Gemfile.lock /app/
 WORKDIR /app
@@ -35,12 +33,13 @@ RUN echo 'gem: --no-rdoc --no-ri' >> /etc/gemrc && \
   bundle install --deployment --without development test --jobs 4
 
 # Copy project files
-COPY . /app
+COPY . /app/
 
 # Setup application
-RUN mkdir -p tmp/pids tmp/builds && \
-  rm -rf tmp/cache && \
+RUN mkdir -p log tmp/pids tmp/builds && \
   ln -sf /dev/stdout /app/log/unicorn.log && \
   ln -sf /dev/stdout /app/log/production.log && \
   ln -sf /dev/stdout /app/log/resque.log && \
-  ln -sf /dev/stdout /app/log/newrelic_agent.log
+  ln -sf /dev/stdout /app/log/newrelic_agent.log && \
+  bundle exec rake assets:precompile && \
+  rm -rf tmp/cache
