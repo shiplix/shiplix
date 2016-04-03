@@ -9,7 +9,7 @@ class RepoActivatorService < ApplicationService
       add_hooks
     end
 
-    Builds::Pushes::EnqueueRecentService.new(user, repo).call
+    Builds::EnqueueRecentService.new(user, repo).call
   end
 
   private

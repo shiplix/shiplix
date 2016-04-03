@@ -1,58 +1,52 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe Analyzers::BrakemanService do
-  let(:build) { create :push }
-  let(:repo) { build.branch.repo }
+  let(:push_build) { create :push }
 
   context "when repo looks like rails app" do
     before do
-      stub_build(build, 'brakeman')
-      described_class.new(build).call
+      stub_build(push_build, "brakeman")
+      described_class.new(push_build).call
     end
 
     it "creates smell for dirty_controller" do
-      klass = build.namespaces.find_by(name: "Brakeman::DirtyController")
+      file = push_build.collections.files["app/controllers/dirty_controller.rb"]
+      smell = file.smells.find { |smell| smell.check_name == "Redirect" }
 
-      smell = klass
-                .smells
-                .where('data @> ?', {method_name: 'redirect_to_some_places'}.to_json)
-                .find_by(type: Smells::Brakeman)
-
-      expect(klass).to be_present
-      expect(smell.file.name).to eq 'app/controllers/dirty_controller.rb'
-      expect(smell.position.first).to eq 4
+      expect(smell.data[:confidence]).to eq 0
+      expect(smell.position).to eq 4
     end
 
     it "creates smell for application_controller" do
-      klass = build.namespaces.find_by(name: "ApplicationController")
+      file = push_build.collections.files["app/controllers/application_controller.rb"]
+      smell = file.smells.find { |smell| smell.check_name == "Cross-Site Request Forgery" }
 
-      expect(klass).to be_present
-      expect(klass.smells.first.file.name).to eq 'app/controllers/application_controller.rb'
-      expect(klass.smells.first.position.first).to eq 0
+      expect(smell.data[:confidence]).to eq 0
+      expect(smell.position).to eq 0
     end
 
     it "creates smells for model" do
-      klass = build.namespaces.find_by(name: "Brakeman::Account")
+      file = push_build.collections.files["app/models/account.rb"]
+      smell = file.smells.find { |smell| smell.check_name == "Mass Assignment" }
 
-      expect(klass).to be_present
-      expect(klass.smells.first.file.name).to eq 'app/models/account.rb'
-      expect(klass.smells.first.position.first).to eq 0
+      expect(smell.data[:confidence]).to eq 0
+      expect(smell.position).to eq 0
     end
 
     it "creates smell for view" do
-      file = build.files.find_by(name: "app/views/index.html.erb")
+      file = push_build.collections.files["app/views/index.html.erb"]
+      smell = file.smells.find { |smell| smell.check_name == "Cross Site Scripting" }
 
-      expect(file).to be_present
-      expect(file.smells).to be_exists(type: Smells::Brakeman)
-      expect(file.smells.first.position.first).to eq 2
+      expect(smell.data[:confidence]).to eq 0
+      expect(smell.position).to eq 2
     end
   end
 
-  context 'when repo not rails app' do
+  context "when repo not rails app" do
     before do
-      stub_build(build, 'not_existing_rails_app')
+      stub_build(push_build, "not_existing_rails_app")
     end
 
-    it { expect { described_class.new(build).call }.not_to raise_error }
+    it { expect { described_class.new(push_build).call }.not_to raise_error }
   end
 end

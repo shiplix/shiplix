@@ -1,20 +1,40 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe Analyzers::FlogService do
-  let(:repo) { create :repo, name: 'flog' }
-  let(:payload) { build "payload/push", revision: "revision" }
-  let(:branch) { create :branch, repo: repo }
-  let(:push_build) { create :push, branch: branch, payload: payload }
-  let(:service) { described_class.new(push_build) }
+  let(:push_build) { create :push }
+  let(:file) { push_build.collections.files["test.rb"] }
 
-  subject(:namespaces) { push_build.namespaces.index_by(&:name) }
+  before do
+    stub_build(push_build, "flog")
+    described_class.new(push_build).call
+  end
 
-  before { stub_build(push_build, 'flog') }
+  context "when find smells" do
+    it "writes metrics in file" do
+      expect(file.metrics[:complexity]).to eq 230
+      expect(file.pain).to eq 30_510_000
+      expect(file.smells.size).to eq 3
+    end
 
-  it 'creates klass with smell' do
-    service.call
+    it "creates smell with overall complexity" do
+      smell = file.smells.find { |smell| smell.check_name == "overall" }
+      expect(smell.pain).to eq 15_700_000
+      expect(smell.position).to eq 0
+      expect(smell.data[:score]).to eq 230
+    end
 
-    expect(namespaces['FlogTest']).to be_present
-    expect(namespaces['FlogTest'].smells.size).to eq 1
+    it "creates smell with outside complexity" do
+      smell = file.smells.find { |smell| smell.check_name == "outside" }
+      expect(smell.pain).to eq 12_970_000
+      expect(smell.position).to eq 0
+      expect(smell.data[:score]).to eq 191
+    end
+
+    it "creates smell with method complexity" do
+      smell = file.smells.find { |smell| smell.check_name == "method" }
+      expect(smell.pain).to eq 1_840_000
+      expect(smell.position).to eq 2
+      expect(smell.data[:score]).to eq 32
+    end
   end
 end

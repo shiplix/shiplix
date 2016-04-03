@@ -1,7 +1,6 @@
 class Changeset < ActiveRecord::Base
-  belongs_to :build
-  belongs_to :block
-  belongs_to :prev_block, class_name: 'Block'
+  belongs_to :build, required: true
 
-  validates :build, :block, presence: true
+  validates :path, presence: true
+  validates :grade_after, presence: true
 end

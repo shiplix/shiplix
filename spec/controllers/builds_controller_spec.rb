@@ -7,8 +7,8 @@ describe BuildsController, type: :controller do
     let(:build) { create(:push, branch: branch) }
     let(:user) { create :user }
     let(:meta_id) { 'some-meta' }
-    let(:recent_service) { instance_double('Builds::Pushes::EnqueueRecentService', call: meta_id) }
-    let!(:recent_service_class) { class_double(Builds::Pushes::EnqueueRecentService, new: recent_service).as_stubbed_const }
+    let(:recent_service) { instance_double('Builds::EnqueueRecentService', call: meta_id) }
+    let!(:recent_service_class) { class_double(Builds::EnqueueRecentService, new: recent_service).as_stubbed_const }
 
     before do
       allow(controller).to receive(:current_user).and_return(user)

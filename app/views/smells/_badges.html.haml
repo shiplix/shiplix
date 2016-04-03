@@ -1,7 +1,7 @@
-- block.smells_statistics.each do |name, count|
-  - smell_class = "#{name}Decorator".constantize
+- file.smells_statistics.each do |analyzer, count|
+  - smell_decorator = "Smells::#{analyzer.camelize}Decorator".constantize
   %button.btn.btn-default{disabled: true}
-    %i{class: smell_class.icon}
-    = smell_class.title
+    %i{class: smell_decorator.icon}
+    = smell_decorator.title
     &nbsp;
     %span.badge= count

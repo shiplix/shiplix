@@ -21,20 +21,20 @@
                   .list-group.border-bottom
                     - changesets.each do |changeset|
                       %li.list-group-item
-                        - if changeset.prev_block_id.present?
+                        - if changeset.grade_before.present?
                           .timeline-marks
                             .progress-timeline-arrow
                               %i.fa.fa-arrow-up
                             %div
-                              = block_rating_badge(changeset.block.rating)
+                              = grade_badge(changeset.grade_after)
                             %div
-                              = block_rating_badge(changeset.prev_block.rating)
+                              = grade_badge(changeset.grade_before)
                         - else
                           .timeline-marks.new-mark
-                            = block_rating_badge(changeset.block.rating)
+                            = grade_badge(changeset.grade_after)
 
                         .timeline-class-name
                           %h3
-                            = link_to changeset.block.name,
-                                      repo_build_namespace_url(@repo.owner, @repo, changeset.block.build, changeset.block)
+                            = link_to changeset.path,
+                                      repo_branch_file_url(@repo.owner, @repo, @repo.default_branch, changeset.path)
             .timeline-footer.timeline-footer-without-padding

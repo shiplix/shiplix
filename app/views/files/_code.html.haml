@@ -1,0 +1,6 @@
+- smells = render(template: "smells/_smells", formats: :json, locals: {smells: file.smells.decorate})
+
+%pre
+  %code{class: 'ruby', data: {smells: smells}}
+    = preserve do
+      = file.content

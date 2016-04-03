@@ -1,8 +1,8 @@
 require "rails_helper"
 
 describe ChangesetsFinder do
-  let(:build) { create :push }
-  let(:finder) { described_class.new(build.branch) }
+  let(:push_build) { create :push }
+  let(:finder) { described_class.new(push_build.branch) }
   let(:results) { finder.call }
 
   context "when branch is empty" do
@@ -12,10 +12,10 @@ describe ChangesetsFinder do
   context "when branch has changesets" do
     before { Timecop.freeze(Time.utc(2015, 3, 10)) }
 
-    let!(:c1) { create :changeset, :with_prev_block, build: build, created_at: 1.month.ago }
-    let!(:c2) { create :changeset, :with_prev_block, build: build, created_at: 1.day.ago }
-    let!(:c3) { create :changeset, :with_prev_block, build: build }
-    let!(:c4) { create :changeset, build: build }
+    let!(:c1) { create :changeset, build: push_build, grade_before: "A", grade_after: "B", path: "c1.rb", created_at: 1.month.ago }
+    let!(:c2) { create :changeset, build: push_build, grade_before: "A", grade_after: "B", path: "c2.rb", created_at: 1.day.ago }
+    let!(:c3) { create :changeset, build: push_build, grade_before: "A", grade_after: "B", path: "c3.rb" }
+    let!(:c4) { create :changeset, build: push_build, grade_after: "A", path: "c4.rb" }
 
     after { Timecop.return }
 

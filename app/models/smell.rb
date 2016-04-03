@@ -1,9 +1,34 @@
 class Smell < ActiveRecord::Base
-  IMPORTANCE = %w(Smells::Flog Smells::Flay Smells::Reek Smells::Brakeman).freeze
+  belongs_to :file, class_name: "SourceFile", required: true
 
-  belongs_to :namespace, class_name: "::Blocks::Namespace"
-  belongs_to :file, class_name: "::Blocks::File"
+  before_validation :set_position, unless: :position?
 
-  validates :file, presence: true
+  validates :analyzer, presence: true
+  validates :check_name, presence: true
   validates :position, presence: true
+
+  def line
+    position.begin
+  end
+
+  def line=(value)
+    self.position = Range.new(value, value) if value
+  end
+
+  def set_position
+    self.position = 0
+  end
+
+  def position=(value)
+    if value.is_a?(Integer)
+      self.line = value
+    else
+      super
+    end
+  end
+
+  # Draper default decorator
+  def decorator_class
+    "Smells::#{analyzer.camelize}Decorator".constantize
+  end
 end

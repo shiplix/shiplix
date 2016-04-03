@@ -1,19 +1,13 @@
 class Build < ActiveRecord::Base
   has_many :changesets
-  has_many :blocks
-  has_many :smells, through: :blocks
-  has_many :namespaces, class_name: 'Blocks::Namespace'
-  has_many :files, class_name: 'Blocks::File'
 
   belongs_to :branch
 
-  validates :uid, presence: true
   validates :branch_id, presence: true
   validates :type, presence: true
   validates :revision, presence: true
   validates :head_timestamp, presence: true
   validates :payload_data, presence: true
-  validates :rating, numericality: {greater_than_or_equal_to: 1, less_than_or_equal_to: 5}
 
   scope :push_builds, -> { where(type: 'Builds::Push') }
   scope :pull_request_builds, -> { where(type: 'Builds::PullRequest') }
@@ -21,10 +15,6 @@ class Build < ActiveRecord::Base
 
   delegate :repo, to: :branch
   delegate :revision_path, :relative_path, to: :locator
-
-  before_validation on: :create do
-    self.uid ||= SecureRandom.hex
-  end
 
   include AASM
 
@@ -40,10 +30,6 @@ class Build < ActiveRecord::Base
     event :fail do
       transitions from: :pending, to: :failed
     end
-  end
-
-  def to_param
-    uid
   end
 
   def prev_build

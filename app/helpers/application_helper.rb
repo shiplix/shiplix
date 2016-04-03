@@ -1,35 +1,42 @@
 module ApplicationHelper
-  RATING_CLASSES = {
-    1 => 'success',
+  GPA_CLASSES = {
+    4 => 'success',
+    3 => 'success',
     2 => 'info',
-    3 => 'warning',
-    4 => 'danger',
-    5 => 'danger' # TODO: choose the color
+    1 => 'warning',
+    0 => 'danger'
   }.freeze
 
-  def block_rating_badge(rating)
-    return unless rating
-    rating = rating.round
+  GRADE_CLASSES = {
+    "A" => 'success',
+    "B" => 'info',
+    "C" => 'warning',
+    "D" => 'danger',
+    "F" => 'danger' # TODO: choose the color
+  }.freeze
+
+  def grade_badge(grade)
+    return unless grade
 
     content_tag(
       :h4,
       content_tag(
         :span,
-        t('rating.levels')[rating],
-        class: "label label-#{RATING_CLASSES[rating]} label-form"
+        grade,
+        class: "label label-#{GRADE_CLASSES[grade]} label-form"
       )
     )
   end
 
-  def build_rating_badge(rating)
-    return unless rating
+  def gpa_badge(gpa)
+    return unless gpa
 
     content_tag(
       :h4,
       content_tag(
         :span,
-        5 - rating,
-        class: "label label-#{RATING_CLASSES[rating.round]} label-form"
+        gpa,
+        class: "label label-#{GPA_CLASSES[gpa.round]} label-form"
       )
     )
   end

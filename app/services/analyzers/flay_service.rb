@@ -1,46 +1,58 @@
-require 'flay'
+require "flay"
 
 module Analyzers
   class FlayService < BaseService
-    THRESHOLD = 25
+    HIGH_DUPLICATION_MASS_THRESHOLD = 25
+    BASE_PAIN = 1_500_000
+    PAIN_PER_MASS = 100_000
 
     def call
-      @flay = Flay.new(mass: THRESHOLD).tap do |flay|
-        flay.process(*build.source_locator.paths)
-        flay.analyze
-      end
+      flay = Flay.new(flay_options)
+      flay.process(*@build.source_locator.paths)
 
-      analyze
+      flay.analyze.each do |item|
+        item.locations.each do |location|
+          smell = process_location(item, location)
+
+          smell.data[:other_locations] = item.locations.each_with_object(Hash.new) do |other_location, memo|
+            next if location == other_location
+            file = find_file(other_location.file)
+            memo[file.path] = other_location.line
+          end
+        end
+      end
     end
 
     private
 
-    def analyze
-      @flay.hashes.each do |structural_hash, nodes|
-        score = @flay.masses[structural_hash]
-        make_smells(nodes, score)
-      end
+    def process_location(item, location)
+      file = find_file(location.file)
+      file.metrics[:duplication] = (file.metrics[:duplication] || 0) + item.mass
+
+      make_smell(file,
+                 line: location.line,
+                 analyzer: "flay".freeze,
+                 check_name: item.identical? ? "identical".freeze : "similiar".freeze,
+                 pain: calucate_pain(item.mass),
+                 data: {mass: item.mass})
     end
 
-    def make_smells(nodes, score)
-      nodes.each do |node|
-        file = block_by_path(node.file)
-        line = node.line
-        namespace = block_by_line(file, line)
-        next unless namespace
+    def calucate_pain(mass)
+      BASE_PAIN + (mass - HIGH_DUPLICATION_MASS_THRESHOLD) * PAIN_PER_MASS
+    end
 
-        # TODO: maybe not multiply same namespaces duplication?
-        namespace.increment_metric("duplication", score)
-
-        Smells::Flay.create!(
-          file: file,
-          namespace: namespace,
-          position: Range.new(line, line), # TODO: find valid lower bound of range
-          data: {"score": score}
-        )
-
-        increment_smells(namespace)
-      end
+    def flay_options
+      {
+        diff: false,
+        mass: HIGH_DUPLICATION_MASS_THRESHOLD,
+        summary: false,
+        verbose: false,
+        number: true,
+        timeout: 300,
+        liberal: false,
+        fuzzy: false,
+        only: nil
+      }
     end
   end
 end

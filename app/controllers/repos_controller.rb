@@ -1,6 +1,4 @@
 class ReposController < ApplicationController
-  include CurrentBuildable
-
   def index
     scope = current_user.
       repos.

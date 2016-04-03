@@ -5,6 +5,4 @@
         .ico><
           %i{class: hb('icon')}><
         .text><
-          .heading><
-            %span {{name}}
-          {{text}}
+          {{message}} {{#if data}}({{data}}){{/if}}

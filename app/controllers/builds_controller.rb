@@ -13,7 +13,7 @@ class BuildsController < ApplicationController
     end
 
     branch_name = params.require(:branch)
-    meta_id = Builds::Pushes::EnqueueRecentService.new(current_user, repo, branch_name: branch_name).call
+    meta_id = Builds::EnqueueRecentService.new(current_user, repo, branch_name: branch_name).call
 
     if meta_id
       render json: {meta_id: meta_id}
