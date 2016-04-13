@@ -37,7 +37,7 @@ describe FilesController, type: :controller do
       context 'when repo is private' do
         let(:repo) { create :repo, private: true }
 
-        it_behaves_like 'returns 404'
+        it { expect(response.status).to eq 403 }
       end
     end
 
@@ -69,7 +69,7 @@ describe FilesController, type: :controller do
 
       before do
         allow(controller).to receive(:api).and_return(api)
-        
+
         get :show, id: file.to_param, owner_id: repo.owner.to_param, repo_id: repo.to_param, branch_id: branch.to_param
       end
 

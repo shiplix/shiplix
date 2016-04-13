@@ -10,6 +10,11 @@
           %h3 Source Files
 
         %ul.panel-controls
+          %li{style: 'width: 200px;'}
+            = select_tag "change_branch",
+                         options_from_collection_for_select(current_repo.branches, :name, :name, current_branch.name),
+                         data: {url: repo_branch_files_url(current_repo.owner, current_repo, ":branch")},
+                         class: "form-control js-change-branch"
           %li{style: 'width: 300px;'}
             %input.form-control.ui-autocomplete-input{placeholder: 'Search by name...', autocomplete: 'off'}
           %li
