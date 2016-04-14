@@ -1,27 +1,57 @@
 class BuildCollections
-  attr_reader :blocks
+  attr_reader :files
+
+  RawFile = Struct.new(:path, :smells, :pain, :metrics, :grade)
+
+  RawSmell = Struct.new(:file, :position, :analyzer, :check_name, :message, :pain, :data) do
+    def fingerprint
+      params = [file.path, position, analyzer, check_name, pain, message, data]
+      Digest::MD5.hexdigest(params.join(":"))
+    end
+  end
 
   def initialize(build)
     @build = build
-    @blocks = ActiveSupport::HashWithIndifferentAccess.new
+    @files = {}
   end
 
-  def block_by_path(path)
+  def find_file(path)
     path = @build.relative_path(path)
-    @blocks[path] ||= Blocks::File.create!(name: path, build: @build)
+    @files[path] ||= RawFile.new(path).tap do |file|
+      file.smells = []
+      file.metrics = {}
+      file.pain = 0
+      file.grade = "A".freeze
+    end
   end
 
-  def block_by_name(name)
-    @blocks[name] ||= Blocks::Namespace.create!(name: name, build: @build)
-  end
+  # Build a code raw smell
+  #
+  # file     - BuildCollections::RawFile
+  # options  - Hash
+  #            :analyzer   - String (required)
+  #            :check_name - String (required)
+  #            :line       - Integer (default: 0)
+  #            :position   - Range
+  #            :message    - String
+  #            :pain       - Integer (default: 0)
+  #            :data       - Hash
+  #
+  # Returns BuildCollections::RawSmell
+  def make_smell(file, options)
+    pain = options.fetch(:pain, 0)
 
-  def block_by_line(file, line)
-    klass = file.
-              locations.
-              reverse.
-              find { |x| x.position.include?(line) }.
-              try(:namespace)
+    smell = RawSmell.new(file)
+    smell.position = options[:line] || options[:position] || 0
+    smell.analyzer = options.fetch(:analyzer)
+    smell.check_name = options.fetch(:check_name)
+    smell.message = options[:message]
+    smell.pain = pain
+    smell.data = options.fetch(:data, {})
 
-    @blocks[klass.name] ||= klass if klass.present?
+    (file.smells ||= []) << smell
+    file.pain += pain if pain > 0
+
+    smell
   end
 end

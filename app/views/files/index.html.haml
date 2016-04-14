@@ -1,0 +1,43 @@
+- breadcrumb :files, @repo, @branch
+
+- content_for(:header_icon, 'fa-file-text-o')
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        .panel-title-box
+          %h3 Source Files
+
+        %ul.panel-controls
+          %li{style: 'width: 300px;'}
+            %input.form-control.ui-autocomplete-input{placeholder: 'Search by name...', autocomplete: 'off'}
+          %li
+            %a.panel-fullscreen{href: '#'}
+              %i.fa.fa-expand
+          - if policy(@repo).manage?
+            - branch_name = @branch.present? ? @branch.name : @repo.default_branch.name
+            %li
+              = link_to builds_url(repo_id: @repo.id, branch: branch_name),
+                        remote: true, method: :post, class: 'js-build-repo' do
+                %i.fa.fa-refresh
+
+      .panel-body.panel-body-table
+        .table-responsive
+          - if @files.present?
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th{style: 'width: 90px'} Marks
+                  %th Name
+                  %th{style: 'width: 90px'} Complexity
+                  %th{style: 'width: 90px'} Duplication
+                  %th{style: 'width: 90px'} LOC
+                  %th{style: 'width: 90px'} Smells
+              %tbody
+                = render partial: 'file', collection: @files, locals: {repo: @repo, branch: @branch}
+          - else
+            There is no analyzed files yet.
+
+      - if @files.present?
+        .panel-footer= will_paginate @files, renderer: BootstrapPagination::Rails

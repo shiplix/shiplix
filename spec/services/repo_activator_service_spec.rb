@@ -6,7 +6,7 @@ describe RepoActivatorService do
   let(:service) { described_class.new(user, repo) }
   let(:api) { instance_double('GithubApi') }
   let(:hook_id) { 111 }
-  let!(:recent_service) { class_double('Builds::Pushes::EnqueueRecentService', new: spy).as_stubbed_const }
+  let!(:recent_service) { class_double('Builds::EnqueueRecentService', new: spy).as_stubbed_const }
 
   before do
     create(:membership, user: user, repo: repo)

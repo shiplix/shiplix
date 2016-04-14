@@ -11,23 +11,12 @@ crumb :repo do |repo|
   parent :repos
 end
 
-crumb :blocks do |repo, build, branch|
-  url = if build
-          repo_build_blocks_url(repo.owner, repo, build)
-        elsif branch
-          repo_branch_blocks_url(repo.owner, repo, branch)
-        end
-
-  link 'Code', url if url
+crumb :files do |repo, branch|
+  link 'Files', repo_branch_files_url(repo.owner, repo, branch)
   parent :repo, repo
 end
 
-crumb :namespace do |repo, namespace|
-  link namespace.name, repo_build_namespace_url(repo.owner, repo, namespace.build, namespace)
-  parent :blocks, repo, namespace.build, nil
-end
-
 crumb :file do |repo, file|
-  link file.name, repo_build_file_url(repo.owner, repo, file.build, file)
-  parent :blocks, repo, file.build, nil
+  link file.path, repo_branch_file_url(repo.owner, repo, file.branch, file)
+  parent :files, repo, file.branch
 end

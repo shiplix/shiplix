@@ -12,16 +12,8 @@ Rails.application.routes.draw do
   scope :repos do
     scope ":owner_id/:repo_id", as: :repo do
       resources :branches, only: [] do
-        resources :blocks, only: :index
-      end
-
-      resources :builds, only: [] do
-        resources :blocks, only: :index
-
-        scope module: "blocks" do
-          resources :namespaces, only: :show
-          get "files/*id", to: "files#show", as: :file, constraints: {id: /.*/}
-        end
+        resources :files, only: :index
+        get "files/*id", to: "files#show", as: :file, constraints: {id: /.*/}
       end
     end
 

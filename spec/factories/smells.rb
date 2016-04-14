@@ -1,17 +1,10 @@
 FactoryGirl.define do
   factory :smell do
-    trait :with_class do
-      association :namespace, factory: :namespace_block
-    end
+    analyzer "flog"
+    check_name "overall"
+    pain 1_000_000
+    line 1
 
-    trait :with_file do
-      association :file, factory: :file_block
-    end
-
-    factory :smell_flog, class: Smells::Flog do
-    end
-
-    factory :smell_reek, class: Smells::Reek do
-    end
+    association :file
   end
 end

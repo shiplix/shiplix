@@ -1,72 +1,68 @@
-require 'flog'
+require "flog"
 
 module Analyzers
   class FlogService < BaseService
-    HIGH_COMPLEXITY_SCORE_THRESHOLD = 25
-
-    attr_reader :flog
+    HIGH_COMPLEXITY_SCORE_THRESHOLD = 20
+    HIGH_OVERALL_COMPLEXITY_SCORE_THRESHOLD = 200
+    BASE_PAIN = 1_000_000
+    PAIN_PER_SCORE = 70_000
 
     def call
-      @flog = Flog.new(all: true, continue: true, methods: true)
+      engine = Flog.new(all: true, continue: true)
 
-      build.source_locator.paths.each do |path|
-        analyze(path)
-        calculate(path)
+      @build.source_locator.paths.each do |path|
+        engine.reset
+        engine.flog(path)
+        engine.calculate
+
+        file = find_file(path)
+        find_smells(file, engine)
       end
     end
 
     private
 
-    def analyze(path)
-      flog.reset
-      flog.flog(path)
-      flog.calculate
-    end
+    def find_smells(file, engine)
+      total_score = engine.total_score.round
+      analyzer_name = "flog".freeze
 
-    def calculate(path)
-      flog.scores.each do |name, total_score|
-        next unless valid_name?(name)
+      if total_score >= HIGH_OVERALL_COMPLEXITY_SCORE_THRESHOLD
+        make_smell(file,
+                   analyzer: analyzer_name,
+                   check_name: "overall".freeze,
+                   pain: calculate_pain(total_score),
+                   data: {score: total_score})
+      end
 
-        namespace = block_by_name(name)
-        file = block_by_path(path)
-        namespace.increment_metric("complexity", total_score.round)
-        find_smells(namespace, file)
+
+      file.metrics[:complexity] = total_score
+
+      each_method(engine) do |score, line|
+        check_name = line ? "method".freeze : "outside".freeze
+
+        make_smell(file,
+                   line: line,
+                   analyzer: analyzer_name,
+                   check_name: check_name,
+                   pain: calculate_pain(score),
+                   data: {score: score})
       end
     end
 
-    def find_smells(namespace, file)
-      flog.method_scores[namespace.name].each do |method_name, score|
+    def each_method(engine)
+      engine.totals.each do |meth, score|
         score = score.round
-        namespace.increment_metric("complexity", score)
+        next if score < HIGH_COMPLEXITY_SCORE_THRESHOLD
 
-        if score >= HIGH_COMPLEXITY_SCORE_THRESHOLD
-          make_smell(namespace, method_name, file, score)
-        end
+        path_line = engine.method_locations[meth]
+        line = path_line.split(':').last.to_i if path_line
+
+        yield score, line
       end
     end
 
-    def make_smell(namespace, method_name, file, score)
-      path_line = flog.method_locations[method_name]
-      return if path_line.blank?
-
-      line = path_line.split(':').last.to_i
-      method_name = method_name.sub('::', '#').split('#').last
-
-      Smells::Flog.create!(
-        namespace: namespace,
-        file: file,
-        position: Range.new(line, line),
-        data: {
-          "score": score,
-          "method_name": method_name
-        }
-      )
-
-      increment_smells(namespace)
-    end
-
-    def valid_name?(name)
-      name.split('::').all? { |x| x =~ /^[A-Z]{1}[A-Za-z0-9_]*$/ }
+    def calculate_pain(score)
+      BASE_PAIN + (score - HIGH_COMPLEXITY_SCORE_THRESHOLD) * PAIN_PER_SCORE
     end
   end
 end

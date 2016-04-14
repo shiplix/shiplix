@@ -1,12 +1,4 @@
 en:
-  rating:
-    levels:
-      1: 'A'
-      2: 'B'
-      3: 'C'
-      4: 'D'
-      5: 'F'
-
   activerecord:
     error:
       messages:
@@ -29,23 +21,13 @@ en:
         title: '%{repo}'
         header: '%{repo}'
 
-    blocks:
+    files:
       postfix: ' - %{repo}'
 
       index:
-        title: 'Code'
-        header: 'Code'
+        title: 'Files'
+        header: 'Files'
 
-      namespaces:
-        postfix: ' - %{repo}'
-
-        show:
-          title: '%{name}'
-          header: '%{name}'
-
-      files:
-        postfix: ' - %{repo}'
-
-        show:
-          title: '%{name}'
-          header: '%{name}'
+      show:
+        title: '%{name}'
+        header: '%{name}'

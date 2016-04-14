@@ -8,12 +8,19 @@ module Smells
       "fa fa-dashboard"
     end
 
-    def name
-      'Code complexity'
+    def message
+      case check_name
+      when "overall".freeze
+        "Very high overall complexity"
+      when "outside"
+        "Very complex code outside of namespaces"
+      when "method"
+        "Very complex method"
+      end
     end
 
-    def message
-      "Complexity is up to #{score}"
+    def data
+      "score = #{object.data['score']}"
     end
   end
 end

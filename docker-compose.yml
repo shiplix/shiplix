@@ -1,55 +1,55 @@
-pgdata:
-  image: 'busybox'
-  volumes:
-    - /data
+version: '2'
 
-pg:
-  image: 'postgres:9.4'
-  volumes_from:
-    - pgdata
+services:
+  app:
+    build: '.'
+    command: 'bundle exec rails s -b 0.0.0.0'
+    environment:
+      - SHIPLIX_DB_USER=postgres
+      - SHIPLIX_DB_HOST=pg
+      - SHIPLIX_DB_PORT=5432
+      - SHIPLIX_REDIS_HOST=redis
+      - SHIPLIX_REDIS_PORT=6379
+      - SHIPLIX_REDIS_CACHE_DB=1
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/app'
+    depends_on:
+      - redis
+      - pg
 
-redisdata:
-  image: 'busybox'
-  volumes:
-    - /data
+  worker:
+    image: shiplix_app
+    command: 'bundle exec rake resque:work --trace'
+    environment:
+      - 'QUEUE=*'
+      - SHIPLIX_DB_USER=postgres
+      - SHIPLIX_DB_HOST=pg
+      - SHIPLIX_DB_PORT=5432
+      - SHIPLIX_REDIS_HOST=redis
+      - SHIPLIX_REDIS_PORT=6379
+      - SHIPLIX_REDIS_CACHE_DB=1
+    volumes:
+      - '.:/app'
+    depends_on:
+      - redis
+      - pg
 
-redis:
-  image: 'redis:3-alpine'
-  command: 'redis-server --appendonly yes'
-  volumes_from:
-    - redisdata
+  pg:
+    image: 'postgres:9.4'
+    volumes:
+      - pgdata:/data
 
-app:
-  build: '.'
-  command: 'bundle exec rails s -b 0.0.0.0'
-  environment:
-    - SHIPLIX_DB_USER=postgres
-    - SHIPLIX_DB_HOST=pg
-    - SHIPLIX_DB_PORT=5432
-    - SHIPLIX_REDIS_HOST=redis
-    - SHIPLIX_REDIS_PORT=6379
-    - SHIPLIX_REDIS_CACHE_DB=1
-  ports:
-    - '3000:3000'
-  volumes:
-    - '.:/app'
-  links:
-    - redis
-    - pg
+  redis:
+    image: 'redis:3-alpine'
+    command: 'redis-server --appendonly yes'
+    volumes:
+      - redisdata:/data
 
-worker:
-  build: '.'
-  command: 'bundle exec rake resque:work --trace'
-  environment:
-    - 'QUEUE=*'
-    - SHIPLIX_DB_USER=postgres
-    - SHIPLIX_DB_HOST=pg
-    - SHIPLIX_DB_PORT=5432
-    - SHIPLIX_REDIS_HOST=redis
-    - SHIPLIX_REDIS_PORT=6379
-    - SHIPLIX_REDIS_CACHE_DB=1
-  volumes:
-    - '.:/app'
-  links:
-    - redis
-    - pg
+volumes:
+  pgdata:
+    driver: local
+
+  redisdata:
+    driver: local

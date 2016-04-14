@@ -1,7 +1,7 @@
 module Analyzers
   class NamespacesService < BaseService
     def call
-      build.source_locator.paths.each do |path|
+      @build.source_locator.paths.each do |path|
         @processed_source = ProcessedSource.new(path)
         next if @processed_source.ast.nil? || @processed_source.loc <= 0
 
@@ -12,21 +12,18 @@ module Analyzers
     private
 
     def find_namespaces
-      file = block_by_path(@processed_source.path)
-      file.metrics["loc"] = @processed_source.loc
+      file = find_file(@processed_source.path)
+
+      file.metrics[:loc] = @processed_source.loc
+      file.metrics[:namespaces_count] = 0
+      file.metrics[:methods_count] = 0
 
       @processed_source.ast.each_node(:module, :class) do |node|
         loc = calculate_loc(node)
         next unless loc > 0
 
-        namespace = block_by_name(node.namespace)
-        namespace.increment_metric("loc", loc)
-        namespace.increment_metric("methods_count", count_methods(node))
-
-        namespace.locations.create!(
-          file: file,
-          position: Range.new(node.first_line, node.last_line)
-        )
+        file.metrics[:namespaces_count] += 1
+        file.metrics[:methods_count] += count_methods(node)
       end
     end
 

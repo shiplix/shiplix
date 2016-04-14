@@ -4,13 +4,13 @@ module Analyzers
   class BrakemanService < BaseService
     def call
       tracker = Brakeman.run(
-        app_path: build.revision_path.to_s,
+        app_path: @build.revision_path.to_s,
         parallel_checks: false,
         min_confidence: 0
       )
 
       tracker.warnings.each do |warn|
-        make_smell(warn)
+        process_warning(warn)
       end
     rescue Brakeman::NoApplication
       # no-op
@@ -18,33 +18,12 @@ module Analyzers
 
     private
 
-    def make_smell(warn)
-      if (namespace = namespace_from_warning(warn)).present?
-        namespace = block_by_name(namespace)
-      end
-
-      file = block_by_path(warn.relative_path)
-      line = warn.line.to_i
-
-      data = {
-        "confidence": warn.confidence,
-        "warning_type": warn.warning_type,
-      }
-
-      data['method_name'] = warn.method.to_s if warn.method.present?
-
-      Smells::Brakeman.create!(
-        namespace: namespace,
-        file: file,
-        position: Range.new(line, line),
-        data: data
-      )
-
-      increment_smells(namespace || file)
-    end
-
-    def namespace_from_warning(warn)
-      warn.class || warn.controller || warn.model
+    def process_warning(warn)
+      make_smell(find_file(warn.relative_path),
+                 line: warn.line.to_i,
+                 analyzer: "brakeman".freeze,
+                 check_name: warn.warning_type,
+                 data: {confidence: warn.confidence})
     end
   end
 end

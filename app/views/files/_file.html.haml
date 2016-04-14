@@ -1,0 +1,14 @@
+%tr
+  %td
+    = grade_badge(file.grade)
+  %td
+    %h4
+      = link_to file.path, repo_branch_file_url(repo.owner, repo, branch, file)
+  %td
+    %h3= file.metrics['complexity'].to_i
+  %td
+    %h3= file.metrics['duplication'].to_i
+  %td
+    %h3= file.metrics['loc']
+  %td
+    %h3= file.smells_count

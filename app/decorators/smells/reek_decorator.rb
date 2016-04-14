@@ -8,8 +8,8 @@ module Smells
       "fa fa-heartbeat"
     end
 
-    def name
-      data['smell_type']
+    def message
+      "#{object.check_name.titleize}: #{object.message}"
     end
   end
 end

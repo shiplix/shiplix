@@ -8,8 +8,8 @@ module Smells
       "fa fa-lock"
     end
 
-    def name
-      trait
+    def message
+      object.check_name.titleize
     end
   end
 end

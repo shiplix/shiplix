@@ -1,34 +1,31 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe Analyzers::FlayService do
-  let(:build) { create :push }
+  let(:push_build) { create :push }
+  let(:file) { push_build.collections.files["test.rb"] }
 
   before do
-    stub_build(build, 'flay')
+    stub_build(push_build, "flay")
+    described_class.new(push_build).call
   end
 
-  context 'when we have knowledge about klass in database' do
-    before { Analyzers::NamespacesService.new(build).call }
-
-    it 'creates smells for dublication code' do
-      described_class.new(build).call
-
-      klass = build.collections.blocks['Flay::DirtyClass']
-
-      created_smells = klass.smells.where(type: Smells::Flay)
-      smells_start_positions = created_smells.map(&:position).map(&:first)
-
-      expect(smells_start_positions).to match_array [3, 10]
-      expect(klass.metrics['duplication']).to eq 108
+  context "when find smells" do
+    it "writes metrics in file" do
+      expect(file.metrics[:duplication]).to eq 108
+      expect(file.pain).to eq 8_800_000
+      expect(file.smells.size).to eq 2
     end
-  end
 
-  context 'when we does not have knowledge about klass in database' do
-    it 'does not create smells' do
-      described_class.new(build).call
+    it "creates smell with similiar duplication" do
+      smells = file.smells.select { |smell| smell.check_name == "similiar" }.sort_by(&:position)
 
-      expect(Blocks::Namespace.exists?).to eq false
-      expect(Smells::Flay.exists?).to eq false
+      expect(smells[0].pain).to eq 4_400_000
+      expect(smells[0].position).to eq 3
+      expect(smells[0].data[:mass]).to eq 54
+
+      expect(smells[1].pain).to eq 4_400_000
+      expect(smells[1].position).to eq 10
+      expect(smells[1].data[:mass]).to eq 54
     end
   end
 end

@@ -18,7 +18,7 @@ describe GithubEventsController, type: :controller do
 
     context 'when signature invalid' do
       it 'does not launch build job' do
-        expect(Builds::Pushes::LaunchJob).not_to receive(:enqueue)
+        expect(Builds::LaunchJob).not_to receive(:enqueue)
 
         request.headers['HTTP_X_HUB_SIGNATURE'] = 'sha1=invalid'
         post :create, payload: payload
@@ -29,7 +29,7 @@ describe GithubEventsController, type: :controller do
 
     context 'when signature valid' do
       it 'launches build job' do
-        expect(Builds::Pushes::LaunchJob).to receive(:enqueue)
+        expect(Builds::LaunchJob).to receive(:enqueue)
 
         request.headers['HTTP_X_HUB_SIGNATURE'] = 'sha1=valid'
         post :create, payload: payload

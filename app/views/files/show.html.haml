@@ -1,0 +1,23 @@
+- breadcrumb :file, @repo, @file
+
+- content_for(:header_icon, 'fa-file-code-o')
+
+.row
+  .col-md-12
+    .panel-heading
+      = render "smells/badges", file: @file
+
+    .panel.panel-warning
+      .panel-heading
+        %h3.panel-title= @file.path
+
+        %ul.panel-controls
+          %li
+            %a.panel-fullscreen{href: "#"}
+              %i.fa.fa-expand
+          %li
+            %a.panel-collapse{href: ""}
+              %i.fa.fa-angle-down
+
+        .panel-body
+          = render "files/code", file: @file
