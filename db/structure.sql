@@ -213,7 +213,9 @@ CREATE TABLE files (
     branch_id integer NOT NULL,
     path character varying(1024) NOT NULL,
     grade grade_type DEFAULT 'A'::grade_type NOT NULL,
-    pain integer DEFAULT 0 NOT NULL
+    pain integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -706,6 +708,13 @@ CREATE UNIQUE INDEX index_files_on_branch_id_and_path ON files USING btree (bran
 
 
 --
+-- Name: index_files_on_branch_id_and_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_files_on_branch_id_and_updated_at ON files USING btree (branch_id, updated_at);
+
+
+--
 -- Name: index_memberships_on_repo_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -975,4 +984,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160314175210');
 INSERT INTO schema_migrations (version) VALUES ('20160403092807');
 
 INSERT INTO schema_migrations (version) VALUES ('20160414065207');
+
+INSERT INTO schema_migrations (version) VALUES ('20160418051548');
 

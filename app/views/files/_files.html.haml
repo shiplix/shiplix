@@ -1,0 +1,34 @@
+- cache [branch, files] do
+  .panel-body.panel-body-table
+    - if files.any?
+      .table-responsive
+        %table.table.table-bordered.table-striped
+          %thead
+            %tr
+              %th{style: 'width: 90px'} Marks
+              %th Name
+              %th{style: 'width: 90px'} Complexity
+              %th{style: 'width: 90px'} Duplication
+              %th{style: 'width: 90px'} LOC
+              %th{style: 'width: 90px'} Smells
+          %tbody
+            - files.each do |file|
+              %tr
+                %td
+                  = grade_badge(file.grade)
+                %td
+                  %h4
+                    = link_to file.path, repo_branch_file_url(repo.owner, repo, branch, file)
+                %td
+                  %h3= file.metrics['complexity'].to_i
+                %td
+                  %h3= file.metrics['duplication'].to_i
+                %td
+                  %h3= file.metrics['loc']
+                %td
+                  %h3= file.smells_count
+    - else
+      There is no analyzed files yet.
+
+  .panel-footer
+    = will_paginate files, renderer: BootstrapPagination::Rails

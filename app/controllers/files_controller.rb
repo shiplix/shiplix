@@ -1,14 +1,11 @@
 class FilesController < ApplicationController
   def index
-    return not_found unless current_repo
+    return not_found unless current_branch
     authorize current_repo, :show?
 
-    title_variables[:repo] = current_repo.full_name
+    @files = FilesFinder.new(current_branch, page: params.fetch(:page, 1), per_page: 20)
 
-    @files = current_branch && current_branch.
-               files.
-               order("files.pain desc, files.path asc").
-               paginate(page: params[:page], per_page: 20)
+    title_variables[:repo] = current_repo.full_name
   end
 
   def show

@@ -60,6 +60,7 @@ gem 'rails-observers'
 gem 'stripe'
 gem 'virtus'
 gem 'interactor'
+gem 'findit'
 
 # Back
 gem 'resque', '~> 1.25'

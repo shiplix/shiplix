@@ -12,8 +12,8 @@
         %ul.panel-controls
           %li{style: 'width: 200px;'}
             = select_tag "change_branch",
-                         options_from_collection_for_select(current_repo.branches, :name, :name, current_branch.name),
-                         data: {url: repo_branch_files_url(current_repo.owner, current_repo, ":branch")},
+                         options_from_collection_for_select(@repo.branches, :name, :name, @branch.name),
+                         data: {url: repo_branch_files_url(@repo.owner, @repo, ":branch")},
                          class: "form-control js-change-branch"
           %li{style: 'width: 300px;'}
             %input.form-control.ui-autocomplete-input{placeholder: 'Search by name...', autocomplete: 'off'}
@@ -21,28 +21,9 @@
             %a.panel-fullscreen{href: '#'}
               %i.fa.fa-expand
           - if policy(@repo).manage?
-            - branch_name = @branch.present? ? @branch.name : @repo.default_branch.name
             %li
-              = link_to builds_url(repo_id: @repo.id, branch: branch_name),
+              = link_to builds_url(repo_id: @repo.id, branch: @branch.name),
                         remote: true, method: :post, class: 'js-build-repo' do
                 %i.fa.fa-refresh
 
-      .panel-body.panel-body-table
-        .table-responsive
-          - if @files.present?
-            %table.table.table-bordered.table-striped
-              %thead
-                %tr
-                  %th{style: 'width: 90px'} Marks
-                  %th Name
-                  %th{style: 'width: 90px'} Complexity
-                  %th{style: 'width: 90px'} Duplication
-                  %th{style: 'width: 90px'} LOC
-                  %th{style: 'width: 90px'} Smells
-              %tbody
-                = render partial: 'file', collection: @files, locals: {repo: @repo, branch: @branch}
-          - else
-            There is no analyzed files yet.
-
-      - if @files.present?
-        .panel-footer= will_paginate @files, renderer: BootstrapPagination::Rails
+      = render "files", files: @files, branch: @branch, repo: @repo
