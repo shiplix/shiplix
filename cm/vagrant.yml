@@ -11,3 +11,4 @@
     - ruby
     - db
     - redis
+    - docker
