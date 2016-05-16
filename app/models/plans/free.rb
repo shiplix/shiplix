@@ -19,9 +19,5 @@ module Plans
     def month
       0
     end
-
-    def free?
-      true
-    end
   end
 end
