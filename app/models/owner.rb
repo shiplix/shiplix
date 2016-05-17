@@ -2,7 +2,8 @@ class Owner < ActiveRecord::Base
   TYPES = %w(user org).freeze
 
   has_many :repos
-  belongs_to :plan
+  has_one :subscription
+  has_one :plan, through: :subscription
 
   validates :name, presence: true
 

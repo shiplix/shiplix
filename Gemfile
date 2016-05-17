@@ -58,6 +58,9 @@ gem 'aasm'
 gem 'attr_extras'
 gem 'whenever', require: false
 gem 'rails-observers'
+gem 'stripe'
+gem 'virtus'
+gem 'interactor'
 
 # Back
 gem 'resque', '~> 1.25'
@@ -105,6 +108,7 @@ group :test do
   gem 'rspec-given'
   gem 'test_after_commit'
   gem 'mock_redis', :github => 'causes/mock_redis' # необходимо пояснения, почему так?
+  gem 'webmock'
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false

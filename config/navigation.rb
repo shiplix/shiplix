@@ -26,5 +26,7 @@ SimpleNavigation::Configuration.run do |navigation|
                    repos_url,
                    html: {icon: 'fa-desktop'})
     end
+
+    primary.item(:profile, 'Profile Settings', profile_root_path, html: {icon: 'fa-user'})
   end
 end

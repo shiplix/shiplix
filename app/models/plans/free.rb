@@ -16,7 +16,7 @@ module Plans
       0
     end
 
-    def month
+    def months
       0
     end
   end

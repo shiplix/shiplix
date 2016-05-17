@@ -20,3 +20,17 @@ crumb :file do |repo, file|
   link file.path, repo_branch_file_url(repo.owner, repo, file.branch, file)
   parent :files, repo, file.branch
 end
+
+crumb :profile do
+  link "Profile", profile_root_url
+end
+
+crumb :billing do
+  link "Billing", profile_billing_index_url
+  parent :profile
+end
+
+crumb :payment do |owner|
+  link "Subscription for #{owner.name}", new_profile_billing_subscription_url(owner)
+  parent :billing
+end

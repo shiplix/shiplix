@@ -24,6 +24,9 @@
 
         .col-md-8
           = render 'shared/page_header'
+          - flash.each do |name, msg|
+            = content_tag :div, msg, class: name
+
         .col-md-4
           - if content_for?(:header_right_col)
             = yield(:header_right_col)

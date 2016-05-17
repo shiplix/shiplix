@@ -1,0 +1,56 @@
+en:
+  pages:
+    default_postfix: ' - Shiplix'
+
+    home:
+      index:
+        title: 'Awesome Code Analyze'
+        header: 'Awesome Code Analyze'
+
+    repos:
+      index:
+        title: 'Repositories'
+        header: 'Repositories'
+
+      show:
+        title: '%{repo}'
+        header: '%{repo}'
+
+    blocks:
+      postfix: ' - %{repo}'
+
+      index:
+        title: 'Code'
+        header: 'Code'
+
+      namespaces:
+        postfix: ' - %{repo}'
+
+        show:
+          title: '%{name}'
+          header: '%{name}'
+
+      files:
+        postfix: ' - %{repo}'
+
+        show:
+          title: '%{name}'
+          header: '%{name}'
+
+    profile:
+      plans:
+        index:
+          title: 'Plans'
+          header: 'Plans'
+
+      billing:
+        index:
+          title: 'Billing'
+          header: 'Billing'
+
+      subscriptions:
+        new: &subscriptions_new
+          title: 'Subscription'
+          header: 'Subscription'
+        create:
+          <<: *subscriptions_new
