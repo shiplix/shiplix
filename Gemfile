@@ -103,7 +103,6 @@ end
 
 group :test do
   gem 'timecop'
-  gem 'fakefs', require: 'fakefs/safe'
   gem 'rspec-rails'
   gem 'rspec-given'
   gem 'test_after_commit'

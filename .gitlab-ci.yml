@@ -1,0 +1,31 @@
+image: "ruby:2.3.0"
+
+services:
+  - postgres:9.4
+
+#cache:
+  #paths:
+    #- .bundle
+    #- vendor
+
+variables:
+  POSTGRES_DB: 'shiplix_test'
+  SHIPLIX_DB_USER: 'postgres'
+  SHIPLIX_DB_HOST: 'postgres'
+  SHIPLIX_DB_PORT: '5432'
+  SHIPLIX_HOST: 'shiplix.test'
+
+before_script:
+  - apt-get update -yqqq
+  - apt-get -o dir::cache::archives="cache/apt" install -y -qq --force-yes postgresql-client
+  - gem install bundler --no-ri --no-rdoc
+  - bundle install --jobs $(nproc) --path cache/
+
+stages:
+  - test
+
+rspec:
+  stage: 'test'
+  script:
+    - bundle exec rspec
+

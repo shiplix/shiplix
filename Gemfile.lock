@@ -138,7 +138,6 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
-    fakefs (0.6.7)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
@@ -533,7 +532,6 @@ DEPENDENCIES
   dotenv-rails
   draper
   factory_girl_rails
-  fakefs
   flay (~> 2.6)
   flog (~> 4.3)
   font-awesome-rails
