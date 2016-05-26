@@ -14,9 +14,7 @@ redis:
     tag: '{{.Name}}'
 
 app:
-  image: shiplix/shiplix
-  build: '.'
-  dockerfile: config/docker/production/rails/Dockerfile
+  image: registry.gitlab.com/shiplix/shiplix:latest
   command: ./config/docker/production/rails/unicorn.sh
   environment:
     - KONTENA_LB_INTERNAL_PORT=3000
@@ -54,7 +52,7 @@ app:
     tag: '{{.Name}}'
 
 worker:
-  image: shiplix/shiplix
+  image: registry.gitlab.com/shiplix/shiplix:latest
   command: 'bundle exec rake resque:work --trace'
   environment:
     - 'QUEUE=*'

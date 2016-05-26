@@ -17,14 +17,30 @@ RUN apt-get update -qq && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   truncate -s 0 /var/log/*log
 
+# Add Tini
+ADD https://github.com/krallin/tini/releases/download/v0.9.0/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+
+ENV RAILS_ENV production
+
 EXPOSE 3000
 
-ENV BUNDLE_PATH /app/vendor/bundle
-
-RUN echo 'gem: --no-rdoc --no-ri' >> /etc/gemrc && \
-  gem install bundler && \
-  bundle config --global jobs 4 && \
-  bundle config --global without production && \
-  bundle config --global build.nokogiri --use-system-libraries
-
+# Install gems
+COPY Gemfile Gemfile.lock /app/
 WORKDIR /app
+RUN echo 'gem: --no-rdoc --no-ri' >> /etc/gemrc && \
+  bundle config build.nokogiri --use-system-libraries && \
+  bundle install --deployment --without development --jobs 4
+
+# Copy project files
+COPY . /app/
+
+# Setup application
+RUN mkdir -p log tmp/pids tmp/builds && \
+  ln -sf /dev/stdout /app/log/unicorn.log && \
+  ln -sf /dev/stdout /app/log/production.log && \
+  ln -sf /dev/stdout /app/log/resque.log && \
+  ln -sf /dev/stdout /app/log/newrelic_agent.log && \
+  bundle exec rake assets:precompile && \
+  rm -rf tmp/cache

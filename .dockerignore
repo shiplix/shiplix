@@ -10,4 +10,3 @@ config/resque.god
 .env
 *.env
 vendor/bundle/
-spec/

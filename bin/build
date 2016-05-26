@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+docker build -t $IMAGE:$TAG .
+
+docker run -d --name shiplix-test-pg postgres:9.4
+
+docker run --rm \
+  -e SHIPLIX_HOST=shiplix-test.com \
+  -e SHIPLIX_DB_HOST=shiplix-test-pg \
+  -e STRIPE_PUBLISHABLE_KEY=stripe_key \
+  -e STRIPE_SECRET_KEY=stripe_secret \
+  -e RAILS_ENV=test \
+  --link shiplix-test-pg \
+  $IMAGE:$TAG \
+  bash -c "bundle exec rake db:create db:structure:load db:migrate && bundle exec rspec"
+
+docker stop shiplix-test-pg
+docker rm -v shiplix-test-pg
