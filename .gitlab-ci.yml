@@ -14,6 +14,8 @@ variables:
   SHIPLIX_DB_HOST: 'postgres'
   SHIPLIX_DB_PORT: '5432'
   SHIPLIX_HOST: 'shiplix.test'
+  STRIPE_PUBLISHABLE_KEY: '123'
+  STRIPE_SECRET_KEY: '123'
 
 before_script:
   - apt-get update -yqqq

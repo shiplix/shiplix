@@ -6,8 +6,15 @@ RSpec.describe Subscription do
       plan = create(:plan)
       owner = create(:user_owner)
 
-      new_account = described_class.new(owner: owner, plan: plan, price: plan.price, stripe_subscription_id: 123)
-      expect { new_account.save! }.to change { new_account.uuid }.from(nil)
+      subscription = described_class.new(
+        owner: owner,
+        plan: plan,
+        price: plan.price,
+        stripe_subscription_id: 123,
+        active_till: 1.day.since
+      )
+
+      expect { subscription.save! }.to change { subscription.uuid }.from(nil)
     end
   end
 
