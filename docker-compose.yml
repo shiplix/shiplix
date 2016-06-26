@@ -39,7 +39,7 @@ services:
   pg:
     image: 'postgres:9.4'
     volumes:
-      - pgdata:/data
+      - pgdata:/var/lib/postgresql/data
 
   redis:
     image: 'redis:3-alpine'
