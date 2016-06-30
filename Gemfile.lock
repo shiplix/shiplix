@@ -175,7 +175,6 @@ GEM
     hashie (3.4.2)
     high_voltage (2.3.0)
     highline (1.6.21)
-    hiredis (0.6.0)
     httmultiparty (0.3.16)
       httparty (>= 0.7.3)
       mimemagic
@@ -540,7 +539,6 @@ DEPENDENCIES
   hamlbars
   handlebars_assets
   high_voltage
-  hiredis
   interactor
   jbuilder
   jquery-rails

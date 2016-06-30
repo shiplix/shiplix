@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  app:
+    extends:
+      file: docker-compose.common.yml
+      service: app
+    command: make
+    environment:
+      - RAILS_ENV=test
+      - STRIPE_PUBLISHABLE_KEY=stripe_key
+      - STRIPE_SECRET_KEY=stripe_secret
+    volumes:
+      - ..:/app
+      - ruby-gems:/gems
+    depends_on:
+      - pg
+
+  pg:
+    extends:
+      file: docker-compose.common.yml
+      service: pg
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  ruby-gems:
+    driver: local
+
+  pg-data:
+    driver: local

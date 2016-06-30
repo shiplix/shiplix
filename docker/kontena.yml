@@ -1,25 +1,14 @@
-pg:
-  image: 'postgres:9.4'
-  stateful: true
-  log_driver: syslog
-  log_opt:
-    tag: '{{.Name}}'
-
-redis:
-  image: 'redis:3-alpine'
-  command: 'redis-server --appendonly yes'
-  stateful: true
-  log_driver: syslog
-  log_opt:
-    tag: '{{.Name}}'
-
-app:
+web:
+  extends:
+    file: docker-compose.common.yml
+    service: web
   image: registry.gitlab.com/shiplix/shiplix:latest
-  command: ./config/docker/production/rails/unicorn.sh
+  command: bash -c "rake db:migrate && unicorn -c /app/config/unicorn.rb -E deployment"
   environment:
     - KONTENA_LB_INTERNAL_PORT=3000
-    - SHIPLIX_DB_HOST=shiplix-pg
-    - SHIPLIX_REDIS_HOST=shiplix-redis
+    - SHIPLIX_POSTGRES_URL=postgres://postgres@${project}-pg/shiplix
+    - SHIPLIX_REDIS_URL=redis://${project}-redis:6379
+    - SHIPLIX_REDIS_CACHE_URL=redis://${project}-redis_cache:6379
   secrets:
     - secret: SHIPLIX_LB_HOSTS
       name: KONTENA_LB_VIRTUAL_HOSTS
@@ -52,17 +41,21 @@ app:
     tag: '{{.Name}}'
 
 worker:
-  image: registry.gitlab.com/shiplix/shiplix:latest
-  command: 'bundle exec rake resque:work --trace'
+  extends:
+    service: worker
   environment:
     - 'QUEUE=*'
-    - SHIPLIX_DB_HOST=shiplix-pg
-    - SHIPLIX_REDIS_HOST=shiplix-redis
+    - SHIPLIX_POSTGRES_URL=postgres://postgres@${project}-pg/shiplix
+    - SHIPLIX_REDIS_URL=redis://${project}-redis:6379
+    - SHIPLIX_REDIS_CACHE_URL=redis://${project}-redis_cache:6379
   secrets:
+    - secret: SHIPLIX_LB_HOSTS
+      name: KONTENA_LB_VIRTUAL_HOSTS
+      type: env
     - secret: SHIPLIX_HOST
       name: SHIPLIX_HOST
       type: env
-    - secret: GITHUB_SECRET_TOKEN
+    - secret: SHIPLIX_GITHUB_SECRET_TOKEN
       name: GITHUB_SECRET_TOKEN
       type: env
     - secret: SHIPLIX_GITHUB_CLIENT_ID
@@ -82,6 +75,32 @@ worker:
       type: env
   volumes:
     - '/tmp/builds:/app/tmp/builds'
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
+
+pg:
+  extends:
+    file: docker-compose.common.yml
+    service: pg
+  stateful: true
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
+
+redis:
+  extends:
+    file: docker-compose.common.yml
+    service: redis
+  stateful: true
+  log_driver: syslog
+  log_opt:
+    tag: '{{.Name}}'
+
+redis_cache:
+  extends:
+    file: docker-compose.common.yml
+    service: redis_cache
   log_driver: syslog
   log_opt:
     tag: '{{.Name}}'

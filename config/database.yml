@@ -1,18 +1,4 @@
-defaults: &DEFAULTS
+<%= ENV.fetch("RAILS_ENV", "development") %>:
   adapter: postgresql
-  username: <%= ENV.fetch("SHIPLIX_DB_USER", "postgres") %>
-  host: <%= ENV.fetch("SHIPLIX_DB_HOST", "pg") %>
-  port: <%= ENV.fetch("SHIPLIX_DB_PORT", 5432) %>
-  password: <%= ENV["SHIPLIX_DB_PASSWORD"] %>
-
-development:
-  <<: *DEFAULTS
-  database: shiplix
-
-test:
-  <<: *DEFAULTS
-  database: shiplix_test
-
-production:
-  <<: *DEFAULTS
-  database: shiplix
+  pool: 5
+  url: <%= ENV['SHIPLIX_POSTGRES_URL'] %>

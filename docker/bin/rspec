@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+exec env RAILS_ENV=test ./docker/bin/bundle exec rspec "$@"

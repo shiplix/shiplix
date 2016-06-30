@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: shiplix_app
+    env_file:
+      - ./.env
+    environment:
+      - RAILS_ENV=$RAILS_ENV
+    command: bash
+
+  web:
+    extends:
+      service: app
+    command: 'bash -c "rm -f /var/run/rails_server.pid && bundle exec rails s -b 0.0.0.0 --pid /var/run/rails_server.pid"'
+
+  worker:
+    extends:
+      service: app
+    environment:
+      - 'QUEUE=*'
+    command: 'bundle exec rake resque:work --trace'
+
+  pg:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_DB=shiplix
+
+  redis:
+    image: redis:3-alpine
+    command: 'redis-server --appendonly yes'
+
+  cache:
+    image: redis:3-alpine
+    environment:
+      - REDIS_MAXMEMORY=30mb
+    command: 'redis-server --maxmemory $$REDIS_MAXMEMORY --maxmemory-policy allkeys-lru'

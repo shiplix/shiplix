@@ -1,30 +1,22 @@
-image: docker:git
-
-services:
-  - docker:dind
+image: gitlab/dind
 
 stages:
+  - test
   - build
-  - release
 
-before_script:
-  - export REGISTRY=registry.gitlab.com
-  - export IMAGE="$REGISTRY/$(basename $(dirname $PWD))/$(basename $PWD)"
-  - export TAG=$CI_BUILD_REF_NAME
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $REGISTRY
+variables:
+  COMPOSE_HTTP_TIMEOUT: "600"
+
+test:
+  stage: test
+  script:
+    - docker-compose -f ./docker/docker-compose.ci.yml run --rm app make
 
 build:
   stage: build
   script:
-    - echo "Start build image $IMAGE:$TAG"
-    - ./bin/build
-    - docker push $IMAGE:$TAG
-
-release:
-  stage: release
-  only:
-    - master@shiplix/shiplix
-  script:
-    - docker pull $IMAGE:$TAG
-    - docker tag $IMAGE:$TAG $IMAGE:latest
+    - export REGISTRY=registry.gitlab.com
+    - export IMAGE="$REGISTRY/$(basename $(dirname $PWD))/$(basename $PWD)"
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $REGISTRY
+    - docker build --rm -t $IMAGE:latest -f docker/Dockerfile.production .
     - docker push $IMAGE:latest
