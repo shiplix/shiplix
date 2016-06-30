@@ -14,12 +14,12 @@ redis:
     tag: '{{.Name}}'
 
 app:
-  image: shiplix/rails
-  build: '.'
-  dockerfile: config/docker/production/rails/Dockerfile
+  image: registry.gitlab.com/shiplix/shiplix:latest
   command: ./config/docker/production/rails/unicorn.sh
   environment:
     - KONTENA_LB_INTERNAL_PORT=3000
+    - SHIPLIX_DB_HOST=shiplix-pg
+    - SHIPLIX_REDIS_HOST=shiplix-redis
   secrets:
     - secret: SHIPLIX_LB_HOSTS
       name: KONTENA_LB_VIRTUAL_HOSTS
@@ -30,23 +30,11 @@ app:
     - secret: SHIPLIX_GITHUB_SECRET_TOKEN
       name: GITHUB_SECRET_TOKEN
       type: env
-    - secret: SHIPLIX_DB_HOST
-      name: SHIPLIX_DB_HOST
-      type: env
-    - secret: SHIPLIX_DB_USER
-      name: SHIPLIX_DB_USER
-      type: env
-    - secret: SHIPLIX_DB_PASSWORD
-      name: SHIPLIX_DB_PASSWORD
-      type: env
     - secret: SHIPLIX_GITHUB_CLIENT_ID
       name: SHIPLIX_GITHUB_CLIENT_ID
       type: env
     - secret: SHIPLIX_GITHUB_CLIENT_SECRET
       name: SHIPLIX_GITHUB_CLIENT_SECRET
-      type: env
-    - secret: SHIPLIX_REDIS_HOST
-      name: SHIPLIX_REDIS_HOST
       type: env
     - secret: SHIPLIX_SECRET_KEY_BASE
       name: SHIPLIX_SECRET_KEY_BASE
@@ -64,8 +52,12 @@ app:
     tag: '{{.Name}}'
 
 worker:
-  image: shiplix/rails
+  image: registry.gitlab.com/shiplix/shiplix:latest
   command: 'bundle exec rake resque:work --trace'
+  environment:
+    - 'QUEUE=*'
+    - SHIPLIX_DB_HOST=shiplix-pg
+    - SHIPLIX_REDIS_HOST=shiplix-redis
   secrets:
     - secret: SHIPLIX_HOST
       name: SHIPLIX_HOST
@@ -73,23 +65,11 @@ worker:
     - secret: GITHUB_SECRET_TOKEN
       name: GITHUB_SECRET_TOKEN
       type: env
-    - secret: SHIPLIX_DB_HOST
-      name: SHIPLIX_DB_HOST
-      type: env
-    - secret: SHIPLIX_DB_USER
-      name: SHIPLIX_DB_USER
-      type: env
-    - secret: SHIPLIX_DB_PASSWORD
-      name: SHIPLIX_DB_PASSWORD
-      type: env
     - secret: SHIPLIX_GITHUB_CLIENT_ID
       name: SHIPLIX_GITHUB_CLIENT_ID
       type: env
     - secret: SHIPLIX_GITHUB_CLIENT_SECRET
       name: SHIPLIX_GITHUB_CLIENT_SECRET
-      type: env
-    - secret: SHIPLIX_REDIS_HOST
-      name: SHIPLIX_REDIS_HOST
       type: env
     - secret: SHIPLIX_SECRET_KEY_BASE
       name: SHIPLIX_SECRET_KEY_BASE
@@ -100,8 +80,6 @@ worker:
     - secret: SHIPLIX_NEWRELIC_APP_NAME
       name: SHIPLIX_NEWRELIC_APP_NAME
       type: env
-  environment:
-    - 'QUEUE=*'
   volumes:
     - '/tmp/builds:/app/tmp/builds'
   log_driver: syslog
