@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+exec ./docker/bin/compose run --rm web "$@"

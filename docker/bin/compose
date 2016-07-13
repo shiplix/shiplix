@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+: ${RAILS_ENV:=development}
+
+case "$RAILS_ENV" in
+  "development") project_name="shiplix";;
+  "test") project_name="shiplixtest";;
+esac
+
+
+exec env RAILS_ENV=$RAILS_ENV docker-compose --file ./docker/docker-compose.yml --project-name $project_name "$@"

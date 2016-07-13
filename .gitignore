@@ -14,11 +14,11 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /.idea
-.ruby-version
-.ruby-gemset
-.env
-*.env
-.capistrano/
+/.ruby-version
+/.ruby-gemset
+/.env
+/.env.*
+/.capistrano/
 /coverage
 /.vagrant
 /config/resque.god
