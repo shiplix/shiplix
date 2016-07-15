@@ -73,6 +73,12 @@ worker:
     - secret: SHIPLIX_NEWRELIC_APP_NAME
       name: SHIPLIX_NEWRELIC_APP_NAME
       type: env
+    - secret: SHIPLIX_STRIPE_SECRET_KEY
+      name: SHIPLIX_STRIPE_SECRET_KEY
+      type: env
+    - secret: SHIPLIX_STRIPE_PUBLISHABLE_KEY
+      name: SHIPLIX_STRIPE_PUBLISHABLE_KEY
+      type: env
   volumes:
     - '/tmp/builds:/app/tmp/builds'
   log_driver: syslog
