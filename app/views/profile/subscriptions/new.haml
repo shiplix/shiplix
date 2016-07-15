@@ -24,14 +24,38 @@
                   %td= "$ #{plan.price} / #{I18n.t('plans.per_months', count: plan.months)}"
                   %td= plan.repo_limit
 
-          .js-payment-errors
+          .form-horizontal
+            .js-payment-errors.text-danger
 
-          %div= f.text_field :card_number, data: {stripe: 'number'}, required: true, placeholder: '0000 0000 0000 0000', value: 4242424242424242, minlength: 11, maxlength: 20
-          %div= f.text_field :cvc, data: {stripe: 'cvc'}, required: true, placeholder: '000', maxlength: 4
-          %div
-            = f.select :exp_month, 1..12, {}, data: {stripe: 'exp-month'}
-            = f.select :exp_year, Date.today.year..8.years.from_now.year, {}, data: {stripe: 'exp-year'}
-          %div= f.button 'submit', class: 'btn'
+            .form-group
+              .col-md-6.col-xs-12
+                = f.label :card_number, "Card number", class: 'control-label'
+                = f.text_field :card_number,
+                                data: {stripe: 'number'},
+                                required: true,
+                                minlength: 11,
+                                maxlength: 20,
+                                class: 'form-control'
+
+            .form-group
+              .col-md-2
+                %label.control-label Expiration date
+                = f.select :exp_month, 1..12, {}, data: {stripe: 'exp-month'}, class: 'form-control'
+              .col-md-2
+                %span.control-label= '&nbsp'.html_safe
+                = f.select :exp_year, Date.today.year..8.years.from_now.year, {}, data: {stripe: 'exp-year'}, class: 'form-control'
+
+              .col-md-2
+                = f.label :csv, "CVC (CVV)", class: 'control-label'
+                = f.text_field :cvc,
+                                data: {stripe: 'cvc'},
+                                required: true,
+                                maxlength: 4,
+                                class: 'form-control'
+
+            .form-group
+              .col-md-6.col-xs-12
+                %div= f.button 'Upgrade plan', class: 'btn btn-success'
 
         = javascript_include_tag 'https://js.stripe.com/v2/'
         :javascript
