@@ -141,6 +141,8 @@ GEM
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
+    findit (1.2.0)
+      activesupport (>= 3.1)
     flay (2.6.1)
       ruby_parser (~> 3.0)
       sexp_processor (~> 4.0)
@@ -531,6 +533,7 @@ DEPENDENCIES
   dotenv-rails
   draper
   factory_girl_rails
+  findit
   flay (~> 2.6)
   flog (~> 4.3)
   font-awesome-rails
@@ -597,4 +600,4 @@ DEPENDENCIES
   wirble
 
 BUNDLED WITH
-   1.11.2
+   1.12.5
