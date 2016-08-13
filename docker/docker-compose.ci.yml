@@ -8,8 +8,8 @@ services:
     command: make
     environment:
       - RAILS_ENV=test
-      - STRIPE_PUBLISHABLE_KEY=stripe_key
-      - STRIPE_SECRET_KEY=stripe_secret
+      - SHIPLIX_STRIPE_PUBLISHABLE_KEY=stripe_key
+      - SHIPLIX_STRIPE_SECRET_KEY=stripe_secret
     volumes:
       - ..:/app
       - ruby-gems:/gems
