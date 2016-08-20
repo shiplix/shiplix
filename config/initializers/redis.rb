@@ -15,6 +15,6 @@ if !Rails.env.test? && !ENV['ASSETS_PRECOMPILE']
   Rails.application.config.cache_store = :readthis_store, {
     expires_in: 1.day.to_i,
     namespace: cache_namespace,
-    redis: {url: ENV.fetch("SHIPLIX_REDIS_CACHE_URL")}
+    redis: {url: ENV.fetch("SHIPLIX_CACHE_URL")}
   }
 end

@@ -2,14 +2,8 @@ version: '2'
 
 services:
   app:
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    image: shiplix_app
     env_file:
       - ./.env
-    environment:
-      - RAILS_ENV=$RAILS_ENV
     command: bash
 
   web:
