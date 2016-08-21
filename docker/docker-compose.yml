@@ -5,6 +5,12 @@ services:
     extends:
       file: docker-compose.common.yml
       service: app
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: shiplix_app
+    environment:
+      - RAILS_ENV=$RAILS_ENV
     volumes:
       - ..:/app
       - ruby-gems:/gems
@@ -24,8 +30,13 @@ services:
     extends:
       file: docker-compose.common.yml
       service: web
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: shiplix_app
     environment:
       - VIRTUAL_HOST=shiplix.dev
+      - RAILS_ENV=$RAILS_ENV
     volumes:
       - ..:/app
       - ruby-gems:/gems
@@ -39,6 +50,12 @@ services:
     extends:
       file: docker-compose.common.yml
       service: worker
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: shiplix_app
+    environment:
+      - RAILS_ENV=$RAILS_ENV
     volumes:
       - ..:/app
       - ruby-gems:/gems

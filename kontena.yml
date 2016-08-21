@@ -1,0 +1,131 @@
+version: '2'
+
+name: shiplix
+
+services:
+  web:
+    extends:
+      file: docker/docker-compose.common.yml
+      service: web
+    image: registry.gitlab.com/shiplix/shiplix:latest
+    command: bundle exec unicorn -c /app/config/unicorn.rb -E deployment
+    environment:
+      - KONTENA_LB_INTERNAL_PORT=3000
+      - RAILS_ENV=production
+      - SHIPLIX_POSTGRES_URL=postgres://postgres@${project}-pg/shiplix
+      - SHIPLIX_REDIS_URL=redis://${project}-redis:6379
+      - SHIPLIX_CACHE_URL=redis://${project}-cache:6379
+    secrets:
+      - secret: SHIPLIX_LB_HOSTS
+        name: KONTENA_LB_VIRTUAL_HOSTS
+        type: env
+      - secret: SHIPLIX_HOST
+        name: SHIPLIX_HOST
+        type: env
+      - secret: SHIPLIX_GITHUB_SECRET_TOKEN
+        name: GITHUB_SECRET_TOKEN
+        type: env
+      - secret: SHIPLIX_GITHUB_CLIENT_ID
+        name: SHIPLIX_GITHUB_CLIENT_ID
+        type: env
+      - secret: SHIPLIX_GITHUB_CLIENT_SECRET
+        name: SHIPLIX_GITHUB_CLIENT_SECRET
+        type: env
+      - secret: SHIPLIX_SECRET_KEY_BASE
+        name: SHIPLIX_SECRET_KEY_BASE
+        type: env
+      - secret: SHIPLIX_NEWRELIC_KEY
+        name: SHIPLIX_NEWRELIC_KEY
+        type: env
+      - secret: SHIPLIX_NEWRELIC_APP_NAME
+        name: SHIPLIX_NEWRELIC_APP_NAME
+        type: env
+    external_links:
+      - lb
+    hooks:
+      post_start:
+        - name: db_migration
+          cmd: bundle exec rake db:migrate
+          instances: 1
+    logging:
+      driver: syslog
+      options:
+        tag: '{{.Name}}'
+
+  worker:
+    extends:
+      file: docker/docker-compose.common.yml
+      service: worker
+    image: registry.gitlab.com/shiplix/shiplix:latest
+    environment:
+      - 'QUEUE=*'
+      - RAILS_ENV=production
+      - SHIPLIX_POSTGRES_URL=postgres://postgres@${project}-pg/shiplix
+      - SHIPLIX_REDIS_URL=redis://${project}-redis:6379
+      - SHIPLIX_CACHE_URL=redis://${project}-cache:6379
+    secrets:
+      - secret: SHIPLIX_LB_HOSTS
+        name: KONTENA_LB_VIRTUAL_HOSTS
+        type: env
+      - secret: SHIPLIX_HOST
+        name: SHIPLIX_HOST
+        type: env
+      - secret: SHIPLIX_GITHUB_SECRET_TOKEN
+        name: GITHUB_SECRET_TOKEN
+        type: env
+      - secret: SHIPLIX_GITHUB_CLIENT_ID
+        name: SHIPLIX_GITHUB_CLIENT_ID
+        type: env
+      - secret: SHIPLIX_GITHUB_CLIENT_SECRET
+        name: SHIPLIX_GITHUB_CLIENT_SECRET
+        type: env
+      - secret: SHIPLIX_SECRET_KEY_BASE
+        name: SHIPLIX_SECRET_KEY_BASE
+        type: env
+      - secret: SHIPLIX_NEWRELIC_KEY
+        name: SHIPLIX_NEWRELIC_KEY
+        type: env
+      - secret: SHIPLIX_NEWRELIC_APP_NAME
+        name: SHIPLIX_NEWRELIC_APP_NAME
+        type: env
+      - secret: SHIPLIX_STRIPE_SECRET_KEY
+        name: SHIPLIX_STRIPE_SECRET_KEY
+        type: env
+      - secret: SHIPLIX_STRIPE_PUBLISHABLE_KEY
+        name: SHIPLIX_STRIPE_PUBLISHABLE_KEY
+        type: env
+    volumes:
+      - '/tmp/builds:/app/tmp/builds'
+    logging:
+      driver: syslog
+      options:
+        tag: '{{.Name}}'
+
+  pg:
+    extends:
+      file: docker/docker-compose.common.yml
+      service: pg
+    stateful: true
+    logging:
+      driver: syslog
+      options:
+        tag: '{{.Name}}'
+
+  redis:
+    extends:
+      file: docker/docker-compose.common.yml
+      service: redis
+    stateful: true
+    logging:
+      driver: syslog
+      options:
+        tag: '{{.Name}}'
+
+  cache:
+    extends:
+      file: docker/docker-compose.common.yml
+      service: cache
+    logging:
+      driver: syslog
+      options:
+        tag: '{{.Name}}'
