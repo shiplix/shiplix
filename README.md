@@ -16,11 +16,11 @@ Awesome code analyze tool for Ruby projects
 ```
 $ cp .env.sample .env
 $ vi .env
-$ docker-compose build
-$ docker-compose run --rm app bundle install
-$ docker-compose run --rm app bundle exec rake db:create
-$ docker-compose run --rm app bundle exec rake db:migrate
-$ docker-compose run --rm -e RAILS_ENV=test app bundle exec rake db:migrate
+$ ./docker/bin/compose build
+$ ./docker/bin/bundle install
+$ ./docker/bin/bundle exec rake db:create
+$ ./docker/bin/bundle exec rake db:migrate
+$ RAILS_ENV=test ./docker/bin/bundle exec rake db:migrate
 $ docker-compose up -d
 ```
 
