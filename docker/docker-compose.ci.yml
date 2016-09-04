@@ -2,9 +2,6 @@ version: '2'
 
 services:
   app:
-    extends:
-      file: docker-compose.common.yml
-      service: app
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
@@ -12,6 +9,7 @@ services:
     command: make
     environment:
       - RAILS_ENV=test
+      - SHIPLIX_HOST=shiplix.dev
       - SHIPLIX_STRIPE_PUBLISHABLE_KEY=stripe_key
       - SHIPLIX_STRIPE_SECRET_KEY=stripe_secret
     volumes:
@@ -21,9 +19,6 @@ services:
       - pg
 
   pg:
-    extends:
-      file: docker-compose.common.yml
-      service: pg
     volumes:
       - pg-data:/var/lib/postgresql/data
 

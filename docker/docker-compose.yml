@@ -2,96 +2,41 @@ version: '2'
 
 services:
   app:
-    extends:
-      file: docker-compose.common.yml
-      service: app
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    image: shiplix_app
+    image: registry.gitlab.com/shiplix/shiplix:latest
+    command: bash
     environment:
-      - RAILS_ENV=$RAILS_ENV
-    volumes:
-      - ..:/app
-      - ruby-gems:/gems
-    depends_on:
-      - pg
-      - redis
-      - cache
+      - SHIPLIX_POSTGRES_URL=postgres://postgres@pg/shiplix
+      - SHIPLIX_REDIS_URL=redis://redis:6379
+      - SHIPLIX_CACHE_URL=redis://cache:6379
 
   nginx:
     image: jwilder/nginx-proxy
     ports:
       - "80:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
 
   web:
     extends:
-      file: docker-compose.common.yml
-      service: web
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    image: shiplix_app
-    environment:
-      - VIRTUAL_HOST=shiplix.dev
-      - RAILS_ENV=$RAILS_ENV
-    volumes:
-      - ..:/app
-      - ruby-gems:/gems
-    depends_on:
-      - nginx
-      - pg
-      - redis
-      - cache
+      service: app
+    command: 'bash -c "rm -f /var/run/rails_server.pid && bundle exec rails s -b 0.0.0.0 --pid /var/run/rails_server.pid"'
 
   worker:
     extends:
-      file: docker-compose.common.yml
-      service: worker
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    image: shiplix_app
+      service: app
     environment:
-      - RAILS_ENV=$RAILS_ENV
-    volumes:
-      - ..:/app
-      - ruby-gems:/gems
-    depends_on:
-      - pg
-      - redis
-      - cache
+      - 'QUEUE=*'
+    command: 'bundle exec rake resque:work --trace'
 
   pg:
-    extends:
-      file: docker-compose.common.yml
-      service: pg
-    volumes:
-      - pg-data:/var/lib/postgresql/data
+    image: postgres:9.4
+    environment:
+      - POSTGRES_DB=shiplix
 
   redis:
-    extends:
-      file: docker-compose.common.yml
-      service: redis
-    volumes:
-      - redis-data:/data
+    image: redis:3-alpine
+    command: 'redis-server --appendonly yes'
 
   cache:
-    extends:
-      file: docker-compose.common.yml
-      service: cache
+    image: redis:3-alpine
     environment:
       - REDIS_MAXMEMORY=30mb
-
-volumes:
-  ruby-gems:
-    external:
-      name: gems-ruby2
-
-  pg-data:
-    driver: local
-
-  redis-data:
-    driver: local
+    command: 'redis-server --maxmemory $$REDIS_MAXMEMORY --maxmemory-policy allkeys-lru'
