@@ -8,4 +8,10 @@ case "$RAILS_ENV" in
 esac
 
 
-exec env RAILS_ENV=$RAILS_ENV docker-compose --file ./docker/docker-compose.yml --project-name $project_name "$@"
+exec env \
+  RAILS_ENV=$RAILS_ENV \
+  docker-compose \
+  --file ./docker/docker-compose.yml \
+  --file ./docker/docker-compose.development.yml \
+  --project-name $project_name \
+  "$@"

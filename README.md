@@ -37,27 +37,10 @@ Then login to you new virtual machine with `vagrunt ssh` and configure project w
 
 ### Production
 
-#### Install
+#### Configure
 
-http://kontena.io/docs/getting-started/installing/
-
-```
-$ gem install kontena-cli
-$ kontena login http://kontena.shiplix.com:8080
-$ kontena grid create staging
-```
-
-#### Build
-
-Build image and push to https://hub.docker.com/r/shiplix
-
-```
-$ kontena app build
-```
+TODO
 
 #### Deploy
 
-```
-$ kontena service create --ports 80:80 lb kontena/lb:latest
-$ kontena app deploy
-```
+TODO

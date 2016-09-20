@@ -10,7 +10,7 @@ variables:
 test:
   stage: test
   script:
-    - docker-compose -f ./docker/docker-compose.ci.yml run --rm app make
+    - ./docker/bin/compose-ci run --rm app
 
 build:
   stage: build
