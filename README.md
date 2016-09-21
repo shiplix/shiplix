@@ -4,36 +4,27 @@ Awesome code analyze tool for Ruby projects
 
 ## Usage
 
-#### Show Resque statistics
+TODO
 
-`http://test.shiplix.com/resque_web`
+### Show Resque statistics
+
+`http://shiplix.docker/resque_web`
 
 ## Installation
 
 ### Development
 
-#### Docker
-```
-$ cp .env.sample .env
-$ vi .env
-$ ./docker/bin/compose build
-$ ./docker/bin/bundle install
-$ ./docker/bin/bundle exec rake db:create
-$ ./docker/bin/bundle exec rake db:migrate
-$ RAILS_ENV=test ./docker/bin/bundle exec rake db:migrate
-$ docker-compose up -d
-```
+Place `SHIPLIX_GITHUB_CLIENT_ID`, `SHIPLIX_GITHUB_CLIENT_SECRET`, `GITHUB_SECRET_TOKEN` to `.env` file at root of the project.
 
-#### Ansible
+Install Docker (>= 1.10) https://github.com/abak-press/dkit#docker
 
-Install ansible on host machine.
+Install Docker-Compose (>= 1.7) https://github.com/docker/compose/releases
+
+Install dnsdock https://github.com/abak-press/dkit#dns
 
 ```
-cd cm && make ansible/install_roles && cd ..
-vagrant up
+make setup
 ```
-
-Then login to you new virtual machine with `vagrunt ssh` and configure project with `./bin/setup` command
 
 ### Production
 

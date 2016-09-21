@@ -1,40 +1,19 @@
 version: '2'
 
 services:
-  app:
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    image: shiplix_app
-    environment:
-      - RAILS_ENV=$RAILS_ENV
-      - SHIPLIX_HOST=shiplix.dev
-    volumes:
-      - ..:/app
-      - ruby-gems:/gems
-    depends_on:
-      - pg
-      - redis
-      - cache
-
-  nginx:
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-
   web:
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
     image: shiplix_app
+    env_file:
+      - ./.env.development
     environment:
-      - VIRTUAL_HOST=shiplix.dev
       - RAILS_ENV=$RAILS_ENV
-      - SHIPLIX_HOST=shiplix.dev
     volumes:
       - ..:/app
       - ruby-gems:/gems
     depends_on:
-      - nginx
       - pg
       - redis
       - cache
@@ -44,9 +23,11 @@ services:
       context: ../
       dockerfile: ./docker/Dockerfile
     image: shiplix_app
+    env_file:
+      - ./.env.development
     environment:
+      - 'QUEUE=*'
       - RAILS_ENV=$RAILS_ENV
-      - SHIPLIX_HOST=shiplix.dev
     volumes:
       - ..:/app
       - ruby-gems:/gems

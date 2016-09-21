@@ -1,27 +1,19 @@
 version: '2'
 
 services:
-  app:
+  web:
     image: registry.gitlab.com/shiplix/shiplix:latest
-    command: bash
+    command: bundle exec rails s Puma -b 0.0.0.0 -p 80
+    expose:
+      - "80"
     environment:
       - SHIPLIX_POSTGRES_URL=postgres://postgres@pg/shiplix
       - SHIPLIX_REDIS_URL=redis://redis:6379
       - SHIPLIX_CACHE_URL=redis://cache:6379
 
-  nginx:
-    image: jwilder/nginx-proxy
-    ports:
-      - "80:80"
-
-  web:
-    extends:
-      service: app
-    command: 'bash -c "rm -f /var/run/rails_server.pid && bundle exec rails s -b 0.0.0.0 --pid /var/run/rails_server.pid"'
-
   worker:
     extends:
-      service: app
+      service: web
     environment:
       - 'QUEUE=*'
     command: 'bundle exec rake resque:work --trace'
