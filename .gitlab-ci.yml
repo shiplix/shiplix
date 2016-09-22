@@ -4,13 +4,16 @@ stages:
   - test
   - build
 
-variables:
-  COMPOSE_HTTP_TIMEOUT: "600"
-
 test:
   stage: test
+  variables:
+    COMPOSE_HTTP_TIMEOUT: "600"
+    RAILS_ENV: test
   script:
-    - ./docker/bin/compose-ci run --rm app
+    - apt-get update -qq
+    - apt-get install -y make
+    - make setup
+    - make test
 
 build:
   stage: build

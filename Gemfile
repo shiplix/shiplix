@@ -4,6 +4,7 @@ gem 'rails', '~> 4.2.0'
 gem 'responders', '~> 2.0'
 gem 'rails-i18n'
 gem 'dotenv-rails'
+gem 'puma'
 
 # Data
 gem 'pg'
@@ -65,7 +66,6 @@ gem 'findit'
 # Back
 gem 'resque', '~> 1.25'
 gem 'resque-retry'
-gem 'resque-god'
 gem 'resque-single'
 gem 'resque-web', require: 'resque_web'
 gem 'cocaine', require: false
@@ -81,19 +81,9 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'spring'
-  gem 'capistrano', '~> 3.2'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rails'
-  gem 'capistrano3-unicorn'
-  gem "telegram-bot-ruby"
   gem 'quiet_assets'
   gem 'wirble'
   gem 'awesome_print'
-end
-
-group :production do
-  gem "unicorn", ">= 5.0.1"
-  gem "unicorn-worker-killer", ">= 0.4.4"
 end
 
 group :development, :test do

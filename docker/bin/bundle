@@ -1,3 +1,3 @@
 #!/bin/bash -e
 
-exec ./docker/bin/app bundle "$@"
+exec ./docker/bin/web bundle "$@"
