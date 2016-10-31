@@ -1,5 +1,0 @@
----
-
-- name: Redis | Install redis
-  apt: name=redis-server state=present
-  sudo: yes

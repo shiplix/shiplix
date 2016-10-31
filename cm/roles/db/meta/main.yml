@@ -1,3 +1,0 @@
----
-dependencies:
-  - { role: ANXS.postgresql, sudo: yes }
