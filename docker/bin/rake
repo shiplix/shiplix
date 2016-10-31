@@ -1,3 +1,0 @@
-#!/bin/bash -e
-
-exec ./docker/bin/bundle exec rake "$@"

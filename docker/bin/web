@@ -1,9 +1,0 @@
-#!/bin/bash -e
-
-: ${RUN_ARGS:=''}
-
-if [[ $# -eq 0 ]]; then
-  export RUN_ARGS="-e DNSDOCK_NAME=shiplix -e DNSDOCK_IMAGE= $RUN_ARGS"
-fi
-
-exec ./docker/bin/compose run --rm $RUN_ARGS web "$@"

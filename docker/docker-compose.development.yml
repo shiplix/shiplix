@@ -1,36 +1,40 @@
 version: '2'
 
 services:
-  web:
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    image: shiplix_app
-    env_file:
-      - ./.env.development
+  app:
     environment:
+      - BUNDLE_PATH=/bundle/2.3
       - RAILS_ENV=$RAILS_ENV
     volumes:
       - ..:/app
-      - ruby-gems:/gems
+      - bundler-data:/bundle
     depends_on:
       - pg
       - redis
       - cache
 
-  worker:
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    image: shiplix_app
-    env_file:
-      - ./.env.development
+  web:
     environment:
-      - 'QUEUE=*'
+      - BUNDLE_PATH=/bundle/2.3
       - RAILS_ENV=$RAILS_ENV
     volumes:
       - ..:/app
-      - ruby-gems:/gems
+      - bundler-data:/bundle
+    depends_on:
+      - pg
+      - redis
+      - cache
+    labels:
+      com.dnsdock.name: "shiplix"
+      com.dnsdock.image: ""
+
+  worker:
+    environment:
+      - BUNDLE_PATH=/bundle/2.3
+      - RAILS_ENV=$RAILS_ENV
+    volumes:
+      - ..:/app
+      - bundler-data:/bundle
     depends_on:
       - pg
       - redis
@@ -49,9 +53,9 @@ services:
       - REDIS_MAXMEMORY=30mb
 
 volumes:
-  ruby-gems:
+  bundler-data:
     external:
-      name: gems-ruby2
+      name: bundler_data
 
   pg-data:
     driver: local

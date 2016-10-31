@@ -18,12 +18,14 @@ Place `SHIPLIX_GITHUB_CLIENT_ID`, `SHIPLIX_GITHUB_CLIENT_SECRET`, `GITHUB_SECRET
 
 Install Docker (>= 1.10) https://github.com/abak-press/dkit#docker
 
-Install Docker-Compose (>= 1.7) https://github.com/docker/compose/releases
+Install Docker-Compose (>= 1.7.1) https://github.com/docker/compose/releases
 
-Install dnsdock https://github.com/abak-press/dkit#dns
+Install dip (>= 1.8.0) https://github.com/bibendi/dip
 
-```
-make setup
+```sh
+  dip dns up
+  dip provision
+  dip rails s
 ```
 
 ### Production
