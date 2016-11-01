@@ -1,4 +1,4 @@
-image: gitlab/dind
+image: abakpress/dind:2
 
 stages:
   - test
@@ -7,19 +7,15 @@ stages:
 test:
   stage: test
   variables:
-    COMPOSE_HTTP_TIMEOUT: "600"
     RAILS_ENV: test
   script:
-    - apt-get update -qq
-    - apt-get install -y make
-    - make setup
-    - make test
+    - dip provision
+    - dip rspec
 
 build:
   stage: build
   script:
-    - export REGISTRY=registry.gitlab.com
-    - export IMAGE="$REGISTRY/$(basename $(dirname $PWD))/$(basename $PWD)"
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $REGISTRY
-    - docker build --rm -t $IMAGE:latest -f docker/Dockerfile.production .
-    - docker push $IMAGE:latest
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build --rm -t $CI_REGISTRY_IMAGE:latest -f docker/Dockerfile.production .
+    - docker tag $CI_REGISTRY_IMAGE:latest $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME

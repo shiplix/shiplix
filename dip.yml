@@ -1,0 +1,57 @@
+version: '1'
+
+environment:
+  COMPOSE_FILE_EXT: development
+  RAILS_ENV: development
+  SHIPLIX_HOST: shiplix.docker
+
+compose:
+  files:
+    - docker/docker-compose.yml
+    - docker/docker-compose.${COMPOSE_FILE_EXT}.yml
+  project_name: shiplix${RAILS_ENV}
+
+
+interaction:
+  sh:
+    service: app
+
+  irb:
+    service: app
+    command: irb
+
+  bundle:
+    service: app
+    command: bundle
+
+  rake:
+    service: app
+    command: bundle exec rake
+
+  rails:
+    service: app
+    subcommands:
+      s:
+        service: web
+
+      c:
+        command: bundle exec rails c
+
+      g:
+        command: bundle exec rails g
+
+  rspec:
+    service: app
+    environment:
+      RAILS_ENV: test
+    command: bundle exec rspec
+
+  psql:
+    service: pg
+    command: psql -h pg -U postgres shiplix
+
+provision:
+  - docker volume create --name bundler_data
+  - dip compose up -d pg redis
+  - dip bundle install
+  - dip rake db:structure:load db:migrate --trace
