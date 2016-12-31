@@ -384,8 +384,6 @@ GEM
       faraday (~> 0.8, < 0.10)
     seedbank (0.3.0)
     sexp_processor (4.6.0)
-    shoulda-matchers (2.8.0)
-      activesupport (>= 3.0.0)
     simple-navigation (4.0.3)
       activesupport (>= 2.3.2)
     simplecov (0.10.0)
@@ -524,7 +522,6 @@ DEPENDENCIES
   rspec-rails
   sass-rails
   seedbank
-  shoulda-matchers
   simple-navigation
   simplecov
   spring

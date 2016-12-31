@@ -99,6 +99,5 @@ group :test do
   gem 'mock_redis', :github => 'causes/mock_redis' # необходимо пояснения, почему так?
   gem 'webmock'
   gem 'factory_girl_rails'
-  gem 'shoulda-matchers'
   gem 'simplecov', require: false
 end
