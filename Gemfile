@@ -96,7 +96,7 @@ group :test do
   gem 'rspec-rails'
   gem 'rspec-given'
   gem 'test_after_commit'
-  gem 'mock_redis', :github => 'causes/mock_redis' # необходимо пояснения, почему так?
+  gem 'mock_redis'
   gem 'webmock'
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
