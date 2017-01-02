@@ -47,11 +47,12 @@ interaction:
     command: bundle exec rspec
 
   psql:
-    service: pg
+    service: app
     command: psql -h pg -U postgres shiplix
 
 provision:
   - docker volume create --name bundler_data
   - dip compose up -d pg redis
+  - until dip sh nc -z pg 5432; do echo "Waiting for pg..."; sleep 30; done
   - dip bundle install
   - dip rake db:structure:load db:migrate --trace
