@@ -99,6 +99,5 @@ group :test do
   gem 'mock_redis'
   gem 'webmock'
   gem 'factory_girl_rails'
-  gem 'shoulda-matchers'
   gem 'simplecov', require: false
 end
